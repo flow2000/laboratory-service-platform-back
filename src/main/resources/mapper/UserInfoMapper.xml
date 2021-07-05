@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miku.lab.dao.UserInfoDao">
+
+    <select id="selectUsernameAndPassword" resultType="com.miku.lab.entity.UserInfo" parameterType="com.miku.lab.entity.UserInfo">
+        select *from sys_info_user
+        <where>
+            user_id = #{userId} and password = #{password}
+        </where>
+    </select>
+
+    <select id="getUserById" resultType="com.miku.lab.entity.UserInfo" parameterType="java.lang.String">
+        select *
+        from sys_info_user
+        where user_id = #{userId}
+    </select>
+</mapper>
