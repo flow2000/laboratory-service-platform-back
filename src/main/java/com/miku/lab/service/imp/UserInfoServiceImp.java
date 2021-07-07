@@ -4,17 +4,16 @@ package com.miku.lab.service.imp;/*
  *@version:1.1
  */
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.miku.lab.dao.UserInfoDao;
 import com.miku.lab.entity.UserInfo;
 import com.miku.lab.service.UserInfoService;
-import com.miku.lab.util.JwtTokenUtils;
-import com.miku.lab.util.RedisUtils;
+import com.miku.lab.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -23,35 +22,46 @@ public class UserInfoServiceImp implements UserInfoService {
     @Autowired
     private UserInfoDao userInfoDao;
 
-    @Resource
-    @Autowired
-    private RedisUtils redisUtils;
+    RedisUtil redisUtil = new RedisUtil();
+
+
+    @Override
+    public UserInfo login(String token,UserInfo user,String captcha){
+        RedisUtil redisUtil = new RedisUtil();
+        UserInfo userInfo = userInfoDao.loginVerify(user);
+        if(userInfo!=null){
+            return userInfo;
+        }else{
+            return null;
+        }
+    }
 
     /**
-     *
-     * @param userInfo
-     * @param rememberme
+     * 获取全部用户信息
      * @return
      */
-    public String login(UserInfo userInfo, int rememberme){
-       /* QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id",userInfo.getUserId());
-        queryWrapper.eq("password",userInfo.getPassword());*/
-        /*userInfo = userInfoDao.selectOne(queryWrapper);*/
-        userInfo = userInfoDao.selectUsernameAndPassword(userInfo);
-        //生成token
-        if(userInfo!=null){
-            String token = JwtTokenUtils.createToken(userInfo,rememberme);
-            System.out.println(token);
-            redisUtils.set(userInfo.getUserId(),token);
-            System.out.println(redisUtils.get(userInfo.getUserId()));
-            return token;
+    @Override
+    public List<UserInfo> getAllUser(){
+        List<UserInfo> users = userInfoDao.getAllUserInfo();
+        if(users!=null){
+            return users;
+        }else{
+            return null;
         }
-        return null;
     }
-    public UserInfo findUserById(String userId){
-        /*QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id",userId);*/
-        return userInfoDao.getUserById(userId);
+
+    public int isValiToken(String token,String user_id) {
+
+        if("null".equals(redisUtil.getString(user_id))){
+            return 0;
+        }else if(redisUtil.getString(user_id)!=null) {
+            if(token==""||"null".equals(token)) {
+                return 0;
+            }else if(redisUtil.getString(user_id).equals(token)) {
+                return 1;
+            }
+        }
+        return 0;
+
     }
 }

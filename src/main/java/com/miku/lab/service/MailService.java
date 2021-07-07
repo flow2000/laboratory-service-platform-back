@@ -4,7 +4,7 @@ package com.miku.lab.service;/*
  *@version:1.1
  */
 
-import com.miku.lab.vo.ReturnResult;
+import com.miku.lab.entity.vo.ReturnResult;
 import org.springframework.stereotype.Service;
 
 @Service

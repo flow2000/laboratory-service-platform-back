@@ -17,26 +17,25 @@ import java.sql.Date;
 @NoArgsConstructor
 @ToString
 @Accessors(chain = true)
-@TableName(value = "machine")
 public class Machine {
     @TableId(value = "id")
     private Integer id;
     @TableId(value = "machine_code")
-    private String machineCode;
+    private String machine_code;
     @TableId(value = "img_code")
-    private String imgCode;
+    private String img_code;
     @TableId(value = "class_code")
-    private String classCode;
+    private String class_code;
      @TableId(value = "machine_name")
-    private String machineName;
+    private String machine_name;
      @TableId(value = "location")
     private String location;
      @TableId(value = "active_count")
-    private Integer activeCount;
+    private Integer active_count;
      @TableId(value = "bookable_count")
-    private Integer bookableCount;
+    private Integer bookable_count;
       @TableId(value = "unit_price")
-    private BigDecimal unitPrice;
+    private BigDecimal unit_price;
      @TableId(value = "buy_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date buyDate;
@@ -45,11 +44,11 @@ public class Machine {
      @TableId(value = "factory")
     private String factory;
      @TableId(value = "quality_date")
-    private Integer qualityDate;
+    private Integer quality_date;
      @TableId(value = "model")
     private String model;
      @TableId(value = "machine_function")
-    private String machineFunction;
+    private String machine_function;
       @TableId(value = "abstract1")
     private String abstract1;
      @TableId(value = "remark")
@@ -59,15 +58,15 @@ public class Machine {
      @TableId(value = "modifyer")
     private String modifyer;
      @TableId(value = "create_time")
-    private Integer createTime;
+    private Integer create_time;
      @TableId(value = "modify_time")
-    private Integer modifyTime;
+    private Integer modify_time;
      @TableId(value = "delete_time")
     private Integer deleteTime;
      @TableId(value = "valid_status")
-    private Integer validStatus;
+    private Integer valid_status;
      @TableId(value = "is_check")
-   private Integer isDeleted;
+
     private Integer isCheck;
      @TableId(value = "supplier")
     private String supplier;
@@ -77,5 +76,6 @@ public class Machine {
     private String phone;
    @TableId(value = "life")
     private Integer life;
+    private Integer isDeleted;
 
 }

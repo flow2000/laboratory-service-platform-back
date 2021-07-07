@@ -7,6 +7,7 @@ package com.miku.lab.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,43 +17,46 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Accessors(chain = true)
-@TableName(value = "sys_info_user")
 public class UserInfo {
-
-    //@TableId(value = "id")
+    //id
     private Integer id;
-
-    //@TableId(value = "user_id")
+    //用户账号
     private String userId;
-
-    //@TableId(value = "password")
+    //密码
     private String password;
-
-    //@TableId(value = "role_code")
-    private String role_code;
-
-   // @TableId(value = "name")
-    private String name;
-
-   // @TableId(value = "username")
+    //角色编号
+    private String roleCode;
+    //姓名
+    private String realName;
+    //用户名
     private String username;
-
-   // @TableId(value = "phone")
+    //手机号
     private String phone;
-
-    //@TableId(value = "sex")
+    //性别
     private int sex;
-
-    //@TableId(value = "email")
+    //邮箱
     private String email;
-
-    //@TableId(value = "is_disable")
-    private int isDisable;
+    //删除标志
+    private int is_disable;
+    //创建者
+    private String creater;
+    //创建时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date createTime;
+    //修改人
+    private String updater;
+    //修改时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date updateTime;
+    //删除时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date del_time;
 
 }

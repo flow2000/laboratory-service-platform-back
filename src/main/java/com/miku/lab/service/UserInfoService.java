@@ -7,8 +7,11 @@ package com.miku.lab.service;/*
 import com.miku.lab.entity.UserInfo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface UserInfoService {
-    public String login(UserInfo userInfo, int rememberme);
-    public UserInfo findUserById(String userId);
+    UserInfo login(String token, UserInfo user, String captcha);
+    int isValiToken(String user_id,String token);
+    List<UserInfo> getAllUser();
 }

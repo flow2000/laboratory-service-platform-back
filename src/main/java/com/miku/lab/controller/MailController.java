@@ -5,14 +5,14 @@ package com.miku.lab.controller;/*
  */
 
 import com.miku.lab.service.imp.MailServiceImp;
-import com.miku.lab.vo.ReturnResult;
+import com.miku.lab.entity.vo.ReturnResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/Reg")
+@RequestMapping("/reg")
 public class MailController {
 
     @Autowired

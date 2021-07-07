@@ -12,11 +12,11 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface UserInfoDao  {
-    UserInfo selectUsernameAndPassword(UserInfo userInfo);
-
-   /* @Select("select *from sys_info_user where user_id = #{userId}")*/
-    UserInfo getUserById(String userId);
+    UserInfo loginVerify(UserInfo userInfo);
+    List<UserInfo> getAllUserInfo();
 }

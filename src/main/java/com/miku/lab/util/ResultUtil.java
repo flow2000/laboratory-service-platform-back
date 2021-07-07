@@ -1,7 +1,7 @@
 package com.miku.lab.util;
 
 
-import com.miku.lab.vo.ReturnResult;
+import com.miku.lab.entity.vo.ReturnResult;
 
 public class ResultUtil {
 

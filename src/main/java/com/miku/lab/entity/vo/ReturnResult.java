@@ -1,4 +1,4 @@
-package com.miku.lab.vo;
+package com.miku.lab.entity.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
