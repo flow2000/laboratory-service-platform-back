@@ -3,7 +3,7 @@ package com.miku.lab.util;
 
 import com.miku.lab.entity.vo.ReturnResult;
 
-public class ResultUtil {
+public class AjaxUtil {
 
     public static ReturnResult success(Object object, Integer code, Integer count){
         ReturnResult result = new ReturnResult();

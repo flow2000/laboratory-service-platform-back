@@ -8,11 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class Constant {
 	
-	public static String JDBC_Driver = "com.mysql.jdbc.Driver";
-	public static String USERNAME = "root";
-	public static String PASSWORD = "526500siji";				
-	public static String URL = "jdbc:mysql://localhost:3306/library?characterEncoding=UTF-8&useSSL=false";
-	public static String ContentType = "text/json;charset=utf-8";
 
     /**
      * 数据请求返回码

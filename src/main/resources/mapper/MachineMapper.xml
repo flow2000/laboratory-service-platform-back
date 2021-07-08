@@ -14,5 +14,12 @@
         </where>
     </select>
 
+    <select id="getAllMachineImg" resultType="com.miku.lab.entity.Machine_img" parameterType="com.miku.lab.entity.Machine">
+        select *from sys_machine
+        <where>
+            del_flag=0
+        </where>
+    </select>
+
 
 </mapper>

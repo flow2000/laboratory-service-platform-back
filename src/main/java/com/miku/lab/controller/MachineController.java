@@ -5,16 +5,18 @@ package com.miku.lab.controller;/*
  */
 
 import com.miku.lab.entity.Machine;
-import com.miku.lab.entity.UserInfo;
 import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.MachineService;
 import com.miku.lab.util.Constant;
-import com.miku.lab.util.ResultUtil;
+import com.miku.lab.util.AjaxUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/machine")
@@ -23,13 +25,15 @@ public class MachineController {
     @Autowired
     private MachineService machineService;
 
+    @ApiOperation(value = "获取仪器接口")
+    @ApiImplicitParam()
     @RequestMapping("/getMachineList")
     public ReturnResult getAllUser(){
-        List<Machine> machines = machineService.getAllMachine();
-        if(machines!=null){
-            return ResultUtil.success(machines, Constant.RESCODE_SUCCESS,machines.size());
+        Object map = machineService.getAllMachine();
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
         }else{
-            return ResultUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
         }
     }
 }

@@ -11,5 +11,5 @@ import java.util.List;
 
 @Service
 public interface MachineService {
-    List<Machine> getAllMachine();
+    Object getAllMachine();
 }

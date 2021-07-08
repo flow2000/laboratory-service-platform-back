@@ -26,14 +26,13 @@ public class SwaggerConfig {
         //作者信息
         Contact contact =  new Contact("liang" + "", "", "1257322785@qq.com");
         return new ApiInfo(
-                "miku的swaggerApi文档",
-                "miku一生一世",
+                "实验室管理系统Api文档",
+                "有关实验室的Api接口文档",
                 "1.0",
                 "",
                 contact,
                 "Apache 2.0",
                 "http://www.apache.org/licenses/LICENSE-2.0",
                 new ArrayList());
-
     }
 }
