@@ -14,9 +14,9 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @ToString
 @Accessors(chain = true)
-@TableName(value = "sys_machine_img")
+/*@TableName(value = "sys_machine_img")*/
 public class Machine_img {
-    @TableId(value = "id")
+   /* @TableId(value = "id")*/
     private Integer id;
     @TableId(value = "url")
     private String url;

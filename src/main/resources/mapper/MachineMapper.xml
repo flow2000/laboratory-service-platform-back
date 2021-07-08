@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miku.lab.dao.MachineDao">
+
+    <select id="loginVerify" resultType="com.miku.lab.entity.Machine" parameterType="com.miku.lab.entity.Machine">
+
+    </select>
+
+
+    <select id="getAllMachine" resultType="com.miku.lab.entity.Machine" parameterType="com.miku.lab.entity.Machine">
+        select *from sys_machine
+        <where>
+            del_flag=0
+        </where>
+    </select>
+
+
+</mapper>
