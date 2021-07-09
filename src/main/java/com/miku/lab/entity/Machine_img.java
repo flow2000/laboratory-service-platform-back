@@ -40,10 +40,6 @@ public class Machine_img {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;                    //更新时间
 
-    private String delFlag;                     //删除标志
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date delTime;                       //删除时间
 
 
 }

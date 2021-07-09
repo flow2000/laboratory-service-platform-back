@@ -20,7 +20,7 @@ public class MailController {
     @Autowired
     private MailServiceImp mailServiceImp;
 
-    @ApiOperation(value = "发送邮件")
+    @ApiOperation(value = "邮件接口")
     @ApiImplicitParam()
     @RequestMapping("/sendMail")
     public ReturnResult sendMail(@RequestParam String email){

@@ -1,12 +1,12 @@
 package com.miku.lab.controller;/*
  *@author miku
- *@data 2021/7/9 14:35
+ *@data 2021/7/9 15:38
  *@version:1.1
  */
 
 import com.miku.lab.entity.vo.ReturnResult;
+import com.miku.lab.service.ArticleService;
 import com.miku.lab.service.BookLogService;
-import com.miku.lab.service.LabService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
 import io.swagger.annotations.ApiImplicitParam;
@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/booking")
-public class BookLogController {
+@RequestMapping("/article")
+public class ArticleController {
 
     @Autowired
-    private BookLogService bookLogService;
+    private ArticleService articleService;
 
-    @ApiOperation(value = "预约接口")
+    @ApiOperation(value = "文章接口")
     @ApiImplicitParam()
-    @RequestMapping("/getBookingLog")
-    public ReturnResult getBookingLog(){
-        Object map = bookLogService.getAllBookLog();
+    @RequestMapping("/getArticle")
+    public ReturnResult getArticle(){
+        Object map = articleService.getAllArticle();
         if(map!=null){
             return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
         }else{
