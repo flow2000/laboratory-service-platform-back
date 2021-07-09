@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 @Data
 @AllArgsConstructor

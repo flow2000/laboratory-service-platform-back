@@ -5,7 +5,7 @@
     <select id="loginVerify" resultType="com.miku.lab.entity.UserInfo" parameterType="com.miku.lab.entity.UserInfo">
         select *from sys_user
         <where>
-            user_id = #{user_id} and password = #{password} and del_flag=0
+            user_id = #{userId} and password = #{password} and del_flag=0
         </where>
     </select>
 

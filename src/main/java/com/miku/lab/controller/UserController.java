@@ -52,7 +52,7 @@ public class UserController {
     /**
      *登录验证
      * @param token
-     * @param user_id
+     * @param userId
      * @param password
      * @param captcha
      * @return
@@ -60,10 +60,10 @@ public class UserController {
     @ApiOperation(value = "用户登录接口")
     @ApiImplicitParam()
     @RequestMapping("/login")
-    public ReturnResult login(@RequestParam String token, @RequestParam String user_id, @RequestParam String password, @RequestParam String captcha) {
+    public ReturnResult login(@RequestParam String token, @RequestParam String userId, @RequestParam String password, @RequestParam String captcha) {
         RedisUtil redisUtil = new RedisUtil();
         UserInfo user = new UserInfo();
-        user.setUserId(user_id);
+        user.setUserId(userId);
         user.setPassword(password);
         if(!captcha.equalsIgnoreCase(Constant.CODE)){
             return AjaxUtil.error(Constant.RESCODE_CAPTCHA_ERROR,"验证码错误");

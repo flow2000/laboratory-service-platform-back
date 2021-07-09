@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miku.lab.dao.SuggestDao">
+
+
+
+    <select id="getAllSuggestion" resultType="com.miku.lab.entity.Suggestion" parameterType="com.miku.lab.entity.Suggestion">
+        select *from sys_suggestion
+        <where>
+            del_flag=0
+        </where>
+    </select>
+
+
+</mapper>
