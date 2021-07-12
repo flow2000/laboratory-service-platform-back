@@ -33,5 +33,5 @@ public class WxUserController {
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取微信信息失败");
         }
     }
-    
+
 }

@@ -59,7 +59,7 @@ public class UserController {
      */
     @ApiOperation(value = "用户登录接口")
     @ApiImplicitParam()
-    @RequestMapping("/login")
+    @GetMapping("/login")
     public ReturnResult login(@RequestParam String token, @RequestParam String userId, @RequestParam String password, @RequestParam String captcha) {
         RedisUtil redisUtil = new RedisUtil();
         UserInfo user = new UserInfo();
@@ -86,7 +86,7 @@ public class UserController {
      */
     @ApiOperation(value = "获取所有的用户信息")
     @ApiImplicitParam()
-    @RequestMapping("/getAllUser")
+    @GetMapping("/getAllUser")
     public ReturnResult getAllUser(){
         List<UserInfo> userInfos = userInfoService.getAllUser();
         if(userInfos!=null){

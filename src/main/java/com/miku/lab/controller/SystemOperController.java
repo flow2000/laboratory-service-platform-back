@@ -13,6 +13,7 @@ import com.miku.lab.util.Constant;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ public class SystemOperController {
 
     @ApiOperation(value = "系统操作接口")
     @ApiImplicitParam()
-    @RequestMapping("/getOper")
+    @GetMapping("/getOper")
     public ReturnResult getOper(){
         Object map = operService.getAllOper();
         if(map!=null){

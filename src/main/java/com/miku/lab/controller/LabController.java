@@ -12,6 +12,7 @@ import com.miku.lab.util.Constant;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class LabController {
 
     @ApiOperation(value = "获取实验室接口")
     @ApiImplicitParam()
-    @RequestMapping("/getLabList")
+    @GetMapping("/getLabList")
     public ReturnResult getLabList(){
         Object map = labService.getAllLabInfo();
         if(map!=null){

@@ -12,6 +12,7 @@ import com.miku.lab.util.Constant;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class BookLogController {
 
     @ApiOperation(value = "预约接口")
     @ApiImplicitParam()
-    @RequestMapping("/getBookingLog")
+    @GetMapping("/getBookingLog")
     public ReturnResult getBookingLog(){
         Object map = bookLogService.getAllBookLog();
         if(map!=null){
