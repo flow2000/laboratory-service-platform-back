@@ -1,0 +1,42 @@
+package com.miku.lab.entity;/*
+ *@author miku
+ *@data 2021/7/12 21:56
+ *@version:1.1
+ */
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+
+import java.util.Date;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Accessors(chain = true)
+public class BookMachine {
+
+
+    private Integer id;
+    private String openId;
+
+    private String bookingCode;
+
+    private String machineCode;
+
+    private Integer machineNumber;
+
+    private Integer validStatus;
+
+    private String creater;                     //创建者
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date createTime;                   //创建时间
+    private String updater;                     //更新者
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date updateTime;                   //更新时间
+}

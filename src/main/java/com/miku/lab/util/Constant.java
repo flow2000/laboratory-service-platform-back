@@ -50,12 +50,10 @@ public class Constant {
     public static final boolean TEST_ON_BORROW = true;         //清空
     
     /**
-     * 借阅时间
+     * 业务代码
      */
-    public static final Long STUDENT_EXPIRETIME = (long) (60*60*24*30*2);
-    public static final Long TEACHER_EXPIRETIME = (long) (60*60*24*30*3);
-    public static final Long OTHER_EXPIRETIME = (long) (60*60*24*30*1);
-    
+    public static final String BUSINESS_Book = "b";
+
     /**
      * 验证码
      */
@@ -70,19 +68,4 @@ public class Constant {
 		}
 		
 	}
-    
-   /* *//**
-     * 权限
-     *//*
-    public static final int PRI_INFOLIET = 0;    //信息列表权限
-    public static final int PRI_PERMISION = 1;   //权限管理
-    public static final int PRI_DEPARTMENT = 2;  //部门管理权限
-    public static final int PRI_SALARY = 3;      //薪资核对权限
-    public static final int PRI_PUNISH = 4;      //奖惩管理权限
-
-    *//**
-     * 用户
-     *//*
-    public static final int YEAR = 2021;   //当前年份
-*/
 }

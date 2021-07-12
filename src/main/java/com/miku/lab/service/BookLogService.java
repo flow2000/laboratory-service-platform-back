@@ -11,4 +11,8 @@ import java.util.List;
 @Service
 public interface BookLogService {
     Object getAllBookLog();
+
+    Object getAllBookMachine();
+
+    String addBookMachineLog(String openId,String machine_id,String book_number);
 }

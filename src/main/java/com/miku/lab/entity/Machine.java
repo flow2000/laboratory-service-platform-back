@@ -50,9 +50,4 @@ public class Machine {
     private Date updateTime;                   //更新时间
 
 
-
-
-
-
-
 }

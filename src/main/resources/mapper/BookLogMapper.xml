@@ -10,5 +10,40 @@
         </where>
     </select>
 
+    <select id="getAllBookMachine" resultType="com.miku.lab.entity.BookMachine" parameterType="com.miku.lab.entity.BookMachine">
+        select *from wx_booking_machine
+        <where>
+            del_flag=0
+        </where>
+    </select>
+
+    <select id="getWxUserByOpenId" resultType="com.miku.lab.entity.WxUser" parameterType="com.miku.lab.entity.BookMachine">
+        select *from wx_booking_user
+        <where>
+            openId=#{openId} and del_flag=0
+        </where>
+    </select>
+
+    <select id="getMachineAndCount" resultType="com.miku.lab.entity.Machine" parameterType="map">
+        select *from sys_machine
+        <where>
+            machine_id=#{machine_id} and bookable_count>=#{book_number} and del_flag=0
+        </where>
+    </select>
+
+    <insert id="addBookMachine" parameterType="map">
+        insert
+        into wx_booking_machine(openId,booking_code,machine_code,machine_number,del_flag)
+        values(#{openId},#{booking_code},#{machine_id},#{book_number},0)
+    </insert>
+
+    <update id="updateMachine" parameterType="map">
+        update sys_machine
+        set bookable_count=#{last_number}
+        <where>
+            machine_id=#{machine_id}
+        </where>
+    </update>
+
 
 </mapper>

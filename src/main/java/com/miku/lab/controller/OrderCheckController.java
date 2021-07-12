@@ -36,5 +36,5 @@ public class OrderCheckController {
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
         }
     }
-    
+
 }
