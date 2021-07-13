@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -48,6 +50,20 @@ public class UserInfoServiceImp implements UserInfoService {
         }else{
             return null;
         }
+    }
+
+    /**
+     * 获取单个用户信息
+     * @return
+     */
+    @Override
+    public Map<String,Object> getOneUser(String user_id) {
+        Map<String,Object> map = new HashMap<String,Object>();
+        if (user_id==null||"".equals(user_id)){
+            map.put("msg","参数错误");
+        }
+        map.put("user",userInfoDao.getOneUser(user_id));
+        return map;
     }
 
     public int isValiToken(String token,String user_id) {

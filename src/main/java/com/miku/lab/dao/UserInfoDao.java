@@ -19,4 +19,6 @@ import java.util.List;
 public interface UserInfoDao  {
     UserInfo loginVerify(UserInfo userInfo);
     List<UserInfo> getAllUserInfo();
+
+    UserInfo getOneUser(String user_id);
 }

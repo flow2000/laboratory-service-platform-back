@@ -16,4 +16,5 @@ import java.util.List;
 public interface MachineDao {
     List<Machine> getAllMachine();
 
+    List<Machine> getPageMachine(int page,int limit);
 }

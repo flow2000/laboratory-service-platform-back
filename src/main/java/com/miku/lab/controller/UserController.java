@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -91,6 +92,18 @@ public class UserController {
         List<UserInfo> userInfos = userInfoService.getAllUser();
         if(userInfos!=null){
             return AjaxUtil.success(userInfos,Constant.RESCODE_SUCCESS,userInfos.size());
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
+
+    @ApiOperation(value = "获取一个用户信息")
+    @ApiImplicitParam
+    @GetMapping("/getOneUser")
+    public ReturnResult getOneUser(@RequestParam String user_id){
+        Map<String,Object> map = userInfoService.getOneUser(user_id);
+        if(map!=null){
+            return AjaxUtil.success(map,Constant.RESCODE_SUCCESS,1);
         }else{
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
         }

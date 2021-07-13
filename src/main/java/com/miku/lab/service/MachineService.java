@@ -12,4 +12,6 @@ import java.util.List;
 @Service
 public interface MachineService {
     Object getAllMachine();
+
+    Object getPageMachine(String page, String limit);
 }

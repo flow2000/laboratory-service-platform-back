@@ -6,6 +6,7 @@ package com.miku.lab.dao;/*
 
 import com.miku.lab.entity.Machine_img;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,4 +16,6 @@ import java.util.List;
 public interface MachineImgDao {
 
     List<Machine_img> getAllMachineImg();
+
+    List<Machine_img> getPageMachineImg(@Param("machineIdList")List<String> machineIdList);
 }
