@@ -45,5 +45,32 @@
         </where>
     </update>
 
+    <select id="getLabById" resultType="com.miku.lab.entity.LabInfo" parameterType="com.miku.lab.entity.OrderCheck">
+        select *from sys_lab_info
+        <where>
+            lab_id=#{labId} and del_flag=0
+        </where>
+    </select>
+
+    <update id="updateLabSetStatus" parameterType="com.miku.lab.entity.OrderCheck">
+        update sys_lab_info
+        set lab_status=1
+        <where>
+            lab_id=#{labId}
+        </where>
+    </update>
+
+    <insert id="addBookLab" parameterType="com.miku.lab.entity.OrderCheck">
+        insert
+        into sys_order_check(openId,booking_code,username,lab_id,
+             order_applyer,order_phone,order_number,lab_name,remark,
+             start_time,end_time,checker,check_status,create_time,del_flag)
+        values(
+                #{openId},#{bookingCode},#{username},#{labId},
+                #{orderApplyer},#{orderPhone},#{orderNumber},#{labName},#{remark},
+                #{startTime},#{endTime},#{checker},0,#{createTime},0
+                )
+    </insert>
+
 
 </mapper>

@@ -4,18 +4,20 @@ package com.miku.lab.controller;/*
  *@version:1.1
  */
 
+import com.miku.lab.entity.LabInfo;
+import com.miku.lab.entity.OrderCheck;
 import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.BookLogService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
+import com.miku.lab.util.TimeUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/booking")
@@ -58,6 +60,13 @@ public class BookLogController {
     @GetMapping("/addMachineCheck")
     public ReturnResult addMachineCheck(@RequestParam String openId,@RequestParam String machine_id,@RequestParam String book_number){
         String msg = bookLogService.addBookMachineLog(openId,machine_id,book_number);
+        return AjaxUtil.error(Constant.RESCODE_SUCCESS, msg);
+    }
+
+    @ApiOperation(value = "预约实验室接口")
+    @PostMapping("/addLabCheck")
+    public ReturnResult addLabInfo(@RequestBody OrderCheck orderCheck){
+        String msg = bookLogService.addLabLog(orderCheck);
         return AjaxUtil.error(Constant.RESCODE_SUCCESS, msg);
     }
 }

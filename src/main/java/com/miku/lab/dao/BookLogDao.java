@@ -4,10 +4,7 @@ package com.miku.lab.dao;/*
  *@version:1.1
  */
 
-import com.miku.lab.entity.BookLog;
-import com.miku.lab.entity.BookMachine;
-import com.miku.lab.entity.Machine;
-import com.miku.lab.entity.WxUser;
+import com.miku.lab.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +26,12 @@ public interface BookLogDao {
     int addBookMachine(Map<String,String>map);
 
     int updateMachine(Map<String,String>map);
+
+    Machine getMachineById(Map<String,String>map);
+
+    LabInfo getLabById(String lab_id);
+
+    int updateLabSetStatus(String lab_id);
+
+    int addBookLab(OrderCheck orderCheck);
 }

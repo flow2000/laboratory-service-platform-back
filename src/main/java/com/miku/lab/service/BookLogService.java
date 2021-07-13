@@ -4,6 +4,7 @@ package com.miku.lab.service;/*
  *@version:1.1
  */
 
+import com.miku.lab.entity.OrderCheck;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface BookLogService {
     Object getAllBookMachine();
 
     String addBookMachineLog(String openId,String machine_id,String book_number);
+
+    String addLabLog(OrderCheck orderCheck);
 }

@@ -5,17 +5,17 @@ package com.miku.lab.service.imp;/*
  */
 
 import com.miku.lab.dao.BookLogDao;
-import com.miku.lab.entity.BookLog;
-import com.miku.lab.entity.BookMachine;
-import com.miku.lab.entity.Machine;
-import com.miku.lab.entity.WxUser;
+import com.miku.lab.entity.*;
 import com.miku.lab.service.BookLogService;
 import com.miku.lab.util.Constant;
 import com.miku.lab.util.IdUtil;
+import com.miku.lab.util.TimeUtil;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +25,8 @@ public class BookLogServiceImp implements BookLogService{
 
     @Autowired
     private BookLogDao bookLogDao;
+
+    Map<String,String>map = new HashMap<>();
 
     /**
      * 获取所有预约记录
@@ -54,14 +56,19 @@ public class BookLogServiceImp implements BookLogService{
         }
     }
 
+    /**
+     * 预约仪器
+     * @param openId
+     * @param machine_id
+     * @param book_number
+     * @return
+     */
     @Override
     public String addBookMachineLog(String openId,String machine_id,String book_number){
         WxUser wxUser = bookLogDao.getWxUserByOpenId(openId);
         if (wxUser==null){
             return  "用户未授权";
         }
-
-        Map<String,String>map = new HashMap<>();
         map.put("machine_id",machine_id);
         map.put("book_number",book_number);
         Machine machine = bookLogDao.getMachineAndCount(map);
@@ -85,4 +92,35 @@ public class BookLogServiceImp implements BookLogService{
         return null;
     }
 
+    //String openId,String order_number,String lab_name,String remark,String start_time,String end_time
+    public String addLabLog(OrderCheck orderCheck){
+        WxUser wxUser = bookLogDao.getWxUserByOpenId(orderCheck.getOpenId());
+        if (wxUser==null){
+            return  "用户未授权";
+        }
+        LabInfo labInfo = bookLogDao.getLabById(orderCheck.getLabId());
+        if(labInfo!=null){
+            if(labInfo.getLabStatus()==1){
+                return "该实验室已借用，请更换实验室";
+            }else if(labInfo.getLabStatus()==-1){
+                return "该实验室已被锁定，请更换实验室";
+            }
+            int affectupdate = bookLogDao.updateLabSetStatus(orderCheck.getLabId());   //更改状态
+            if(affectupdate>0){
+                orderCheck.setBookingCode(IdUtil.geneId(Constant.BUSINESS_Book));
+                orderCheck.setOrderApplyer(wxUser.getRealName());
+                orderCheck.setOrderPhone(wxUser.getUserPhone());
+                orderCheck.setChecker("root");
+                orderCheck.setUsername(wxUser.getUsername());
+                orderCheck.setCreateTime(new Date());
+                int affectAdd = bookLogDao.addBookLab(orderCheck);             //插入借用记录
+                if (affectAdd>0){
+                    return "预约成功";
+                }
+            }
+        }else{
+            return "实验室为空";
+        }
+        return "预约失败，详细原因请联系管理员";
+    }
 }
