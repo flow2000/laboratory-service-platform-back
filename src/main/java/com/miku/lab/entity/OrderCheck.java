@@ -23,31 +23,33 @@ import java.util.Date;
 @ApiModel(description= "预约实验室记录模板")
 public class OrderCheck {
 
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private Integer id; //id
 
 
     @ApiModelProperty(value = "微信授权id")
     private String openId;  //微信授权id
 
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private String bookingCode;     //预约申请编号
 
-    @ApiModelProperty(value = "可不填")
+    //@ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private String username;        //昵称
 
     @ApiModelProperty(value = "实验室编号")
     private String labId;           //实验室编号
 
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private String orderAddress;   //预约实验室地址
 
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private String orderApplyer;    //预约申请人姓名
 
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private String orderPhone;      //预约申请人手机号
 
+    @ApiModelProperty(value = "实验名称")
     private String  labName;        //实验名称
 
     @ApiModelProperty(value = "预约目的")
@@ -61,30 +63,30 @@ public class OrderCheck {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date endTime;           //结束时间
 
-    @ApiModelProperty(value = "审核人")
+    @ApiModelProperty(hidden=true)
     private String checker;         //审核人
 
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private String lastUpdater;     //最后修改人
 
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private Integer checkStatus;    //审核状态
 
     @ApiModelProperty(value = "人数")
     private Integer orderNumber;         //人数
 
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private Integer validStatus;        //有效状态
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private String creater;                     //创建者
 
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;                   //创建时间
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private String updater;                     //更新者
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    @ApiModelProperty(value = "可不填")
+    @ApiModelProperty(hidden=true)
     private Date updateTime;                   //更新时间
 
 }
