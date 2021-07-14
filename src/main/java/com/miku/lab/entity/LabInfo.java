@@ -23,6 +23,8 @@ public class LabInfo {
 
     private Integer id;                         //id
 
+    private String lab_id;                      //实验室编号
+
     private String labAddress;                  //实验室地址
 
     private Integer LabStatus;                  //实验室状态
