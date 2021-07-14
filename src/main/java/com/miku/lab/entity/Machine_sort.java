@@ -17,8 +17,8 @@ import java.util.Date;
 public class Machine_sort {
 
     private Integer id;    //id
-    private Integer parent_id; //父分类(默认0)
-    private String sort_sort;  //分类名称
+    private Integer sortId; //父分类(默认0)
+    private String sortSort;  //分类名称
     private String remark;     //备注
     private String valid_status; //有效状态
     private String creater;                     //创建者

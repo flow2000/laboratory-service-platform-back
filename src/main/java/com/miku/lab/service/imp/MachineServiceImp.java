@@ -8,6 +8,7 @@ import com.miku.lab.dao.MachineDao;
 import com.miku.lab.dao.MachineImgDao;
 import com.miku.lab.entity.Machine;
 import com.miku.lab.entity.Machine_img;
+import com.miku.lab.entity.Machine_sort;
 import com.miku.lab.service.MachineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class MachineServiceImp implements MachineService {
     private MachineDao machineDao;
     @Autowired
     private MachineImgDao machineImgDao;
+    Map<String,Object> map = new HashMap<>();
 
 
     @Override
@@ -38,7 +40,7 @@ public class MachineServiceImp implements MachineService {
 
     @Override
     public Object getPageMachine(String page, String limit) {
-        Map<String,Object> map = new HashMap<>();
+
         List<String> machineIdList = new ArrayList<String>();
         int p = 0;
         int m = 10;
@@ -56,6 +58,25 @@ public class MachineServiceImp implements MachineService {
             machineIdList.add(machineList.get(i).getMachineId());
         }
         map.put("machine_img",machineImgDao.getPageMachineImg(machineIdList)); //获取仪器对应图片数据
+        return map;
+    }
+
+    /**
+     * 分页获取仪器分类数据
+     * @param page
+     * @param limit
+     * @return
+     */
+    @Override
+    public Object getPageMachineSort(String page, String limit) {
+        int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
+        int m = Integer.valueOf(limit)*(Integer.valueOf(page)-1+1);
+        map.put("page",p);
+        map.put("limit",m);
+        List<Machine_sort> machineList = machineDao.getPageMachineSort(map); //获取仪器数据
+        List<Machine_sort> machineSortAll = machineDao.getAllMachineSort();
+        map.put("machine_sort",machineList);
+        map.put("count",machineSortAll.size());
         return map;
     }
 }

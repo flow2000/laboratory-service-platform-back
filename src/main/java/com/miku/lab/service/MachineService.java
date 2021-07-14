@@ -14,4 +14,7 @@ public interface MachineService {
     Object getAllMachine();
 
     Object getPageMachine(String page, String limit);
+
+
+    Object getPageMachineSort(String page, String limit);
 }

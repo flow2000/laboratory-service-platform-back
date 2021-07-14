@@ -54,4 +54,19 @@ public class MachineController {
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
         }
     }
+
+    @ApiOperation(value="获取所有仪器分类接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page",value="页数",required=true),
+            @ApiImplicitParam(name = "limit", value = "每页数据量", required = true)
+    })
+    @GetMapping("/getPageMachineSort")
+    public ReturnResult getPageMachineSort(@RequestParam String page, @RequestParam String limit){
+        Object map = machineService.getPageMachineSort(page,limit);
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
 }
