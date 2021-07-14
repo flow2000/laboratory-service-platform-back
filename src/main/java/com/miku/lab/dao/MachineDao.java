@@ -23,4 +23,8 @@ public interface MachineDao {
     List<Machine_sort> getPageMachineSort(Map<String,Object>map);
 
     List<Machine_sort> getAllMachineSort();
+
+    Machine_sort getSortDetailById(String sortId);
+
+    int updateMachineSort(Map<String,Object>map);
 }

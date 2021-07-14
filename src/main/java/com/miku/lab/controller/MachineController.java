@@ -5,6 +5,7 @@ package com.miku.lab.controller;/*
  */
 
 import com.miku.lab.entity.Machine;
+import com.miku.lab.entity.Machine_sort;
 import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.MachineService;
 import com.miku.lab.util.Constant;
@@ -13,10 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -68,5 +66,25 @@ public class MachineController {
         }else{
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
         }
+    }
+
+    @ApiOperation(value="获取分类详细信息接口")
+    @ApiImplicitParam(name = "sortId",value="分类编号",required=true)
+    @GetMapping("/getMachineSortDetail")
+    public ReturnResult getMachineSortDetail(@RequestParam String sortId){
+        Object map = machineService.getSortDetail(sortId);
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
+
+    @ApiOperation(value="获取分类详细信息接口")
+    @ApiImplicitParam(name = "sortId",value="分类编号",required=true)
+    @PostMapping("/updateSort")
+    public ReturnResult updateSort(@RequestBody Machine_sort machine_sort){
+        String map = (String) machineService.updateMachineSort(machine_sort);
+        return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,map);
     }
 }

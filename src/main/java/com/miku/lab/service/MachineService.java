@@ -5,6 +5,7 @@ package com.miku.lab.service;/*
  */
 
 import com.miku.lab.entity.Machine;
+import com.miku.lab.entity.Machine_sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,4 +18,8 @@ public interface MachineService {
 
 
     Object getPageMachineSort(String page, String limit);
+
+    Object getSortDetail(String sortId);
+
+    Object updateMachineSort(Machine_sort machine_sort);
 }

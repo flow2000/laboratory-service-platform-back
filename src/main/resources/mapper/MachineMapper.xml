@@ -32,4 +32,20 @@
     <select id="getAllMachineSort" resultType="com.miku.lab.entity.Machine_sort" parameterType="map">
         select * from sys_machine_sort
     </select>
+
+    <select id="getSortDetailById" resultType="com.miku.lab.entity.Machine_sort" parameterType="com.miku.lab.entity.Machine_sort">
+        select * from sys_machine_sort
+        <where>
+            sort_id=#{sortId} and del_flag=0
+        </where>
+    </select>
+
+    <update id="updateMachineSort" parameterType="map">
+        update sys_machine_sort
+        set sort_id=#{sortId},sort_name=#{sortName},remark=#{remark},valid_status=#{validStatus}
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
 </mapper>

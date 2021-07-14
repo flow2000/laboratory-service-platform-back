@@ -25,9 +25,13 @@ public class MachineServiceImp implements MachineService {
     private MachineDao machineDao;
     @Autowired
     private MachineImgDao machineImgDao;
-    Map<String,Object> map = new HashMap<>();
 
 
+
+    /**
+     * 获取所有的仪器接口
+     * @return
+     */
     @Override
     public Object getAllMachine() {
        /* List<Machine> machines =  ;
@@ -38,9 +42,15 @@ public class MachineServiceImp implements MachineService {
         return map;
     }
 
+    /**
+     * 分页获取仪器
+     * @param page
+     * @param limit
+     * @return
+     */
     @Override
     public Object getPageMachine(String page, String limit) {
-
+        Map<String,Object> map = new HashMap<>();
         List<String> machineIdList = new ArrayList<String>();
         int p = 0;
         int m = 10;
@@ -69,6 +79,7 @@ public class MachineServiceImp implements MachineService {
      */
     @Override
     public Object getPageMachineSort(String page, String limit) {
+        Map<String,Object> map = new HashMap<>();
         int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
         int m = Integer.valueOf(limit)*(Integer.valueOf(page)-1+1);
         map.put("page",p);
@@ -78,5 +89,40 @@ public class MachineServiceImp implements MachineService {
         map.put("machine_sort",machineList);
         map.put("count",machineSortAll.size());
         return map;
+    }
+
+    /**
+     * 获取分类详细
+     * @param sortId
+     * @return
+     */
+    @Override
+    public Object getSortDetail(String sortId) {
+        Map<String,Object> map = new HashMap<>();
+        Machine_sort machine_sort = machineDao.getSortDetailById(sortId);
+        if(machine_sort!=null){
+            map.put("machineDetail",machine_sort);
+            return map;
+        }else{
+            map.put("machineDetail","查询失败");
+            return map;
+        }
+    }
+
+    @Override
+    public Object updateMachineSort(Machine_sort machine_sort) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("id",machine_sort.getId());
+        map.put("sortId",machine_sort.getSortId());
+        map.put("sortName",machine_sort.getSortName());
+        map.put("remark",machine_sort.getRemark());
+        map.put("validStatus",machine_sort.getValidStatus());
+
+        int updateSort = machineDao.updateMachineSort(map);
+        if(updateSort!=0){
+            return "更新成功";
+        }else{
+            return "更新失败";
+        }
     }
 }

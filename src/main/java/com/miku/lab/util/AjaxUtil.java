@@ -20,4 +20,11 @@ public class AjaxUtil {
         result.setMsg(msg);
         return result;
     }
+
+    public static ReturnResult sucessUpdate(Integer code, String msg){
+        ReturnResult result = new ReturnResult();
+        result.setCode(code);
+        result.setMsg(msg);
+        return result;
+    }
 }
