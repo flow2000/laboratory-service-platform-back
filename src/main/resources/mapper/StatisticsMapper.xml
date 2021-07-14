@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miku.lab.dao.StatisticsDao">
+
+    <resultMap id="machineTypeAndCount" type="java.util.Map">
+        <result column="sort_name" property="name" jdbcType="VARCHAR" />
+        <result column="sort_count" property="value" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="LabTypeAndCount" type="java.util.Map">
+        <result column="lab_address" property="name" jdbcType="VARCHAR" />
+        <result column="sort_count" property="value" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="MonthAndCountList" type="java.util.Map">
+        <result column="months" property="months" jdbcType="INTEGER" />
+        <result column="count" property="count" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="getMachineStatistics" resultMap="machineTypeAndCount" >
+        select sort_name, COUNT(class_code) as sort_count from sys_machine,sys_machine_sort
+        where sys_machine.class_code = sys_machine_sort.sort_name
+        GROUP BY class_code
+    </select>
+
+    <select id="getLabStatistics" resultMap="LabTypeAndCount" >
+        select lab_address, COUNT(id) as sort_count from sys_lab_info
+        GROUP BY id
+    </select>
+
+    <select id="getUserCount" resultType="int">
+        select COUNT(*) from sys_user
+    </select>
+
+    <select id="getMachineCount" resultType="int">
+        select COUNT(*) from sys_machine
+    </select>
+
+    <select id="getBookingCount" resultType="int">
+        select COUNT(*) from sys_booking_log
+    </select>
+
+    <select id="getArticleCount" resultType="int">
+        select COUNT(*) from sys_article
+    </select>
+
+    <select id="getCountList" resultMap="MonthAndCountList" parameterType="String">
+        select DATE_FORMAT(create_time,'%m') months,count(id) count from (
+        SELECT id,create_time FROM ${tableName}
+        WHERE create_time BETWEEN date_sub(DATE_FORMAT(NOW(),'%Y-%m-01 0:00:00'),interval 6 month)
+        and date_sub(DATE_FORMAT(NOW(),'%Y-%m-01 0:00:00'),interval 0 month)
+        ) lastSexMonths group by months;
+    </select>
+</mapper>
