@@ -125,4 +125,9 @@ public class MachineServiceImp implements MachineService {
             return "更新失败";
         }
     }
+
+    @Override
+    public List<Machine_sort> getMachineType() {
+        return machineDao.getAllMachineSort();
+    }
 }

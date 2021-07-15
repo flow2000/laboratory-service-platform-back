@@ -53,6 +53,18 @@ public class MachineController {
         }
     }
 
+    @ApiOperation(value = "获取所有仪器分类接口")
+    @ApiImplicitParam()
+    @GetMapping("/getMachineType")
+    public ReturnResult getMachineType(){
+        List<Machine_sort> list = machineService.getMachineType();
+        if(list!=null){
+            return AjaxUtil.success(list, Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
+
     @ApiOperation(value="获取所有仪器分类接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page",value="页数",required=true),

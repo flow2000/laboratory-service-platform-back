@@ -22,4 +22,6 @@ public interface MachineService {
     Object getSortDetail(String sortId);
 
     Object updateMachineSort(Machine_sort machine_sort);
+
+    List<Machine_sort> getMachineType();
 }
