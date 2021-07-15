@@ -55,19 +55,21 @@ public class MachineServiceImp implements MachineService {
         int p = 0;
         int m = 10;
         try{
-            p = Integer.valueOf(page);
-            m = Integer.valueOf(limit);
+            p = (Integer.parseInt(page)-1)*Integer.parseInt(limit);
+            m = Integer.parseInt(limit)*(Integer.parseInt(page)-1+1);
         }catch (Exception e){
             e.printStackTrace();
             map.put("msg","参数错误");
             return map;
         }
         List<Machine> machineList = machineDao.getPageMachine(p,m); //获取仪器数据
+        List<Machine> allMachineList = machineDao.getAllMachine();
         map.put("machine",machineList);
         for (int i = 0; i < machineList.size(); i++) {
             machineIdList.add(machineList.get(i).getMachineId());
         }
         map.put("machine_img",machineImgDao.getPageMachineImg(machineIdList)); //获取仪器对应图片数据
+        map.put("count",allMachineList.size());
         return map;
     }
 
