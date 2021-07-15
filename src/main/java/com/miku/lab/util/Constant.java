@@ -27,6 +27,7 @@ public class Constant {
     public static final int RESCODE_PASSWORD_ERROR = 1013;         //未登录
     public static final int RESCODE_REDIS_SUCCESS = 1014;         //查询redis成功
     public static final int RESCODE_REDIS_TIME_OUT = 1015;         //查询redis成功
+    public static final int RESCODE_SEARCHERROR = 1016;         //查询redis成功
     /**
      * token
      * */

@@ -24,4 +24,10 @@ public interface MachineService {
     Object updateMachineSort(Machine_sort machine_sort);
 
     List<Machine_sort> getMachineType();
+
+    int addMachineSort(Machine_sort machine_sort);
+
+    int delMachineSort(String sortId);
+
+    Object searchSort(String searchKey,String searchValue);
 }

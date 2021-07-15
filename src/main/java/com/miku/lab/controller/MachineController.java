@@ -93,10 +93,61 @@ public class MachineController {
     }
 
     @ApiOperation(value="更新仪器分类接口")
-    @ApiImplicitParam(name = "sortId",value="分类编号",required=true)
     @PostMapping("/updateSort")
     public ReturnResult updateSort(@RequestBody Machine_sort machine_sort){
         String map = (String) machineService.updateMachineSort(machine_sort);
         return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,map);
+    }
+
+    @ApiOperation(value="添加仪器分类接口")
+    @PostMapping("/addSort")
+    public ReturnResult addSort(@RequestBody Machine_sort machine_sort){
+        int flag = machineService.addMachineSort(machine_sort);
+        if (flag == 0) {
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_INSERTERROR,"添加失败，请勿重复添加分类");
+        }else{
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"添加成功");
+        }
+    }
+
+    @ApiOperation(value="删除仪器分类接口")
+    @PostMapping("/delSort")
+    public ReturnResult delSort(@RequestParam String sortId){
+        int flag = machineService.delMachineSort(sortId);
+        if (flag == 0) {
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_INSERTERROR,"删除失败");
+        }else{
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"删除成功");
+        }
+    }
+
+    @ApiOperation(value="删除仪器分类接口")
+    @PostMapping("/combineDelSort")
+    public ReturnResult combineDelSort(@RequestParam String ids){
+        String[] sortIds = ids.split(",");
+        int count=sortIds.length;
+        int delCount=0;
+        for(String sortId:sortIds){
+            int flag = machineService.delMachineSort(sortId);
+            if (flag == 1) {
+                delCount++;
+            }
+        }
+        if(delCount==count){
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"批量删除成功");
+        }else{
+            return AjaxUtil.success("已删除",Constant.RESCODE_DELETEERROR,delCount);
+        }
+    }
+
+    @ApiOperation(value="查询仪器分类接口")
+    @GetMapping("/searchSort")
+    public ReturnResult searchSort(@RequestParam String searchKey,@RequestParam String searchValue){
+        Object map = machineService.searchSort(searchKey,searchValue);
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
     }
 }

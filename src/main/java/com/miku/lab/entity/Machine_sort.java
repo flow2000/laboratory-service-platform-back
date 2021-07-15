@@ -17,7 +17,7 @@ import java.util.Date;
 public class Machine_sort {
 
     private Integer id;    //id
-    private Integer sortId; //父分类(默认0)
+    private String sortId; //父分类(默认0)
     private String sortName;  //分类名称
     private String remark;     //备注
     private String validStatus; //有效状态

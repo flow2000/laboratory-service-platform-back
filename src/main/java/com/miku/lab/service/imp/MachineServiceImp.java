@@ -13,10 +13,7 @@ import com.miku.lab.service.MachineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MachineServiceImp implements MachineService {
@@ -119,6 +116,7 @@ public class MachineServiceImp implements MachineService {
         map.put("sortName",machine_sort.getSortName());
         map.put("remark",machine_sort.getRemark());
         map.put("validStatus",machine_sort.getValidStatus());
+        map.put("updateTime",new Date());
 
         int updateSort = machineDao.updateMachineSort(map);
         if(updateSort!=0){
@@ -132,4 +130,55 @@ public class MachineServiceImp implements MachineService {
     public List<Machine_sort> getMachineType() {
         return machineDao.getAllMachineSort();
     }
+
+    /**
+     * 添加仪器分类
+     * @param machine_sort
+     * @return
+     */
+    @Override
+    public int addMachineSort(Machine_sort machine_sort) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("sortId",machine_sort.getSortId());
+        map.put("sortName",machine_sort.getSortName());
+        map.put("remark",machine_sort.getRemark());
+        map.put("validStatus","1");
+        map.put("creater",machine_sort.getCreater());
+        map.put("createTime",new Date());
+        Machine_sort sort = machineDao.getSortDetailById(machine_sort.getSortId());
+        if(sort==null){
+            int addSort = machineDao.addMachineSort(map);
+            if(addSort!=0){
+                return 1;
+            }
+        }else{
+            return 0;
+        }
+        return 0;
+    }
+
+    @Override
+    public int delMachineSort(String sortId) {
+        int delSort = machineDao.delMachineSort(sortId);
+        if(delSort!=0){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+    @Override
+    public  Object searchSort(String searchKey,String searchValue) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("key",searchValue);
+        map.put("value",searchKey);
+        List<Machine_sort> machineList = machineDao.searchSort(map);
+        if(machineList!=null){
+            map.put("machine_sort",machineList);
+            return map;
+        }else {
+            return null;
+        }
+    }
+
 }
