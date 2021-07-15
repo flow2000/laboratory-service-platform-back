@@ -4,18 +4,17 @@ package com.miku.lab.controller;/*
  *@version:1.1
  */
 
+import com.miku.lab.entity.Role;
 import com.miku.lab.entity.UserInfo;
 import com.miku.lab.entity.vo.LoginResultVo;
 import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.UserInfoService;
 import com.miku.lab.util.*;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -91,21 +90,105 @@ public class UserController {
     public ReturnResult getAllUser(){
         List<UserInfo> userInfos = userInfoService.getAllUser();
         if(userInfos!=null){
-            return AjaxUtil.success(userInfos,Constant.RESCODE_SUCCESS,userInfos.size());
+            return AjaxUtil.success(userInfos,Constant.RESCODE_SUCCESS_MSG,userInfos.size());
         }else{
-            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+            return AjaxUtil.error(Constant.RESCODE_NOEXIST, "获取信息失败");
         }
     }
 
+    @ApiOperation(value="分页获取用户信息")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "page",value="页数",required=true),
+        @ApiImplicitParam(name = "limit", value = "每页数据量", required = true)
+    })
+    @GetMapping("/getPageUser")
+    public ReturnResult getPageUser(@RequestParam String page, @RequestParam String limit){
+        Object map = userInfoService.getPageUser(page,limit);
+        if(map!=null){
+            return AjaxUtil.success(map,Constant.RESCODE_SUCCESS_MSG,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_NOEXIST, "获取信息失败");
+        }
+    }
+
+
+    /**
+     * 获取一个用户信息
+     * @param user_id
+     * @return
+     */
     @ApiOperation(value = "获取一个用户信息")
     @ApiImplicitParam
     @GetMapping("/getOneUser")
     public ReturnResult getOneUser(@RequestParam String user_id){
-        Map<String,Object> map = userInfoService.getOneUser(user_id);
-        if(map!=null){
-            return AjaxUtil.success(map,Constant.RESCODE_SUCCESS,1);
+        Object object = userInfoService.getOneUser(user_id);
+        if(object!=null){
+            return AjaxUtil.success(object,Constant.RESCODE_SUCCESS_MSG,1);
         }else{
-            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+            return AjaxUtil.error(Constant.RESCODE_NOEXIST, "获取信息失败");
         }
+    }
+
+    /**
+     * 验证用户密码
+     * @param user_id
+     * @param password
+     * @return
+     */
+    @ApiOperation(value="验证用户密码")
+    @ApiImplicitParam
+    @PostMapping("/verifyUserPassword")
+    public ReturnResult verifyUserPassword(@RequestParam String user_id,@RequestParam String password){
+        int res = userInfoService.verifyUserPassword(user_id,password);
+        if(res == 1){
+            return AjaxUtil.success("验证成功",Constant.RESCODE_SUCCESS,res);
+        }else if(res == 0){
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS_MSG, "密码错误");
+        }
+        return AjaxUtil.error(Constant.RESCODE_NOEXIST, "查询失败");
+    }
+
+    /**
+     * 修改个人信息
+     * @param param
+     * @return
+     */
+    @ApiOperation(value="修改个人信息")
+    @ApiImplicitParam
+    @PostMapping("/updatePersonInfo")
+    public ReturnResult updateUserInfo(@RequestBody Map<String,Object>param){
+        int res = userInfoService.updateUserInfo(param);
+        if(res == 1){
+            return AjaxUtil.success("修改成功",Constant.RESCODE_SUCCESS,res);
+        }else if(res == 0){
+            return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "修改失败");
+        }
+        return AjaxUtil.error(Constant.RESCODE_EXCEPTION, "失败");
+    }
+
+    @ApiOperation(value = "添加用户")
+    @ApiImplicitParam
+    @PostMapping("/addUser")
+    public ReturnResult addUser(@RequestBody Map<String,Object>param){
+        int res = userInfoService.addUser(param);
+        if(res == 1){
+            return AjaxUtil.success("添加成功",Constant.RESCODE_SUCCESS,res);
+        }else if(res == 0){
+            return AjaxUtil.error(Constant.RESCODE_INSERTERROR, "添加失败");
+        }
+        return AjaxUtil.error(Constant.RESCODE_EXCEPTION, "失败");
+    }
+
+    @ApiOperation(value = "删除用户")
+    @ApiImplicitParam
+    @PostMapping("/deleteUser")
+    public ReturnResult deleteUser(@RequestBody Map<String,Object>param){
+        int res = userInfoService.deleteUser(param);
+        if(res >= 1){
+            return AjaxUtil.success("删除成功",Constant.RESCODE_SUCCESS,res);
+        }else if(res == 0){
+            return AjaxUtil.error(Constant.RESCODE_DELETEERROR, "删除失败");
+        }
+        return AjaxUtil.error(Constant.RESCODE_EXCEPTION, "失败");
     }
 }

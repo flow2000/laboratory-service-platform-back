@@ -6,13 +6,13 @@ package com.miku.lab.dao;
  *@version:1.1
  */
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.miku.lab.entity.Role;
 import com.miku.lab.entity.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
@@ -20,5 +20,15 @@ public interface UserInfoDao  {
     UserInfo loginVerify(UserInfo userInfo);
     List<UserInfo> getAllUserInfo();
 
-    UserInfo getOneUser(String user_id);
+    Map<String,Object> getOneUser(String user_id);
+
+    UserInfo verifyUserPassword(String user_id, String password);
+
+    int updateUserInfo(Map<String, Object> param);
+
+    List<UserInfo> getPageUser(int p, int m);
+
+    int addUser(Map<String, Object> param);
+
+    int deleteUser(String str);
 }

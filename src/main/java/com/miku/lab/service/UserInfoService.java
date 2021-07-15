@@ -16,5 +16,15 @@ public interface UserInfoService {
     int isValiToken(String user_id,String token);
     List<UserInfo> getAllUser();
 
-    Map<String,Object> getOneUser(String user_id);
+    Object getOneUser(String user_id);
+
+    int verifyUserPassword(String user_id, String password);
+
+    int updateUserInfo(Map<String, Object> param);
+
+    Map<String, Object> getPageUser(String page, String limit);
+
+    int addUser(Map<String, Object> param);
+
+    int deleteUser(Map<String, Object> param);
 }
