@@ -5,6 +5,7 @@ package com.miku.lab.dao;/*
  */
 
 import com.miku.lab.entity.Article;
+import com.miku.lab.entity.ArticleSort;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,7 @@ import java.util.List;
 public interface ArticleDao {
 
     List<Article> getAllArticle();
+
+    List<ArticleSort>getAllArticleSort();
+
 }

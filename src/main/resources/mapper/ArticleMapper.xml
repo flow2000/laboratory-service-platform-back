@@ -10,5 +10,12 @@
         </where>
     </select>
 
+    <select id="getAllArticleSort" resultType="com.miku.lab.entity.ArticleSort" parameterType="com.miku.lab.entity.ArticleSort">
+        select *from sys_article_sort
+        <where>
+            del_flag=0
+        </where>
+    </select>
+
 
 </mapper>

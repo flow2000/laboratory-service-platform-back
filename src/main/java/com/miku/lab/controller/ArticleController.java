@@ -36,4 +36,17 @@ public class ArticleController {
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
         }
     }
+
+    @ApiOperation(value = "获取所有文章分类")
+//    @ApiImplicitParam()
+//    @RequestMapping("/getArticle")
+    @GetMapping("/getArticleSort")
+    public ReturnResult getArticleSort(){
+        Object map = articleService.getAllArticleSort();
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
 }

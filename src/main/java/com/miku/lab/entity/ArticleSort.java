@@ -1,6 +1,6 @@
 package com.miku.lab.entity;/*
  *@author miku
- *@data 2021/7/9 13:42
+ *@data 2021/7/15 8:21
  *@version:1.1
  */
 
@@ -19,22 +19,12 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Accessors(chain = true)
-public class LabInfo {
-
-    private Integer id;                         //id
-
-    private String labId;                      //实验室编号
-
-    private String labAddress;                  //实验室地址
-
-    private Integer LabStatus;                  //实验室状态
-
-    private String LabAdmin;                    //实验室管理员
-
-    private String LabAdminPhone;              //实验室
-
-    private Integer validStatus;
-
+public class ArticleSort {
+    private Integer id;    //id
+    private Integer sortId; //分类(默认0)
+    private String sortName;  //分类名称
+    private String remark;     //备注
+    private String validStatus; //有效状态
     private String creater;                     //创建者
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;                   //创建时间
@@ -42,8 +32,4 @@ public class LabInfo {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;                   //更新时间
 
-
-
-
 }
-

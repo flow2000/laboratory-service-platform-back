@@ -92,7 +92,7 @@ public class MachineController {
         }
     }
 
-    @ApiOperation(value="获取分类详细信息接口")
+    @ApiOperation(value="更新仪器分类接口")
     @ApiImplicitParam(name = "sortId",value="分类编号",required=true)
     @PostMapping("/updateSort")
     public ReturnResult updateSort(@RequestBody Machine_sort machine_sort){

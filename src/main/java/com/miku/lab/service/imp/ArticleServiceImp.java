@@ -6,6 +6,7 @@ package com.miku.lab.service.imp;/*
 
 import com.miku.lab.dao.ArticleDao;
 import com.miku.lab.entity.Article;
+import com.miku.lab.entity.ArticleSort;
 import com.miku.lab.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,16 @@ public class ArticleServiceImp implements ArticleService {
         List<Article> articles = articleDao.getAllArticle();
         if (articles!=null){
             return articles;
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public Object getAllArticleSort() {
+        List<ArticleSort> articleSorts = articleDao.getAllArticleSort();
+        if (articleSorts!=null){
+            return articleSorts;
         }else{
             return null;
         }
