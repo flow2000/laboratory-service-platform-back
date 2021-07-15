@@ -27,4 +27,10 @@ public interface MachineDao {
     Machine_sort getSortDetailById(String sortId);
 
     int updateMachineSort(Map<String,Object>map);
+
+    int addMachineSort(Map<String,Object>map);
+
+    int delMachineSort(String sortId);
+
+    List<Machine_sort> searchSort(Map<String,Object>map);
 }

@@ -6,6 +6,14 @@
 
     </select>
 
+    <sql id="Base_Column_List">
+        sort_id
+    </sql>
+
+    <sql id="Base_Table">
+        sys_machine_sort
+    </sql>
+
 
     <select id="getAllMachine" resultType="com.miku.lab.entity.Machine" parameterType="com.miku.lab.entity.Machine">
         select *from sys_machine
@@ -26,11 +34,11 @@
     </select>
 
     <select id="getPageMachineSort" resultType="com.miku.lab.entity.Machine_sort" parameterType="map">
-        select * from sys_machine_sort limit #{page},#{limit}
+        select * from sys_machine_sort where del_flag=0 limit #{page},#{limit}
     </select>
 
     <select id="getAllMachineSort" resultType="com.miku.lab.entity.Machine_sort" parameterType="map">
-        select * from sys_machine_sort
+        select * from sys_machine_sort where del_flag=0
     </select>
 
     <select id="getSortDetailById" resultType="com.miku.lab.entity.Machine_sort" parameterType="com.miku.lab.entity.Machine_sort">
@@ -42,10 +50,36 @@
 
     <update id="updateMachineSort" parameterType="map">
         update sys_machine_sort
-        set sort_id=#{sortId},sort_name=#{sortName},remark=#{remark},valid_status=#{validStatus}
+        set sort_id=#{sortId},sort_name=#{sortName},remark=#{remark},valid_status=#{validStatus},update_time=#{updateTime}
         <where>
             id=#{id}
         </where>
     </update>
+
+    <insert id="addMachineSort" parameterType="com.miku.lab.entity.Machine_sort">
+        insert
+        into sys_machine_sort(sort_id,sort_name,remark,valid_status,
+             creater,create_time,del_flag)
+        values(
+                #{sortId},#{sortName},#{remark},#{validStatus},
+                #{creater},#{createTime},0
+                )
+    </insert>
+
+    <update id="delMachineSort" parameterType="com.miku.lab.entity.Machine_sort">
+        update sys_machine_sort
+        set del_flag=1
+        <where>
+            <include refid="Base_Column_List"/> = #{sortId}
+        </where>
+    </update>
+
+    <select id="searchSort" resultType="com.miku.lab.entity.Machine_sort" parameterType="com.miku.lab.entity.Machine_sort">
+        select *
+         from sys_machine_sort
+        <where>
+            locate(#{key},${value}) and del_flag=0
+        </where>
+    </select>
 
 </mapper>
