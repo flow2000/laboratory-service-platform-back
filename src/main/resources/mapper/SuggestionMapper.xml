@@ -12,4 +12,21 @@
     </select>
 
 
+    <insert id="addSuggest" parameterType="com.miku.lab.entity.Suggestion">
+        insert
+        into sys_suggestion(openid,suggest_content,
+        <if test="suggestPhone!=null||suggestPhone!=''">
+            suggest_phone,
+        </if>
+             creater,
+             create_time,del_flag)
+        values(
+                #{openid},#{suggestContent},
+                <if test="suggestPhone!=null||suggestPhone!=''">
+                    #{suggestPhone},
+                </if>
+                #{creater},#{createTime},0
+                )
+    </insert>
+
 </mapper>

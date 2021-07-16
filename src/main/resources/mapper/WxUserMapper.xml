@@ -9,6 +9,24 @@
         </where>
     </select>
 
+    <update id="updateWxUser" parameterType="com.miku.lab.entity.WxUser">
+        update wx_booking_user
+        set real_name=#{realName},user_company=#{userCompany},
+            sex=#{sex},user_phone=#{userPhone}
+            <if test="userPosition!=null||userPosition!=''">
+                ,user_position=#{userPosition}
+            </if>
+            <if test="email!=null||email!=''">
+                ,email=#{email}
+            </if>
+            <if test="username!=null||username!=''">
+                ,username=#{username}
+            </if>
+            ,update_time=#{updateTime}
 
+        <where>
+            openId=#{openId} and del_flag=0
+        </where>
+    </update>
 
 </mapper>

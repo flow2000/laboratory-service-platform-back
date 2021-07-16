@@ -4,7 +4,6 @@ package com.miku.lab.controller;/*
  *@version:1.1
  */
 
-import com.miku.lab.entity.Role;
 import com.miku.lab.entity.UserInfo;
 import com.miku.lab.entity.vo.LoginResultVo;
 import com.miku.lab.entity.vo.ReturnResult;

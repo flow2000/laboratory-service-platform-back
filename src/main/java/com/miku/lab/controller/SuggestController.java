@@ -4,6 +4,7 @@ package com.miku.lab.controller;/*
  *@version:1.1
  */
 
+import com.miku.lab.entity.Suggestion;
 import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.MachineService;
 import com.miku.lab.service.SuggestService;
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +34,18 @@ public class SuggestController {
             return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
         }else{
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
+
+    @ApiOperation(value = "提交反馈信息接口")
+    @ApiImplicitParam()
+    @GetMapping("/addSuggest")
+    public ReturnResult addSuggest(@RequestBody Suggestion suggestion){
+        int flag = suggestService.addSuggest(suggestion);
+        if(flag!=0){
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"添加成功");
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_INSERTERROR, "添加信息失败");
         }
     }
 }

@@ -4,9 +4,12 @@ package com.miku.lab.service;/*
  *@version:1.1
  */
 
+import com.miku.lab.entity.WxUser;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface WxUserService {
     Object getAllWxUser();
+
+    int updateWxUser(WxUser wxUser);
 }

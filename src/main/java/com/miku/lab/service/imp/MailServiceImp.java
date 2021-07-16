@@ -22,6 +22,11 @@ public class MailServiceImp implements MailService {
     @Autowired
     private JavaMailSenderImpl javaMailSender;
 
+    /**
+     * 发送邮箱验证码
+     * @param eamil
+     * @return
+     */
     @Override
     public ReturnResult sendActiveMail(String eamil) {
        try {
@@ -35,6 +40,28 @@ public class MailServiceImp implements MailService {
            javaMailSender.send(message);
            System.out.println("邮箱发送成功");
            return AjaxUtil.success(checkCode,1000,1);
+       }catch (Exception e){
+           e.printStackTrace();
+           return AjaxUtil.error(1001,"发送失败");
+       }
+    }
+
+    /**
+     * 通知邮箱
+     * @param eamil
+     * @return
+     */
+    @Override
+    public ReturnResult sendNotifyMail(String eamil) {
+       try {
+           SimpleMailMessage message = new SimpleMailMessage();
+           message.setFrom("1257322785@qq.com");
+           message.setTo(eamil);
+           message.setSubject("预约结果");
+           message.setText("你好，你的相应仪器或实验室预约已经完成，请准时到指定地点领取并签名");
+           javaMailSender.send(message);
+           System.out.println("邮箱发送成功");
+           return AjaxUtil.success("预约成功",1000,1);
        }catch (Exception e){
            e.printStackTrace();
            return AjaxUtil.error(1001,"发送失败");

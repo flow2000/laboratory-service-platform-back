@@ -6,7 +6,6 @@ package com.miku.lab.dao;
  *@version:1.1
  */
 
-import com.miku.lab.entity.Role;
 import com.miku.lab.entity.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;

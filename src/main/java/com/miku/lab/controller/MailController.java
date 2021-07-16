@@ -21,10 +21,17 @@ public class MailController {
     @Autowired
     private MailServiceImp mailServiceImp;
 
-    @ApiOperation(value = "邮件接口")
+    @ApiOperation(value = "邮件验证码接口")
     @ApiImplicitParam()
     @GetMapping("/sendMail")
     public ReturnResult sendMail(@RequestParam String email){
         return mailServiceImp.sendActiveMail(email);
+    }
+
+    @ApiOperation(value = "邮件接口")
+    @ApiImplicitParam()
+    @GetMapping("/sendNotifyMail")
+    public ReturnResult sendNotifyMail(@RequestParam String email){
+        return mailServiceImp.sendNotifyMail(email);
     }
 }

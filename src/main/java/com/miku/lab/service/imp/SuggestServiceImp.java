@@ -10,6 +10,7 @@ import com.miku.lab.service.SuggestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,6 +26,17 @@ public class SuggestServiceImp implements SuggestService {
             return suggestions;
         }else{
             return null;
+        }
+    }
+
+    @Override
+    public int addSuggest(Suggestion suggestion) {
+        suggestion.setCreateTime(new Date());
+        int addAffect = suggestDao.addSuggest(suggestion);
+        if(addAffect>0){
+            return 1;
+        }else {
+            return 0;
         }
     }
 }

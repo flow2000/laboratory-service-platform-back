@@ -32,7 +32,7 @@ public class Machine {
     private String machineRemark;              //说明
     private String machineSupplier;            //供应商单位
     private String machineContacter;           //供应商联系人
-    private String machineContacter_phone;     //供应商联系电话
+    private String machineContacterPhone;     //供应商联系电话
     private Integer machineLife;                //寿命
     private Integer bookableCount;              //可预约数量
     private BigDecimal unitPrice;                  //单价

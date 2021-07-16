@@ -11,4 +11,6 @@ import org.springframework.stereotype.Service;
 public interface MailService {
 
     ReturnResult sendActiveMail( String email);
+
+    ReturnResult sendNotifyMail( String email);
 }

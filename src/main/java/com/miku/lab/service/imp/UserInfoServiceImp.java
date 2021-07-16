@@ -5,7 +5,6 @@ package com.miku.lab.service.imp;/*
  */
 
 import com.miku.lab.dao.UserInfoDao;
-import com.miku.lab.entity.Role;
 import com.miku.lab.entity.UserInfo;
 import com.miku.lab.service.UserInfoService;
 import com.miku.lab.util.RedisUtil;

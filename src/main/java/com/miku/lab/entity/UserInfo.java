@@ -41,7 +41,7 @@ public class UserInfo {
     //邮箱
     private String email;
     //删除标志
-    private int is_disable;
+    private int isDisable;
     //创建者
     private String creater;
     //创建时间

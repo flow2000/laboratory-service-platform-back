@@ -10,6 +10,7 @@ import com.miku.lab.service.WxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,5 +27,18 @@ public class WxUserServiceImp implements WxUserService {
         }else{
             return null;
         }
+    }
+
+    @Override
+    public int updateWxUser(WxUser wxUser) {
+        wxUser.setUpdateTime(new Date());
+        int addAffect = wxUserDao.updateWxUser(wxUser);
+        if (addAffect!=0){
+            return 1;
+        }else {
+            return 0;
+        }
+
+
     }
 }

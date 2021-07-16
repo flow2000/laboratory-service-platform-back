@@ -28,7 +28,7 @@ public class Machine_img {
 
     private String machineCode;                 //仪器编号
 
-    private Integer is_tar;                     //是否是缩略图
+    private Integer isTar;                     //是否是缩略图
 
     private String creater;                     //创建者
 

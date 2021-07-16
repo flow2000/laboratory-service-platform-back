@@ -1,10 +1,10 @@
 package com.miku.lab.dao;/*
  *@author miku
- *@data 2021/7/12 20:49
+ *@data 2021/7/16 15:42
  *@version:1.1
  */
 
-import com.miku.lab.entity.WxUser;
+import com.miku.lab.entity.LinkInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -12,8 +12,7 @@ import java.util.List;
 
 @Mapper
 @Repository
-public interface WxUserDao {
+public interface LinkInfoDao {
 
-    List<WxUser> getAllWxUser();
-    int updateWxUser(WxUser wxUser);
+    List<LinkInfo> getLinkInfoList();
 }

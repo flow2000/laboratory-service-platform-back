@@ -15,4 +15,6 @@ import java.util.List;
 public interface SuggestDao {
 
     List<Suggestion> getAllSuggestion();
+
+    int addSuggest(Suggestion suggestion);
 }
