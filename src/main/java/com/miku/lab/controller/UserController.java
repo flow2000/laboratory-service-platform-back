@@ -9,6 +9,7 @@ import com.miku.lab.entity.vo.LoginResultVo;
 import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.UserInfoService;
 import com.miku.lab.util.*;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
+@Api(value="UserController",tags="用户接口")
 public class UserController {
     @Autowired
     private UserInfoService userInfoService;

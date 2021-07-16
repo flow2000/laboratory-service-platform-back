@@ -11,6 +11,7 @@ import com.miku.lab.service.BookLogService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
 import com.miku.lab.util.TimeUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/booking")
+@Api(value="BookLogController",tags="预约接口")
 public class BookLogController {
 
     @Autowired

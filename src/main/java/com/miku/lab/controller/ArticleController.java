@@ -9,6 +9,7 @@ import com.miku.lab.service.ArticleService;
 import com.miku.lab.service.BookLogService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/article")
+@Api(value="ArticleController",tags="文章接口")
 public class ArticleController {
 
     @Autowired

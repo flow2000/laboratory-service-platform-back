@@ -9,6 +9,7 @@ import com.miku.lab.service.LabService;
 import com.miku.lab.service.LinkInfoService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/link")
+@Api(value="LinkInfoController",tags="联系方式接口")
 public class LinkInfoController {
 
     @Autowired

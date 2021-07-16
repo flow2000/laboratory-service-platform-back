@@ -9,6 +9,7 @@ import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.WxUserService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/wx")
+@Api(value="WxUserController",tags="微信用户接口")
 public class WxUserController {
 
     @Autowired

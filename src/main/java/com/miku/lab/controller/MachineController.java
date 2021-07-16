@@ -10,6 +10,7 @@ import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.MachineService;
 import com.miku.lab.util.Constant;
 import com.miku.lab.util.AjaxUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/machine")
+@Api(value="MachineController",tags="仪器接口")
 public class MachineController {
 
     @Autowired

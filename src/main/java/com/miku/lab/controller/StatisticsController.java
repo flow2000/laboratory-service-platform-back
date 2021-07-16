@@ -4,6 +4,7 @@ import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.StatisticsService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/statistics")
+@Api(value="StatisticsController",tags="数据统计接口")
 public class StatisticsController {
 
     @Autowired

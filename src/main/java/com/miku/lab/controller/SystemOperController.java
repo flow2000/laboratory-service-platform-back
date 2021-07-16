@@ -10,6 +10,7 @@ import com.miku.lab.service.OperService;
 import com.miku.lab.service.SuggestService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/operation")
+@Api(value="SystemOperController",tags="操作接口")
 public class SystemOperController {
 
     @Autowired
