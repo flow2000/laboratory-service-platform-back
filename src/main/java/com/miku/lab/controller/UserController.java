@@ -148,6 +148,23 @@ public class UserController {
     }
 
     /**
+     * 修改用户密码
+     * @param user_id
+     * @param password
+     * @return
+     */
+    @ApiOperation(value="修改用户密码")
+    @ApiImplicitParam
+    @PostMapping("/updatePersonPassword")
+    public ReturnResult updatePersonPassword(@RequestParam String user_id,@RequestParam String password,@RequestParam String updater){
+        int res = userInfoService.updatePersonPassword(user_id,password,updater);
+        if(res == 1){
+            return AjaxUtil.success("修改成功",Constant.RESCODE_SUCCESS,res);
+        }
+        return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "修改失败");
+    }
+
+    /**
      * 修改个人信息
      * @param param
      * @return
