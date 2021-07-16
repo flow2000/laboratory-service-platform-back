@@ -21,7 +21,7 @@ import java.util.Date;
 @Accessors(chain = true)
 public class ArticleSort {
     private Integer id;    //id
-    private Integer sortId; //分类(默认0)
+    private String sortId; //分类(默认0)
     private String sortName;  //分类名称
     private String remark;     //备注
     private String validStatus; //有效状态

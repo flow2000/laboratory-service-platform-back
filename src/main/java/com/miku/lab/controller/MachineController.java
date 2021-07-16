@@ -123,7 +123,7 @@ public class MachineController {
         }
     }
 
-    @ApiOperation(value="删除仪器分类接口")
+    @ApiOperation(value="批量删除仪器分类接口")
     @PostMapping("/combineDelSort")
     public ReturnResult combineDelSort(@RequestParam String ids){
         String[] sortIds = ids.split(",");

@@ -17,5 +17,50 @@
         </where>
     </select>
 
+    <select id="getPageArticleSort" resultType="com.miku.lab.entity.ArticleSort" parameterType="map">
+        select * from sys_article_sort where del_flag=0 limit #{page},#{limit}
+    </select>
+
+    <select id="getSortDetailById" resultType="com.miku.lab.entity.ArticleSort" parameterType="com.miku.lab.entity.ArticleSort">
+        select * from sys_article_sort
+        <where>
+            sort_id=#{sortId} and del_flag=0
+        </where>
+    </select>
+
+    <update id="updateSort" parameterType="map">
+        update sys_article_sort
+        set sort_id=#{sortId},sort_name=#{sortName},remark=#{remark},valid_status=#{validStatus},update_time=#{updateTime}
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
+    <insert id="addSort" parameterType="com.miku.lab.entity.ArticleSort">
+        insert
+        into sys_article_sort(sort_id,sort_name,remark,valid_status,
+             creater,create_time,del_flag)
+        values(
+                #{sortId},#{sortName},#{remark},#{validStatus},
+                #{creater},#{createTime},0
+                )
+    </insert>
+
+    <update id="delSort" parameterType="com.miku.lab.entity.ArticleSort">
+        update sys_article_sort
+        set del_flag=1
+        <where>
+            sort_id = #{sortId}
+        </where>
+    </update>
+
+    <select id="searchSort" resultType="com.miku.lab.entity.ArticleSort" parameterType="com.miku.lab.entity.ArticleSort">
+        select *
+        from sys_article_sort
+        <where>
+            locate(#{key},${value}) and del_flag=0
+        </where>
+    </select>
+
 
 </mapper>
