@@ -126,6 +126,11 @@ public class UserInfoServiceImp implements UserInfoService {
         return userInfoDao.deleteUser(str);
     }
 
+    @Override
+    public int updatePersonPassword(String user_id, String password,String updater) {
+        return userInfoDao.updatePersonPassword(user_id,password,updater);
+    }
+
     public int isValiToken(String token,String user_id) {
 
         if("null".equals(redisUtil.getString(user_id))){

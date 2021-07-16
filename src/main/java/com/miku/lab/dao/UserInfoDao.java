@@ -31,4 +31,6 @@ public interface UserInfoDao  {
     int addUser(Map<String, Object> param);
 
     int deleteUser(String str);
+
+    int updatePersonPassword(String user_id, String password,String updater);
 }
