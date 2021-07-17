@@ -30,5 +30,5 @@ public interface UserInfoService {
 
     int updatePersonPassword(String user_id, String password,String updater);
 
-    Object searchUser(Map<String,String> param);
+    Object searchUser(int page,int limit,String searchKey,String searchValue);
 }
