@@ -228,7 +228,10 @@ public class UserController {
 
     /**
      * 搜索用户
-     * @param param
+     * @param page
+     * @param limit
+     * @param searchKey
+     * @param searchValue
      * @return
      */
     @ApiOperation(value = "搜索用户")
