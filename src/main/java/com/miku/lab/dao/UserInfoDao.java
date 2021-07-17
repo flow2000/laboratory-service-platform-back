@@ -25,11 +25,13 @@ public interface UserInfoDao  {
 
     int updateUserInfo(Map<String, Object> param);
 
-    List<UserInfo> getPageUser(int p, int m);
+    List<Map> getPageUser(int p, int m);
 
     int addUser(Map<String, Object> param);
 
     int deleteUser(String str);
 
     int updatePersonPassword(String user_id, String password,String updater);
+
+    List<Map> searchUser(Map<String ,Object> param);
 }

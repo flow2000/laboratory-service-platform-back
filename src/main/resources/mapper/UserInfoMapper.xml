@@ -17,10 +17,13 @@
         </where>
     </select>
 
-    <select id="getPageUser" resultType="com.miku.lab.entity.UserInfo" parameterType="int">
-        select * from sys_user
+    <select id="getPageUser" resultType="java.util.HashMap" parameterType="int">
+        select sys_user.id,user_id,sys_user.role_code,role_name,real_name,username,
+            user_phone,sex,email,is_disable,sys_user.creater,sys_user.create_time,
+            sys_user.updater,sys_user.update_time
+        from sys_user,sys_role
         <where>
-            del_flag=0
+            sys_user.role_code = sys_role.role_code and sys_user.del_flag=0
         </where>
         limit #{p},#{m}
     </select>
@@ -68,4 +71,19 @@
             user_id in (${str})
         </where>
     </update>
+
+    <select id="searchUser" resultType="java.util.HashMap" parameterType="map">
+        select sys_user.id,user_id,sys_user.role_code,role_name,real_name,username,
+        user_phone,sex,email,is_disable,sys_user.creater,sys_user.create_time,
+        sys_user.updater,sys_user.update_time
+        from sys_user,sys_role
+        <where>
+            sys_user.role_code = sys_role.role_code
+            and sys_user.del_flag=0
+            and user_id like concat('%',#{user_id},'%')
+            and real_name like concat('%',#{real_name},'%')
+            and user_phone LIKE concat('%',#{user_phone},'%')
+        </where>
+        limit #{p},#{m}
+    </select>
 </mapper>

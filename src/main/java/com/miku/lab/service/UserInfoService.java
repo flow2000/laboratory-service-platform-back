@@ -29,4 +29,6 @@ public interface UserInfoService {
     int deleteUser(Map<String, Object> param);
 
     int updatePersonPassword(String user_id, String password,String updater);
+
+    Object searchUser(Map<String,String> param);
 }

@@ -97,6 +97,12 @@ public class UserController {
         }
     }
 
+    /**
+     * 分页获取用户信息
+     * @param page
+     * @param limit
+     * @return
+     */
     @ApiOperation(value="分页获取用户信息")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "page",value="页数",required=true),
@@ -184,6 +190,11 @@ public class UserController {
         return AjaxUtil.error(Constant.RESCODE_EXCEPTION, "失败");
     }
 
+    /**
+     * 添加用户
+     * @param param
+     * @return
+     */
     @ApiOperation(value = "添加用户")
     @ApiImplicitParam
     @PostMapping("/addUser")
@@ -197,7 +208,12 @@ public class UserController {
         return AjaxUtil.error(Constant.RESCODE_EXCEPTION, "失败");
     }
 
-    @ApiOperation(value = "删除用户")
+    /**
+     * 删除用户(逻辑删除)
+     * @param param
+     * @return
+     */
+    @ApiOperation(value = "删除用户(逻辑删除)")
     @ApiImplicitParam
     @PostMapping("/deleteUser")
     public ReturnResult deleteUser(@RequestBody Map<String,Object>param){
@@ -208,5 +224,21 @@ public class UserController {
             return AjaxUtil.error(Constant.RESCODE_DELETEERROR, "删除失败");
         }
         return AjaxUtil.error(Constant.RESCODE_EXCEPTION, "失败");
+    }
+
+    /**
+     * 搜索用户
+     * @param param
+     * @return
+     */
+    @ApiOperation(value = "搜索用户")
+    @ApiImplicitParam
+    @GetMapping("/searchUser")
+    public ReturnResult searchUser(@RequestBody Map<String,String>param){
+        Object object = userInfoService.searchUser(param);
+        if(object != null){
+            return AjaxUtil.success(object,Constant.RESCODE_SUCCESS,1);
+        }
+        return AjaxUtil.error(Constant.RESCODE_NOEXIST, "搜索失败");
     }
 }

@@ -98,7 +98,7 @@ public class UserInfoServiceImp implements UserInfoService {
             map.put("msg","参数错误");
             return map;
         }
-        List<UserInfo> pageUserList = userInfoDao.getPageUser(p,m);
+        List<Map> pageUserList = userInfoDao.getPageUser(p,m);
         List<UserInfo> allUserList = userInfoDao.getAllUserInfo();
         map.put("users",pageUserList);
         map.put("count",allUserList.size());
@@ -128,6 +128,24 @@ public class UserInfoServiceImp implements UserInfoService {
     @Override
     public int updatePersonPassword(String user_id, String password,String updater) {
         return userInfoDao.updatePersonPassword(user_id,password,updater);
+    }
+
+    @Override
+    public Object searchUser(Map<String,String> param) {
+        Map<String,Object> map = new HashMap<>();
+        int p = Integer.parseInt(param.get("page"));
+        int m = Integer.parseInt(param.get("limit"));
+        Map<String ,Object> SOMap = new HashMap<String ,Object>();
+        Map tempMap = param;
+        SOMap = tempMap;
+        SOMap.put("p",(p-1)*m);
+        SOMap.put("m",m);
+
+        List<Map> pageUserList = userInfoDao.searchUser(SOMap);
+        List<UserInfo> allUserList = userInfoDao.getAllUserInfo();
+        map.put("users",pageUserList);
+        map.put("count",allUserList.size());
+        return map;
     }
 
     public int isValiToken(String token,String user_id) {
