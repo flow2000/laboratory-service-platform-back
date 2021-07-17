@@ -81,7 +81,7 @@ public class MachineServiceImp implements MachineService {
     public Object getPageMachineSort(String page, String limit) {
         Map<String,Object> map = new HashMap<>();
         int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
-        int m = Integer.valueOf(limit)*(Integer.valueOf(page)-1+1);
+        int m = Integer.valueOf(limit);
         map.put("page",p);
         map.put("limit",m);
         List<Machine_sort> machineList = machineDao.getPageMachineSort(map); //获取仪器数据
@@ -176,7 +176,7 @@ public class MachineServiceImp implements MachineService {
         List<Machine_sort> searchAllSort = machineDao.searchSort(map);
 
         int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
-        int m = Integer.valueOf(limit)*(Integer.valueOf(page)-1+1);
+        int m = Integer.valueOf(limit);
         map.put("page",p);
         map.put("limit",m);
         List<Machine_sort> machinePageList = machineDao.getSearchPageSort(map);

@@ -54,7 +54,7 @@ public class ArticleServiceImp implements ArticleService {
     public Object getPageMachineSort(String page, String limit) {
         Map<String,Object> map = new HashMap<>();
         int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
-        int m = Integer.valueOf(limit)*(Integer.valueOf(page)-1+1);
+        int m = Integer.valueOf(limit);
         map.put("page",p);
         map.put("limit",m);
         List<ArticleSort> articleSorts = articleDao.getPageArticleSort(map); //获取仪器数据
@@ -145,7 +145,7 @@ public class ArticleServiceImp implements ArticleService {
         List<ArticleSort> searchSort = articleDao.searchSort(map);
 
         int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
-        int m = Integer.valueOf(limit)*(Integer.valueOf(page)-1+1);
+        int m = Integer.valueOf(limit);
         map.put("page",p);
         map.put("limit",m);
         List<ArticleSort> articleSorts = articleDao.getSearchPageSort(map);

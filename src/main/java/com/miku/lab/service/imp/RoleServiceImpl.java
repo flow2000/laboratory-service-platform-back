@@ -134,7 +134,7 @@ public class RoleServiceImpl implements RoleService {
         List<Role> searchRole = roleDao.searchRole(map);
 
         int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
-        int m = Integer.valueOf(limit)*(Integer.valueOf(page)-1+1);
+        int m = Integer.valueOf(limit);
         map.put("page",p);
         map.put("limit",m);
         List<Role> roles = roleDao.getSearchPageRole(map);
