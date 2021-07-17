@@ -131,21 +131,18 @@ public class UserInfoServiceImp implements UserInfoService {
     }
 
     @Override
-    public Object searchUser(Map<String,String> param) {
-        Map<String,Object> map = new HashMap<>();
-        int p = Integer.parseInt(param.get("page"));
-        int m = Integer.parseInt(param.get("limit"));
-        Map<String ,Object> SOMap = new HashMap<String ,Object>();
-        Map tempMap = param;
-        SOMap = tempMap;
-        SOMap.put("p",(p-1)*m);
-        SOMap.put("m",m);
-
-        List<Map> pageUserList = userInfoDao.searchUser(SOMap);
+    public Object searchUser(int page,int limit,String searchKey,String searchValue) {
+        Map<String ,Object> map = new HashMap<String ,Object>();
+        map.put("p",(page-1)*limit);
+        map.put("m",limit);
+        map.put("searchKey",searchKey);
+        map.put("searchValue",searchValue);
+        List<Map> pageUserList = userInfoDao.searchUser(map);
         List<UserInfo> allUserList = userInfoDao.getAllUserInfo();
-        map.put("users",pageUserList);
-        map.put("count",allUserList.size());
-        return map;
+        Map<String ,Object> resMap = new HashMap<String ,Object>();
+        resMap.put("users",pageUserList);
+        resMap.put("count",allUserList.size());
+        return resMap;
     }
 
     public int isValiToken(String token,String user_id) {

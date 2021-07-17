@@ -234,8 +234,9 @@ public class UserController {
     @ApiOperation(value = "搜索用户")
     @ApiImplicitParam
     @GetMapping("/searchUser")
-    public ReturnResult searchUser(@RequestBody Map<String,String>param){
-        Object object = userInfoService.searchUser(param);
+    public ReturnResult searchUser(@RequestParam int page,@RequestParam int limit,
+                                   @RequestParam String searchKey,@RequestParam String searchValue){
+        Object object = userInfoService.searchUser(page,limit,searchKey,searchValue);
         if(object != null){
             return AjaxUtil.success(object,Constant.RESCODE_SUCCESS,1);
         }
