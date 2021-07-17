@@ -31,6 +31,8 @@ public interface ArticleDao {
 
     int delSort(String sortId);
 
-    List<ArticleSort> searchSort(Map<String,Object>map);
+    List<ArticleSort> searchSort(Map<String,Object>map);            //获取查询数据
+
+    List<ArticleSort> getSearchPageSort(Map<String,Object> map);    //获取查询所有分页数据
 
 }

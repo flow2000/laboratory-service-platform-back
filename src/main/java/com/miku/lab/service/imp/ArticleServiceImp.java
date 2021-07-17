@@ -138,13 +138,20 @@ public class ArticleServiceImp implements ArticleService {
     }
 
     @Override
-    public  Object searchSort(String searchKey,String searchValue) {
+    public  Object searchSort(String searchKey,String searchValue,String page, String limit) {
         Map<String,Object> map = new HashMap<>();
         map.put("key",searchValue);
         map.put("value",searchKey);
-        List<ArticleSort> articleSorts = articleDao.searchSort(map);
+        List<ArticleSort> searchSort = articleDao.searchSort(map);
+
+        int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
+        int m = Integer.valueOf(limit)*(Integer.valueOf(page)-1+1);
+        map.put("page",p);
+        map.put("limit",m);
+        List<ArticleSort> articleSorts = articleDao.getSearchPageSort(map);
         if(articleSorts!=null){
             map.put("article_sorts",articleSorts);
+            map.put("count",searchSort.size());
             return map;
         }else {
             return null;

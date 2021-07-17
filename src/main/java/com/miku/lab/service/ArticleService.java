@@ -24,5 +24,5 @@ public interface ArticleService {
 
     int delSort(String sortId);
 
-    Object searchSort(String searchKey,String searchValue);
+    Object searchSort(String searchKey,String searchValue,String page, String limit);
 }

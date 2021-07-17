@@ -144,8 +144,9 @@ public class MachineController {
 
     @ApiOperation(value="查询仪器分类接口")
     @GetMapping("/searchSort")
-    public ReturnResult searchSort(@RequestParam String searchKey,@RequestParam String searchValue){
-        Object map = machineService.searchSort(searchKey,searchValue);
+    public ReturnResult searchSort(@RequestParam String searchKey,@RequestParam String searchValue,
+                                   @RequestParam String page, @RequestParam String limit ){
+        Object map = machineService.searchSort(searchKey,searchValue,page,limit);
         if(map!=null){
             return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
         }else{

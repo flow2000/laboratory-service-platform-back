@@ -12,6 +12,7 @@ import com.miku.lab.entity.Machine_sort;
 import com.miku.lab.service.MachineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -168,13 +169,20 @@ public class MachineServiceImp implements MachineService {
     }
 
     @Override
-    public  Object searchSort(String searchKey,String searchValue) {
+    public Object searchSort(String searchKey,String searchValue,String page, String limit){
         Map<String,Object> map = new HashMap<>();
         map.put("key",searchValue);
         map.put("value",searchKey);
-        List<Machine_sort> machineList = machineDao.searchSort(map);
-        if(machineList!=null){
-            map.put("machine_sort",machineList);
+        List<Machine_sort> searchAllSort = machineDao.searchSort(map);
+
+        int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
+        int m = Integer.valueOf(limit)*(Integer.valueOf(page)-1+1);
+        map.put("page",p);
+        map.put("limit",m);
+        List<Machine_sort> machinePageList = machineDao.getSearchPageSort(map);
+        if(machinePageList!=null){
+            map.put("machine_sort",machinePageList);
+            map.put("count",searchAllSort.size());
             return map;
         }else {
             return null;

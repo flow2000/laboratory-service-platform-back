@@ -126,8 +126,9 @@ public class ArticleController {
 
     @ApiOperation(value="查询仪器分类接口")
     @GetMapping("/searchSort")
-    public ReturnResult searchSort(@RequestParam String searchKey,@RequestParam String searchValue){
-        Object map = articleService.searchSort(searchKey,searchValue);
+    public ReturnResult searchSort(@RequestParam String searchKey,@RequestParam String searchValue,
+                                   @RequestParam String page, @RequestParam String limit ){
+        Object map = articleService.searchSort(searchKey,searchValue,page,limit);
         if(map!=null){
             return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
         }else{

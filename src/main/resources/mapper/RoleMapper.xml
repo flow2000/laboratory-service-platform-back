@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.miku.lab.dao.RoleDao">
 
-    <select id="getAllRole" resultType="java.util.HashMap">
+    <select id="getAllRole" resultType="com.miku.lab.entity.Role">
         select * from sys_role
         <where>
             del_flag = 0
@@ -16,12 +16,63 @@
         </where>
     </select>
 
-    <select id="getPageRole" resultType="java.util.HashMap" parameterType="int">
+    <select id="getPageRole" resultType="com.miku.lab.entity.Role" parameterType="int">
         select *from sys_role
         <where>
             del_flag = 0
         </where>
         limit #{p},#{m}
+    </select>
+
+    <select id="getRoleDetailById" resultType="com.miku.lab.entity.Role" parameterType="com.miku.lab.entity.Role">
+        select * from sys_role
+        <where>
+            role_code=#{roleCode} and del_flag=0
+        </where>
+    </select>
+
+    <update id="updateRole" parameterType="map">
+        update sys_role
+        set role_code=#{roleCode},role_name=#{roleName},
+        is_default_role=#{isDefaultRole},valid_status=#{validStatus},
+        updater=#{updater},update_time=#{updateTime}
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
+    <insert id="addRole" parameterType="com.miku.lab.entity.Role">
+        insert
+        into sys_role(role_code,role_name,is_default_role,valid_status,
+             creater,create_time,del_flag)
+        values(
+                #{roleCode},#{roleName},#{isDefaultRole},#{validStatus},
+                #{creater},#{createTime},0
+                )
+    </insert>
+
+    <update id="delRole" parameterType="com.miku.lab.entity.Role">
+        update sys_role
+        set del_flag=1
+        <where>
+            role_code = #{roleCode}
+        </where>
+    </update>
+
+    <select id="searchRole" resultType="com.miku.lab.entity.Role" parameterType="map">
+        select *
+        from sys_role
+        <where>
+            locate(#{key},${value}) and del_flag=0
+        </where>
+    </select>
+
+    <select id="getSearchPageRole" resultType="com.miku.lab.entity.Role" parameterType="map">
+        select *
+        from sys_role
+        <where>
+            locate(#{key},${value}) and del_flag=0 limit #{page},#{limit}
+        </where>
     </select>
 
 </mapper>
