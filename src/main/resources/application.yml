@@ -10,4 +10,4 @@ server:
 logging:
   level:
     root: info
-    com.tomorrow.dao: debug
+    com.miku.lab.dao: debug

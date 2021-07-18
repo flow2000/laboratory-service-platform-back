@@ -28,7 +28,7 @@ public class Suggestion {
     private Integer id;                         //id
 
     @ApiModelProperty(value = "微信授权id")
-    private BigInteger openid;                  //用户账号
+    private String openid;                  //用户账号
 
     @ApiModelProperty(value = "反馈内容")
     private String suggestContent;           //反馈内容
