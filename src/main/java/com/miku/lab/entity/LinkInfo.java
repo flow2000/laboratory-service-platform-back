@@ -41,7 +41,7 @@ public class LinkInfo {
     //邮编
     private String postCode;
     //二维码图片地址
-    private String img_url;
+    private String imgUrl;
     //简介
     private String remark;
 

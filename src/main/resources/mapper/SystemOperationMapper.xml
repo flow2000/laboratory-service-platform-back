@@ -5,8 +5,36 @@
 
 
     <select id="getAllOperation" resultType="com.miku.lab.entity.SystemOperation" parameterType="com.miku.lab.entity.SystemOperation">
-        select *from log_system_operation
+        select *from log_system_operation where del_flag=0
     </select>
+
+    <select id="getPageOper" resultType="com.miku.lab.entity.SystemOperation" parameterType="map">
+        select * from log_system_operation where del_flag=0 limit #{page},#{limit}
+    </select>
+
+    <select id="searchOper" resultType="com.miku.lab.entity.SystemOperation" parameterType="map">
+        select *
+        from log_system_operation
+        <where>
+            locate(#{key},${value}) and del_flag=0
+        </where>
+    </select>
+
+    <select id="getSearchPageOper" resultType="com.miku.lab.entity.SystemOperation" parameterType="map">
+        select *
+        from log_system_operation
+        <where>
+            locate(#{key},${value}) and del_flag=0 limit #{page},#{limit}
+        </where>
+    </select>
+
+    <update id="delOper" parameterType="com.miku.lab.entity.SystemOperation">
+        update log_system_operation
+        set del_flag=1
+        <where>
+            id = #{id}
+        </where>
+    </update>
 
 
 </mapper>

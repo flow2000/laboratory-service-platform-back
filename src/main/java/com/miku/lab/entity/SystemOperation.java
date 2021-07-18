@@ -37,5 +37,6 @@ public class SystemOperation {
 
     private String operContent;     //操作内容
 
-    private Integer isSensitive;    //是否为敏感信息
+    private String  isOk;    //操作成功否
+
 }

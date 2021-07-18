@@ -29,4 +29,21 @@
         </where>
     </update>
 
+    <select id="getWxUserById" resultType="com.miku.lab.entity.WxUser" parameterType="com.miku.lab.entity.WxUser">
+        select * from wx_booking_user
+        <where>
+            openId=#{openId} and del_flag=0
+        </where>
+    </select>
+
+    <insert id="addWxUser" parameterType="com.miku.lab.entity.WxUser">
+        insert
+        into wx_booking_user(openId,username,valid_status,
+             create_time,del_flag)
+        values(
+                #{openId},#{username},1,
+                #{createTime},0
+                )
+    </insert>
+
 </mapper>

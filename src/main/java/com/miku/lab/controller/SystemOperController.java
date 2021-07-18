@@ -12,11 +12,10 @@ import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/operation")
@@ -37,4 +36,62 @@ public class SystemOperController {
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
         }
     }
+
+    @ApiOperation(value="获取所有文章分类接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page",value="页数",required=true),
+            @ApiImplicitParam(name = "limit", value = "每页数据量", required = true)
+    })
+    @GetMapping("/getPageOper")
+    public ReturnResult getPageOper(@RequestParam String page, @RequestParam String limit){
+        Object map = operService.getPageOper(page,limit);
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
+
+    @ApiOperation(value="查询记录接口")
+    @GetMapping("/searchOper")
+    public ReturnResult searchOper(@RequestParam String searchKey,@RequestParam String searchValue,
+                                   @RequestParam String page, @RequestParam String limit ){
+        Object map = operService.searchOper(searchKey,searchValue,page,limit);
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
+
+    @ApiOperation(value="删除记录接口")
+    @PostMapping("/delOper")
+    public ReturnResult delOper(@RequestParam String id){
+        int flag = operService.delOper(id);
+        if (flag == 0) {
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_INSERTERROR,"删除失败");
+        }else{
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"删除成功");
+        }
+    }
+
+    @ApiOperation(value="批量删除记录接口")
+    @PostMapping("/combineDelOper")
+    public ReturnResult combineDelOper(@RequestParam String ids){
+        String[] sortIds = ids.split(",");
+        int count=sortIds.length;
+        int delCount=0;
+        for(String id:sortIds){
+            int flag = operService.delOper(id);
+            if (flag == 1) {
+                delCount++;
+            }
+        }
+        if(delCount==count){
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"批量删除成功");
+        }else{
+            return AjaxUtil.success("已删除",Constant.RESCODE_DELETEERROR,delCount);
+        }
+    }
+
 }

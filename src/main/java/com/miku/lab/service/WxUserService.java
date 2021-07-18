@@ -12,4 +12,6 @@ public interface WxUserService {
     Object getAllWxUser();
 
     int updateWxUser(WxUser wxUser);
+
+    int addWxUser(String openId,String username);
 }

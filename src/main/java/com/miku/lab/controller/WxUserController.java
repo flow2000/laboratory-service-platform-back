@@ -4,6 +4,7 @@ package com.miku.lab.controller;/*
  *@version:1.1
  */
 
+import com.miku.lab.entity.ArticleSort;
 import com.miku.lab.entity.WxUser;
 import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.WxUserService;
@@ -11,6 +12,7 @@ import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +43,22 @@ public class WxUserController {
         if(updateAffect!=0){
             return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"保存成功");
         }else{
-            return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "保存失败");
+            return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "保存失败，请确保你已经登录");
+        }
+    }
+
+    @ApiOperation(value="添加微信用户接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId",value="微信授权id",required=true),
+            @ApiImplicitParam(name = "username", value = "昵称", required = true)
+    })
+    @PostMapping("/addWxUser")
+    public ReturnResult addWxUser(@RequestParam String openId,@RequestParam String username){
+        int flag = wxUserService.addWxUser(openId,username);
+        if (flag == 0) {
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_INSERTERROR,"添加失败，请勿重复添加信息");
+        }else{
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"添加成功");
         }
     }
 

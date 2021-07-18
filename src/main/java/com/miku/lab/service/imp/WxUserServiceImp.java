@@ -5,13 +5,16 @@ package com.miku.lab.service.imp;/*
  */
 
 import com.miku.lab.dao.WxUserDao;
+import com.miku.lab.entity.ArticleSort;
 import com.miku.lab.entity.WxUser;
 import com.miku.lab.service.WxUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WxUserServiceImp implements WxUserService {
@@ -38,7 +41,29 @@ public class WxUserServiceImp implements WxUserService {
         }else {
             return 0;
         }
+    }
 
-
+    /**
+     * 添加微信用户
+     * @param openId
+     * @param username
+     * @return
+     */
+    @Override
+    public int addWxUser(String openId,String username) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("openId",openId);
+        map.put("username",username);
+        map.put("createTime",new Date());
+        WxUser user = wxUserDao.getWxUserById(openId);
+        if(user==null){
+            int addSort = wxUserDao.addWxUser(map);
+            if(addSort!=0){
+                return 1;
+            }
+        }else{
+            return 0;
+        }
+        return 0;
     }
 }
