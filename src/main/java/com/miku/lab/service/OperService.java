@@ -16,5 +16,5 @@ public interface OperService {
     Object searchOper(String searchKey,String searchValue,String page, String limit);
 
     int delOper(String id);
-    void addOper(SystemOperation operation);
+    int addOper(SystemOperation operation);
 }

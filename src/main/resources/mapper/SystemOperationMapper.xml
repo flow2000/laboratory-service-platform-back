@@ -36,5 +36,17 @@
         </where>
     </update>
 
+    <insert id="addOper" parameterType="com.miku.lab.entity.SystemOperation">
+        insert
+        into log_system_operation(
+                ip_address,module_code,opertor,oper_time,
+                oper_type,oper_content,is_ok,del_flag
+                )
+        values(
+                #{ip_address},#{module_code},#{operator},#{oper_time},
+                #{oper_type},#{oper_content},#{is_ok},0
+                )
+    </insert>
+
 
 </mapper>

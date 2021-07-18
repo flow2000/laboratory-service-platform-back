@@ -85,14 +85,21 @@ public class OperServiceImp implements OperService {
     }
 
     @Override
-    public void addOper(SystemOperation operation) {
+    public int addOper(SystemOperation operation) {
         Map<String,Object> map = new HashMap<>();
-        map.put("ipAddress",operation.getIpAddress());
-        map.put("moduleCode",operation.getModuleCode());
+        map.put("ip_address",operation.getIpAddress());
+        map.put("module_code",operation.getModuleCode());
         map.put("operator",operation.getOpertor());
-        map.put("operTime",new Date());
-        map.put("operType",operation.getOperType());
-        map.put("is_ok","1");
-        systemOperationDao.addOper(map);
+        map.put("oper_time",new Date());
+        map.put("oper_type",operation.getOperType());
+        map.put("oper_content",operation.getOperContent());
+        map.put("is_ok",operation.getIsOk());
+        int addAffect = systemOperationDao.addOper(map);
+        if(addAffect!=0){
+            return addAffect;
+        }else{
+            return 0;
+        }
+
     }
 }

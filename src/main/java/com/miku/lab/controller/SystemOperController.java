@@ -4,6 +4,7 @@ package com.miku.lab.controller;/*
  *@version:1.1
  */
 
+import com.miku.lab.entity.ArticleSort;
 import com.miku.lab.entity.SystemOperation;
 import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.OperService;
@@ -16,6 +17,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/operation")
@@ -93,5 +96,15 @@ public class SystemOperController {
             return AjaxUtil.success("已删除",Constant.RESCODE_DELETEERROR,delCount);
         }
     }
-
+    @ApiOperation(value="添加日志接口")
+    @PostMapping("/addOper")
+    public ReturnResult addOper(@RequestBody SystemOperation operation, HttpServletRequest request){
+//        operation.setIpAddress(request.getRemoteAddr());
+        int flag = operService.addOper(operation);
+        if (flag == 0) {
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_INSERTERROR,"添加失败，记录重复");
+        }else{
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"添加成功");
+        }
+    }
 }
