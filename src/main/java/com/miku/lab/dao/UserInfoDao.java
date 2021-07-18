@@ -17,7 +17,7 @@ import java.util.Map;
 @Repository
 public interface UserInfoDao  {
     UserInfo loginVerify(UserInfo userInfo);
-    List<UserInfo> getAllUserInfo();
+    List<Map> getAllUserInfo();
 
     Map<String,Object> getOneUser(String user_id);
 
@@ -29,9 +29,13 @@ public interface UserInfoDao  {
 
     int addUser(Map<String, Object> param);
 
-    int deleteUser(String str);
+    int deleteUser(String[] str);
 
     int updatePersonPassword(String user_id, String password,String updater);
 
     List<Map> searchUser(Map<String ,Object> param);
+
+    int getUserCount();
+
+    int updatePersonDisable(Map<String, Object> param);
 }

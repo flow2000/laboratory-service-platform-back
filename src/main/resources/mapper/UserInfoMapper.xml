@@ -10,11 +10,14 @@
     </select>
 
 
-    <select id="getAllUserInfo" resultType="com.miku.lab.entity.UserInfo" parameterType="com.miku.lab.entity.UserInfo">
-        select *from sys_user
+    <select id="getAllUserInfo" resultType="java.util.HashMap" parameterType="com.miku.lab.entity.UserInfo">
+        select sys_user.id,user_id,password,real_name,sys_role.role_name,username,user_phone,
+        sex,email,is_disable,sys_user.creater,sys_user.create_time,sys_user.updater,sys_user.update_time
+        from sys_user,sys_role
         <where>
-            del_flag=0
+            sys_user.role_code = sys_role.role_code and sys_user.del_flag=0
         </where>
+        order by sys_user.create_time desc
     </select>
 
     <select id="getPageUser" resultType="java.util.HashMap" parameterType="int">
@@ -53,7 +56,7 @@
 
     <update id="updateUserInfo" parameterType="map">
         update sys_user
-        set real_name=#{real_name}, username=#{user_name}, user_phone=#{user_phone}, sex=#{sex}, email=#{email},updater=#{updater},update_time=NOW()
+        set real_name=#{real_name}, username=#{user_name}, user_phone=#{user_phone}, sex=#{sex}, role_code=#{role_code}, email=#{email},updater=#{updater},update_time=NOW()
         <where>
             user_id=#{user_id}
         </where>
@@ -69,7 +72,10 @@
         update sys_user
         set del_flag=1,del_time=NOW()
         <where>
-            user_id in (${str})
+            user_id in
+            <foreach collection="array" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
         </where>
     </update>
 
@@ -86,4 +92,17 @@
         order by sys_user.create_time desc
         limit #{p},#{m}
     </select>
+
+    <select id="getUserCount" resultType="int">
+        select  COUNT(*) from sys_user
+        <where>
+            del_flag=0
+        </where>
+    </select>
+
+    <update id="updatePersonDisable" parameterType="java.util.HashMap">
+        update sys_user
+        set is_disable=#{is_disable},updater=#{updater},update_time=NOW()
+        where user_id = #{u_update_id} and del_flag=0;
+    </update>
 </mapper>

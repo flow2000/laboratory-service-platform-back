@@ -13,8 +13,10 @@ import java.util.Map;
 @Service
 public interface UserInfoService {
     UserInfo login(String token, UserInfo user, String captcha);
+
     int isValiToken(String user_id,String token);
-    List<UserInfo> getAllUser();
+
+    List<Map> getAllUser();
 
     Object getOneUser(String user_id);
 
@@ -31,4 +33,6 @@ public interface UserInfoService {
     int updatePersonPassword(String user_id, String password,String updater);
 
     Object searchUser(int page,int limit,String searchKey,String searchValue);
+
+    int updatePersonDisable(Map<String, Object> param);
 }

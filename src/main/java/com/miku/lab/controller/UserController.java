@@ -89,7 +89,7 @@ public class UserController {
     @ApiImplicitParam()
     @GetMapping("/getAllUser")
     public ReturnResult getAllUser(){
-        List<UserInfo> userInfos = userInfoService.getAllUser();
+        List<Map> userInfos = userInfoService.getAllUser();
         if(userInfos!=null){
             return AjaxUtil.success(userInfos,Constant.RESCODE_SUCCESS_MSG,userInfos.size());
         }else{
@@ -182,6 +182,24 @@ public class UserController {
     @PostMapping("/updatePersonInfo")
     public ReturnResult updateUserInfo(@RequestBody Map<String,Object>param){
         int res = userInfoService.updateUserInfo(param);
+        if(res == 1){
+            return AjaxUtil.success("修改成功",Constant.RESCODE_SUCCESS,res);
+        }else if(res == 0){
+            return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "修改失败");
+        }
+        return AjaxUtil.error(Constant.RESCODE_EXCEPTION, "失败");
+    }
+
+    /**
+     * 修改用户状态
+     * @param param
+     * @return
+     */
+    @ApiOperation(value="修改用户状态")
+    @ApiImplicitParam
+    @PostMapping("/updatePersonDisable")
+    public ReturnResult updatePersonDisable(@RequestBody Map<String,Object>param){
+        int res = userInfoService.updatePersonDisable(param);
         if(res == 1){
             return AjaxUtil.success("修改成功",Constant.RESCODE_SUCCESS,res);
         }else if(res == 0){

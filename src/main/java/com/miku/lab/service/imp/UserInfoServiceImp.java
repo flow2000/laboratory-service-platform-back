@@ -42,8 +42,8 @@ public class UserInfoServiceImp implements UserInfoService {
      * @return
      */
     @Override
-    public List<UserInfo> getAllUser(){
-        List<UserInfo> users = userInfoDao.getAllUserInfo();
+    public List<Map> getAllUser(){
+        List<Map> users = userInfoDao.getAllUserInfo();
         if(users!=null){
             return users;
         }else{
@@ -99,9 +99,9 @@ public class UserInfoServiceImp implements UserInfoService {
             return map;
         }
         List<Map> pageUserList = userInfoDao.getPageUser(p,m);
-        List<UserInfo> allUserList = userInfoDao.getAllUserInfo();
+        int count = userInfoDao.getUserCount();
         map.put("users",pageUserList);
-        map.put("count",allUserList.size());
+        map.put("count",count);
         return map;
     }
 
@@ -122,7 +122,8 @@ public class UserInfoServiceImp implements UserInfoService {
     public int deleteUser(Map<String, Object> param) {
         String str = (String) param.get("user_id");
         str = str.substring(0,str.length());
-        return userInfoDao.deleteUser(str);
+        String [] arr = str.split(",");
+        return userInfoDao.deleteUser(arr);
     }
 
     @Override
@@ -138,11 +139,16 @@ public class UserInfoServiceImp implements UserInfoService {
         map.put("searchKey",searchKey);
         map.put("searchValue",searchValue);
         List<Map> pageUserList = userInfoDao.searchUser(map);
-        List<UserInfo> allUserList = userInfoDao.getAllUserInfo();
+        int count = pageUserList.size();
         Map<String ,Object> resMap = new HashMap<String ,Object>();
         resMap.put("users",pageUserList);
-        resMap.put("count",allUserList.size());
+        resMap.put("count",count);
         return resMap;
+    }
+
+    @Override
+    public int updatePersonDisable(Map<String, Object> param) {
+        return userInfoDao.updatePersonDisable(param);
     }
 
     public int isValiToken(String token,String user_id) {
