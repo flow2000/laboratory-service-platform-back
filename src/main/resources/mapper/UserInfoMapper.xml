@@ -105,4 +105,11 @@
         set is_disable=#{is_disable},updater=#{updater},update_time=NOW()
         where user_id = #{u_update_id} and del_flag=0;
     </update>
+
+    <update id="resetUser" parameterType="java.util.HashMap">
+        update sys_user
+        set password=#{initPassword},updater=#{updater},update_time=NOW()
+        where user_id=#{u_update_id} and del_flag=0;
+    </update>
+
 </mapper>

@@ -151,6 +151,11 @@ public class UserInfoServiceImp implements UserInfoService {
         return userInfoDao.updatePersonDisable(param);
     }
 
+    @Override
+    public int resetUser(Map<String, Object> param) {
+        return userInfoDao.resetUser(param);
+    }
+
     public int isValiToken(String token,String user_id) {
 
         if("null".equals(redisUtil.getString(user_id))){

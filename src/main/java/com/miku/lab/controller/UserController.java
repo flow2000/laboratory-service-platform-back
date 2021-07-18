@@ -156,12 +156,12 @@ public class UserController {
     }
 
     /**
-     * 修改用户密码
+     * 修改个人密码
      * @param user_id
      * @param password
      * @return
      */
-    @ApiOperation(value="修改用户密码")
+    @ApiOperation(value="修改个人密码")
     @ApiImplicitParam
     @PostMapping("/updatePersonPassword")
     public ReturnResult updatePersonPassword(@RequestParam String user_id,@RequestParam String password,@RequestParam String updater){
@@ -173,11 +173,11 @@ public class UserController {
     }
 
     /**
-     * 修改个人信息
+     * 修改个人信息或用户信息
      * @param param
      * @return
      */
-    @ApiOperation(value="修改个人信息")
+    @ApiOperation(value="修改个人信息或用户信息")
     @ApiImplicitParam
     @PostMapping("/updatePersonInfo")
     public ReturnResult updateUserInfo(@RequestBody Map<String,Object>param){
@@ -204,6 +204,24 @@ public class UserController {
             return AjaxUtil.success("修改成功",Constant.RESCODE_SUCCESS,res);
         }else if(res == 0){
             return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "修改失败");
+        }
+        return AjaxUtil.error(Constant.RESCODE_EXCEPTION, "失败");
+    }
+
+    /**
+     * 重置用户密码
+     * @param param
+     * @return
+     */
+    @ApiOperation(value="重置用户密码")
+    @ApiImplicitParam
+    @PostMapping("/resetUser")
+    public ReturnResult resetUser(@RequestBody Map<String,Object>param){
+        int res = userInfoService.resetUser(param);
+        if(res == 1){
+            return AjaxUtil.success("重置成功",Constant.RESCODE_SUCCESS,res);
+        }else if(res == 0){
+            return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "重置失败");
         }
         return AjaxUtil.error(Constant.RESCODE_EXCEPTION, "失败");
     }

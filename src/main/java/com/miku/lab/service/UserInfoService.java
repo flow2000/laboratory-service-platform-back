@@ -35,4 +35,6 @@ public interface UserInfoService {
     Object searchUser(int page,int limit,String searchKey,String searchValue);
 
     int updatePersonDisable(Map<String, Object> param);
+
+    int resetUser(Map<String, Object> param);
 }
