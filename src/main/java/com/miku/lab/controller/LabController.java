@@ -28,11 +28,11 @@ public class LabController {
 
     @ApiOperation(value = "获取实验室接口")
     @ApiImplicitParam()
-    @GetMapping("/getLabList")
-    public ReturnResult getLabList(){
-        Object map = labService.getAllLabInfo();
-        if(map!=null){
-            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
+    @GetMapping("/getAllLab")
+    public ReturnResult getAllLab(){
+        Object object = labService.getAllLab();
+        if(object!=null){
+            return AjaxUtil.success(object, Constant.RESCODE_SUCCESS,1);
         }else{
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
         }

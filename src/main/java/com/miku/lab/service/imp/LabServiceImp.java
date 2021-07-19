@@ -22,10 +22,10 @@ public class LabServiceImp implements LabService {
     private LabDao labDao;
 
     @Override
-    public Object getAllLabInfo() {
-        List<LabInfo> labInfoList = labDao.getLabList();
-        if(labInfoList!=null){
-            return labInfoList;
+    public Object getAllLab() {
+        List<Map> list = labDao.getAllLab();
+        if(list!=null){
+            return list;
         }else{
             return null;
         }
@@ -45,7 +45,7 @@ public class LabServiceImp implements LabService {
             return map;
         }
         List<Map> pageUserList = labDao.getPageLab(p,m);
-        int count = pageUserList.size();
+        int count = labDao.getLabCount();
         map.put("labs",pageUserList);
         map.put("count",count);
         return map;
@@ -99,8 +99,15 @@ public class LabServiceImp implements LabService {
         Map<String ,Object> map = new HashMap<String ,Object>();
         map.put("p",(page-1)*limit);
         map.put("m",limit);
-        map.put("searchKey",searchKey);
-        map.put("searchValue",searchValue);
+        String [] key = searchKey.split(",");
+        String [] value = searchValue.split(",");
+        map.put("baseInfoKey",key[0]);
+        map.put("statusKey",key[1]);
+        map.put("baseInfoValue",value[0]);
+        if(value.length>=2){
+            map.put("statusValue",value[1]);
+        }
+        System.out.println(map);
         List<Map> pageLabList = labDao.searchLab(map);
         int count = pageLabList.size();
         Map<String ,Object> resMap = new HashMap<String ,Object>();

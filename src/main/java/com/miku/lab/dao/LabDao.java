@@ -14,7 +14,8 @@ import java.util.Map;
 @Mapper
 @Repository
 public interface LabDao {
-    List<LabInfo> getLabList();
+
+    List<Map> getAllLab();
 
     List<Map> getPageLab(int p, int m);
 

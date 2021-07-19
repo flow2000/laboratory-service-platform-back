@@ -11,7 +11,7 @@ import java.util.Map;
 @Service
 public interface LabService {
 
-    Object getAllLabInfo();
+    Object getAllLab();
 
     Object getPageLab(String page, String limit);
 

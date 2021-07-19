@@ -4,7 +4,7 @@
 
 
 
-    <select id="getLabList" resultType="com.miku.lab.entity.LabInfo" parameterType="com.miku.lab.entity.LabInfo">
+    <select id="getAllLab" resultType="java.util.HashMap">
         select *from sys_lab_info
         <where>
             del_flag=0
@@ -16,11 +16,15 @@
         <where>
             del_flag=0
         </where>
+        order by create_time desc
         limit #{p},#{m}
     </select>
 
     <select id="getLabCount" resultType="int">
         select COUNT(*) from sys_lab_info
+        <where>
+            del_flag=0
+        </where>
     </select>
 
     <select id="getOneLab" resultType="java.util.HashMap" parameterType="java.lang.String">
@@ -93,7 +97,10 @@
     <select id="searchLab" parameterType="java.util.HashMap" resultType="map">
         select * from sys_lab_info
         <where>
-            del_flag=0 and ${searchKey} like concat('%',#{searchValue},'%')
+            del_flag=0 and ${baseInfoKey} like concat('%',#{baseInfoValue},'%')
+            <if test="statusValue != null">
+                and ${statusKey} = #{statusValue}
+            </if>
         </where>
         order by create_time desc
         limit #{p},#{m}

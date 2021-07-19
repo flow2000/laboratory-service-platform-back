@@ -99,7 +99,7 @@ public class UserInfoServiceImp implements UserInfoService {
             return map;
         }
         List<Map> pageUserList = userInfoDao.getPageUser(p,m);
-        int count = pageUserList.size();
+        int count = userInfoDao.getUserCount();
         map.put("users",pageUserList);
         map.put("count",count);
         return map;
