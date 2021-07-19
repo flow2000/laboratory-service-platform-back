@@ -14,4 +14,19 @@ public class IdUtil {
     public static String geneId(String prefix){
         return prefix+System.currentTimeMillis() +String.valueOf(new Random().nextInt(900)+100);
     }
+
+    /**
+     * 获取六位随机字符串类型的数字
+     * @return
+     */
+    public static String getSixNum() {
+        String str = "0123456789";
+        StringBuilder sb = new StringBuilder(4);
+        for (int i = 0; i < 6; i++) {
+            char ch = str.charAt(new Random().nextInt(str.length()));
+            sb.append(ch);
+        }
+        return sb.toString();
+    }
+
 }

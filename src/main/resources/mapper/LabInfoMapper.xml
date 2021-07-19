@@ -11,5 +11,92 @@
         </where>
     </select>
 
+    <select id="getPageLab" parameterType="int" resultType="java.util.HashMap">
+        select *from sys_lab_info
+        <where>
+            del_flag=0
+        </where>
+        limit #{p},#{m}
+    </select>
+
+    <select id="getLabCount" resultType="int">
+        select COUNT(*) from sys_lab_info
+    </select>
+
+    <select id="getOneLab" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select * from sys_lab_info
+        <where>
+            del_flag=0 and lab_id=#{lab_id}
+        </where>
+    </select>
+
+    <update id="updateLabInfo" parameterType="map">
+        update sys_lab_info
+        set lab_address=#{lab_address},lab_admin=#{lab_admin},lab_admin_phone=#{lab_admin_phone},
+        updater=#{updater},update_time=NOW()
+        <where>
+            lab_id=#{lab_id} and del_flag=0
+        </where>
+    </update>
+
+    <update id="updateLabValid" parameterType="java.util.HashMap">
+        update sys_lab_info
+        set valid_status = #{valid_status},updater=#{updater},update_time=NOW()
+        <where>
+            del_flag=0 and lab_id=#{lab_id}
+        </where>
+    </update>
+
+    <update id="updateLabUsing" parameterType="java.util.HashMap">
+        update sys_lab_info
+        set lab_status=#{lab_status},updater=#{updater},update_time=NOW()
+        <where>
+            del_flag=0 and lab_id=#{lab_id}
+        </where>
+    </update>
+
+    <insert id="addLab" parameterType="java.util.HashMap">
+        insert into sys_lab_info(
+            lab_id,
+            lab_address,
+            lab_status,
+            lab_admin,
+            lab_admin_phone,
+            valid_status,
+            creater,
+            create_time,
+            del_flag
+        )values(
+            #{lab_id},
+            #{lab_address},
+            #{lab_status},
+            #{lab_admin},
+            #{lab_admin_phone},
+            #{valid_status},
+            #{creater},
+            NOW(),
+            0
+        )
+    </insert>
+
+    <update id="deleteLab" parameterType="java.lang.String">
+        update sys_lab_info
+        set del_flag=1,del_time=NOW()
+        <where>
+            del_flag=0 and lab_id in
+            <foreach collection="array" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </update>
+
+    <select id="searchLab" parameterType="java.util.HashMap" resultType="map">
+        select * from sys_lab_info
+        <where>
+            del_flag=0 and ${searchKey} like concat('%',#{searchValue},'%')
+        </where>
+        order by create_time desc
+        limit #{p},#{m}
+    </select>
 
 </mapper>

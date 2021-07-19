@@ -9,9 +9,29 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
 public interface LabDao {
     List<LabInfo> getLabList();
+
+    List<Map> getPageLab(int p, int m);
+
+    int getLabCount();
+
+    Map<String, Object> getOneLab(String lab_id);
+
+    int updateLabInfo(Map<String, Object> param);
+
+    int updateLabValid(Map<String, Object> param);
+
+    int updateLabUsing(Map<String, Object> param);
+
+    int addLab(Map<String, Object> param);
+
+    int deleteLab(String[] arr);
+
+    List<Map> searchLab(Map<String, Object> map);
+
 }

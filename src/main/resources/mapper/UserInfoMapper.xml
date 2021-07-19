@@ -56,9 +56,9 @@
 
     <update id="updateUserInfo" parameterType="map">
         update sys_user
-        set real_name=#{real_name}, username=#{user_name}, user_phone=#{user_phone}, sex=#{sex}, role_code=#{role_code}, email=#{email},updater=#{updater},update_time=NOW()
+        set real_name=#{real_name}, username=#{username}, user_phone=#{user_phone}, sex=#{sex}, role_code=#{role_code}, email=#{email},updater=#{updater},update_time=NOW()
         <where>
-            user_id=#{user_id}
+            del_flag=0 and user_id=#{user_id}
         </where>
     </update>
 
@@ -72,7 +72,7 @@
         update sys_user
         set del_flag=1,del_time=NOW()
         <where>
-            user_id in
+            del_flag=0 and user_id in
             <foreach collection="array" item="id" open="(" separator="," close=")">
                 #{id}
             </foreach>
