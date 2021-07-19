@@ -125,7 +125,7 @@ public class ArticleController {
     }
 
     @ApiOperation(value="查询仪器分类接口")
-    @GetMapping("/searchSort")
+    @PostMapping("/searchSort")
     public ReturnResult searchSort(@RequestParam String searchKey,@RequestParam String searchValue,
                                    @RequestParam String page, @RequestParam String limit ){
         Object map = articleService.searchSort(searchKey,searchValue,page,limit);

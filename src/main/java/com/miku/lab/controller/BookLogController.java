@@ -59,7 +59,7 @@ public class BookLogController {
             @ApiImplicitParam(name="machine_id",value="仪器编号",required=true),
             @ApiImplicitParam(name="book_number",value="预约数量",required=true)
     })
-    @GetMapping("/addMachineCheck")
+    @PostMapping("/addMachineCheck")
     public ReturnResult addMachineCheck(@RequestParam String openId,@RequestParam String machine_id,@RequestParam String book_number){
         String msg = bookLogService.addBookMachineLog(openId,machine_id,book_number);
         return AjaxUtil.error(Constant.RESCODE_SUCCESS, msg);

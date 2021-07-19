@@ -33,9 +33,20 @@
 
     <update id="updateRole" parameterType="map">
         update sys_role
-        set role_code=#{roleCode},role_name=#{roleName},
-        is_default_role=#{isDefaultRole},valid_status=#{validStatus},
-        updater=#{updater},update_time=#{updateTime}
+        set updater=#{updater},update_time=#{updateTime}
+        <if test="roleCode!=null and roleCode!=''">
+            ,role_code=#{roleCode}
+        </if>
+        <if test="roleName!=null and roleName!=''">
+            ,role_name=#{roleName}
+        </if>
+        <if test="isDefaultRole!=null and isDefaultRole!=''">
+            ,is_default_role=#{isDefaultRole}
+        </if>
+        <if test="validStatus!=null || validStatus!=''">
+            ,valid_status=#{validStatus}
+        </if>
+
         <where>
             id=#{id}
         </where>

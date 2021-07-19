@@ -50,7 +50,7 @@
         into wx_booking_user(openId,username,valid_status,
              creater,create_time,del_flag)
         values(
-                #{sortId},#{sortName},#{remark},1,
+                #{openId},#{username},1,
                 #{creater},#{createTime},0
                 )
     </insert>

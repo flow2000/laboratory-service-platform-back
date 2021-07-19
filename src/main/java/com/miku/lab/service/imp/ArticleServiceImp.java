@@ -91,6 +91,7 @@ public class ArticleServiceImp implements ArticleService {
         map.put("remark",articleSort.getRemark());
         map.put("validStatus",articleSort.getValidStatus());
         map.put("updateTime",new Date());
+        map.put("updater",articleSort.getUpdater());
 
         int updateSort = articleDao.updateSort(map);
         if(updateSort!=0){

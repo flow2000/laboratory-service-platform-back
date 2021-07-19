@@ -71,6 +71,11 @@ public class RoleServiceImpl implements RoleService {
         }
     }
 
+    /**
+     * 更新角色信息
+     * @param role
+     * @return
+     */
     @Override
     public Object updateRole(Role role) {
         Map<String,Object> map = new HashMap<>();
@@ -101,7 +106,7 @@ public class RoleServiceImpl implements RoleService {
         map.put("roleCode",role.getRoleCode());
         map.put("roleName",role.getRoleName());
         map.put("isDefaultRole",role.getIsDefaultRole());
-        map.put("validStatus",1);
+        map.put("validStatus",role.getValidStatus());
         map.put("creater",role.getCreater());
         map.put("createTime",new Date());
         Role roleDetailById = roleDao.getRoleDetailById(role.getRoleCode());
@@ -116,6 +121,11 @@ public class RoleServiceImpl implements RoleService {
         return 0;
     }
 
+    /**
+     * 删除角色
+     * @param roleCode
+     * @return
+     */
     @Override
     public int delRole(String roleCode) {
         int delAffect = roleDao.delRole(roleCode);
@@ -126,13 +136,20 @@ public class RoleServiceImpl implements RoleService {
         }
     }
 
+    /**
+     * 查找角色
+     * @param searchKey
+     * @param searchValue
+     * @param page
+     * @param limit
+     * @return
+     */
     @Override
     public  Object searchRole(String searchKey,String searchValue,String page, String limit) {
         Map<String,Object> map = new HashMap<>();
         map.put("key",searchValue);
         map.put("value",searchKey);
         List<Role> searchRole = roleDao.searchRole(map);
-
         int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
         int m = Integer.valueOf(limit);
         map.put("page",p);

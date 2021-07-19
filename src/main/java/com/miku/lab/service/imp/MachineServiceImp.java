@@ -109,6 +109,11 @@ public class MachineServiceImp implements MachineService {
         }
     }
 
+    /**
+     * 更新仪器分类信息
+     * @param machine_sort
+     * @return
+     */
     @Override
     public Object updateMachineSort(Machine_sort machine_sort) {
         Map<String,Object> map = new HashMap<>();
@@ -118,6 +123,7 @@ public class MachineServiceImp implements MachineService {
         map.put("remark",machine_sort.getRemark());
         map.put("validStatus",machine_sort.getValidStatus());
         map.put("updateTime",new Date());
+        map.put("updater",machine_sort.getUpdater());
 
         int updateSort = machineDao.updateMachineSort(map);
         if(updateSort!=0){

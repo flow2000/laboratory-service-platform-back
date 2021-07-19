@@ -30,7 +30,20 @@
 
     <update id="updateSort" parameterType="map">
         update sys_article_sort
-        set sort_id=#{sortId},sort_name=#{sortName},remark=#{remark},valid_status=#{validStatus},update_time=#{updateTime}
+        set update_time=#{updateTime}
+        <if test="sortId!=null and sortId!=''">
+            ,sort_id=#{sortId}
+        </if>
+        <if test="sortName!=null and sortName!=''">
+            ,sort_name=#{sortName}
+        </if>
+        <if test="remark!=null || remark!=''">
+            ,remark=#{remark}
+        </if>
+        <if test="validStatus!=null and validStatus!=''">
+            ,valid_status=#{validStatus}
+        </if>
+
         <where>
             id=#{id}
         </where>

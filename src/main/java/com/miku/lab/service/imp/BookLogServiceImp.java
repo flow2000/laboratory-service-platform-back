@@ -26,7 +26,6 @@ public class BookLogServiceImp implements BookLogService{
     @Autowired
     private BookLogDao bookLogDao;
 
-    Map<String,String>map = new HashMap<>();
 
     /**
      * 获取所有预约记录
@@ -65,6 +64,7 @@ public class BookLogServiceImp implements BookLogService{
      */
     @Override
     public String addBookMachineLog(String openId,String machine_id,String book_number){
+        Map<String,Object>map = new HashMap<>();
         WxUser wxUser = bookLogDao.getWxUserByOpenId(openId);
         if (wxUser==null){
             return  "用户未授权";
@@ -74,6 +74,7 @@ public class BookLogServiceImp implements BookLogService{
         Machine machine = bookLogDao.getMachineAndCount(map);
         if(machine!=null){
             map.put("openId",openId);
+            map.put("createTime",new Date());
             map.put("booking_code", IdUtil.geneId(Constant.BUSINESS_Book));
             String last_number = String.valueOf(machine.getBookableCount()-Integer.valueOf(book_number));
             int affectAdd = bookLogDao.addBookMachine(map);
@@ -92,6 +93,7 @@ public class BookLogServiceImp implements BookLogService{
         return null;
     }
 
+    @Override
     //String openId,String order_number,String lab_name,String remark,String start_time,String end_time
     public String addLabLog(OrderCheck orderCheck){
         WxUser wxUser = bookLogDao.getWxUserByOpenId(orderCheck.getOpenId());

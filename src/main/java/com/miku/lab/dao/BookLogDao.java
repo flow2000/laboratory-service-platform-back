@@ -21,13 +21,13 @@ public interface BookLogDao {
 
     WxUser getWxUserByOpenId(String openId);
 
-    Machine getMachineAndCount(Map<String,String> map);
+    Machine getMachineAndCount(Map<String,Object> map);
 
-    int addBookMachine(Map<String,String>map);
+    int addBookMachine(Map<String,Object>map);
 
-    int updateMachine(Map<String,String>map);
+    int updateMachine(Map<String,Object>map);
 
-    Machine getMachineById(Map<String,String>map);
+    Machine getMachineById(Map<String,Object>map);
 
     LabInfo getLabById(String lab_id);
 

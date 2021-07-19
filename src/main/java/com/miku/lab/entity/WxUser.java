@@ -69,10 +69,10 @@ public class WxUser {
     @ApiModelProperty(hidden=true)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
-    @ApiModelProperty(value = "接受推送")
+    @ApiModelProperty(hidden=true)
     private String isReceptPush;
 
-    @ApiModelProperty(value = "接受短信")
+    @ApiModelProperty(hidden=true)
     private String isReceptMsg;
 
 }
