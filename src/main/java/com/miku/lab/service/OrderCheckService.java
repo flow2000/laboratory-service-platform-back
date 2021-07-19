@@ -8,5 +8,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface OrderCheckService {
+
+    Object getWxMachineLog(String openId);
+
     Object getAllOrderCheck();
 }

@@ -10,5 +10,13 @@
         </where>
     </select>
 
+    <select id="getWxBookLogById" resultType="com.miku.lab.entity.BookMachine" parameterType="com.miku.lab.entity.BookMachine">
+        select *
+        from wx_booking_machine
+        <where>
+            openId=#{openId} and del_flag=0
+        </where>
+    </select>
+
 
 </mapper>

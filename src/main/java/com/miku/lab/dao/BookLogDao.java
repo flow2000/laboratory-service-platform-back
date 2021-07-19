@@ -37,4 +37,5 @@ public interface BookLogDao {
     int addBookLab(OrderCheck orderCheck);
     //通过Id取微信预约信息
     BookLog getBookLogById(String bookingCode);
+
 }

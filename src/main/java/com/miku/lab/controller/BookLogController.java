@@ -71,4 +71,6 @@ public class BookLogController {
         String msg = bookLogService.addLabLog(orderCheck);
         return AjaxUtil.error(Constant.RESCODE_SUCCESS, msg);
     }
+
+
 }

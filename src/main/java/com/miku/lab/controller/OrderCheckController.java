@@ -13,10 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/order")
@@ -39,4 +36,14 @@ public class OrderCheckController {
         }
     }
 
+    @ApiOperation(value = "查看对应预约仪器信息接口")
+    @PostMapping("/getWxMachineLog")
+    public ReturnResult getWxMachineLog(@RequestParam String openId){
+        Object map = orderCheckService.getWxMachineLog(openId);
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
 }
