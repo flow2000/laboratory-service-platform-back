@@ -32,11 +32,38 @@ public class WxUserServiceImp implements WxUserService {
         }
     }
 
+    /**
+     * 更新微信用户详细信息
+     * @param wxUser
+     * @return
+     */
     @Override
     public int updateWxUser(WxUser wxUser) {
         wxUser.setUpdateTime(new Date());
         int addAffect = wxUserDao.updateWxUser(wxUser);
         if (addAffect!=0){
+            return 1;
+        }else {
+            return 0;
+        }
+    }
+
+    /**
+     * 更新微信推送信息
+     * @param openId
+     * @param isReceptMsg
+     * @param isReceptPush
+     * @return
+     */
+    @Override
+    public int updateWxPush(String openId,String isReceptMsg,String isReceptPush) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("openId",openId);
+        map.put("isReceptMsg",isReceptMsg);
+        map.put("isReceptPush",isReceptPush);
+        map.put("updateTime",new Date());
+        int updateAffect = wxUserDao.updateWxPush(map);
+        if (updateAffect!=0){
             return 1;
         }else {
             return 0;

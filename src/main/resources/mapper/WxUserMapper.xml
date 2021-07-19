@@ -29,6 +29,15 @@
         </where>
     </update>
 
+    <update id="updateWxPush" parameterType="map">
+        update wx_booking_user
+        set
+            update_time=#{updateTime}
+            ,is_recept_msg=#{isReceptMsg}
+            ,is_recept_push=#{isReceptPush}
+            ,update_time=#{updateTime}
+    </update>
+
     <select id="getWxUserById" resultType="com.miku.lab.entity.WxUser" parameterType="com.miku.lab.entity.WxUser">
         select * from wx_booking_user
         <where>
@@ -39,10 +48,10 @@
     <insert id="addWxUser" parameterType="com.miku.lab.entity.WxUser">
         insert
         into wx_booking_user(openId,username,valid_status,
-             create_time,del_flag)
+             creater,create_time,del_flag)
         values(
-                #{openId},#{username},1,
-                #{createTime},0
+                #{sortId},#{sortName},#{remark},1,
+                #{creater},#{createTime},0
                 )
     </insert>
 

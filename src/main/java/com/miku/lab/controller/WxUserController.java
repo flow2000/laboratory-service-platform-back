@@ -36,7 +36,7 @@ public class WxUserController {
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取微信信息失败");
         }
     }
-    @ApiOperation(value = "更新微信用户")
+    @ApiOperation(value = "更新微信用户个人信息")
     @PostMapping("/updateWxUser")
     public ReturnResult updateWxUser(@RequestBody WxUser wxUser){
         int updateAffect = wxUserService.updateWxUser(wxUser);
@@ -46,6 +46,18 @@ public class WxUserController {
             return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "保存失败，请确保你已经登录");
         }
     }
+
+    @ApiOperation(value = "更新微信是否推送信息")
+    @PostMapping("/updateWxPush")
+    public ReturnResult updateWxPush(@RequestParam String openId,@RequestParam String isReceptMsg,@RequestParam String isReceptPush){
+        int updateAffect = wxUserService.updateWxPush(openId, isReceptMsg, isReceptPush);
+        if(updateAffect!=0){
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"保存成功");
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "保存失败，请确保你已经登录");
+        }
+    }
+
 
     @ApiOperation(value="添加微信用户接口")
     @ApiImplicitParams({

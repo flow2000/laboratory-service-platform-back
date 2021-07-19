@@ -14,4 +14,6 @@ public interface WxUserService {
     int updateWxUser(WxUser wxUser);
 
     int addWxUser(String openId,String username);
+
+    int updateWxPush(String openId,String isReceptMsg,String isReceptPush);
 }
