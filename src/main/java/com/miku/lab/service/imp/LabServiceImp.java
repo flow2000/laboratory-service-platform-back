@@ -45,7 +45,7 @@ public class LabServiceImp implements LabService {
             return map;
         }
         List<Map> pageUserList = labDao.getPageLab(p,m);
-        int count = labDao.getLabCount();
+        int count = pageUserList.size();
         map.put("labs",pageUserList);
         map.put("count",count);
         return map;
