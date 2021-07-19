@@ -82,7 +82,7 @@ public class BookLogServiceImp implements BookLogService{
                 map.put("last_number",last_number);
                 int affectUpdate  = bookLogDao.updateMachine(map);
                 if(affectUpdate>0){
-                    return "预约成功";
+                    return "预约仪器成功";
                 }
             }else{
                 return "库存不足";
@@ -93,6 +93,11 @@ public class BookLogServiceImp implements BookLogService{
         return null;
     }
 
+    /**
+     *
+     * @param orderCheck
+     * @return
+     */
     @Override
     //String openId,String order_number,String lab_name,String remark,String start_time,String end_time
     public String addLabLog(OrderCheck orderCheck){
