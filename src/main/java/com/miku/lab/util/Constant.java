@@ -54,6 +54,7 @@ public class Constant {
      * 业务代码
      */
     public static final String BUSINESS_Book = "b";
+    public static final String BUSINESS_SORT = "s";
 
     /**
      * 验证码
