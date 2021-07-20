@@ -104,6 +104,17 @@
             </if>
         </where>
         order by create_time desc
+        limit #{p},#{m}
+    </select>
+
+    <select id="searchLabCount" parameterType="map" resultType="int">
+        select COUNT(*) from sys_lab_info
+        <where>
+            del_flag=0 and ${baseInfoKey} like concat('%',#{baseInfoValue},'%')
+            <if test="statusValue != null">
+                and ${statusKey} = #{statusValue}
+            </if>
+        </where>
     </select>
 
 </mapper>

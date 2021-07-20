@@ -35,4 +35,5 @@ public interface LabDao {
 
     List<Map> searchLab(Map<String, Object> map);
 
+    int searchLabCount(Map<String, Object> map);
 }

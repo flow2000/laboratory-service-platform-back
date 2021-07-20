@@ -40,4 +40,6 @@ public interface UserInfoDao  {
     int updatePersonDisable(Map<String, Object> param);
 
     int resetUser(Map<String, Object> param);
+
+    int searchUserCount(Map<String, Object> map);
 }

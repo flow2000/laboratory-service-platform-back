@@ -81,12 +81,14 @@ public class SuggestServiceImp implements SuggestService {
     @Override
     public Object searchSuggest(int page, int limit, String searchKey, String searchValue) {
         Map<String ,Object> map = new HashMap<String ,Object>();
+        map.put("p",(page-1)*limit);
+        map.put("m",limit);
         map.put("searchKey",searchKey);
         map.put("searchValue",searchValue);
         List<Map> pageUserList = suggestDao.searchSuggest(map);
-        int count = pageUserList.size();
+        int count = suggestDao.searchSuggestCount(map);
         Map<String ,Object> resMap = new HashMap<String ,Object>();
-        resMap.put("suggestions",pageUserList.subList((page-1)*limit,page*limit));
+        resMap.put("suggestions",pageUserList);
         resMap.put("count",count);
         return resMap;
     }

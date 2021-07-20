@@ -28,4 +28,6 @@ public interface SuggestDao {
     int deleteSuggest(String[] arr);
 
     List<Map> searchSuggest(Map<String, Object> map);
+
+    int searchSuggestCount(Map<String, Object> map);
 }

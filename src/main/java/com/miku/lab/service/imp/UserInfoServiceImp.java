@@ -136,10 +136,12 @@ public class UserInfoServiceImp implements UserInfoService {
         Map<String ,Object> map = new HashMap<String ,Object>();
         map.put("searchKey",searchKey);
         map.put("searchValue",searchValue);
+        map.put("p",(page-1)*limit);
+        map.put("m",limit);
         List<Map> pageUserList = userInfoDao.searchUser(map);
-        int count = pageUserList.size();
+        int count = userInfoDao.searchUserCount(map);
         Map<String ,Object> resMap = new HashMap<String ,Object>();
-        resMap.put("users",pageUserList.subList((page-1)*limit,page*limit));
+        resMap.put("users",pageUserList);
         resMap.put("count",count);
         return resMap;
     }

@@ -90,6 +90,18 @@
             and ${searchKey} like concat('%',#{searchValue},'%')
         </where>
         order by sys_user.create_time desc
+        limit #{p},#{m}
+    </select>
+
+    <select id="searchUserCount" resultType="int" parameterType="map">
+        select COUNT(*)
+        from sys_user,sys_role
+        <where>
+            sys_user.role_code = sys_role.role_code
+            and sys_user.del_flag=0
+            and ${searchKey} like concat('%',#{searchValue},'%')
+        </where>
+        order by sys_user.create_time desc
     </select>
 
     <select id="getUserCount" resultType="int">
