@@ -97,8 +97,6 @@ public class LabServiceImp implements LabService {
     @Override
     public Object searchLab(int page, int limit, String searchKey, String searchValue) {
         Map<String ,Object> map = new HashMap<String ,Object>();
-        map.put("p",(page-1)*limit);
-        map.put("m",limit);
         String [] key = searchKey.split(",");
         String [] value = searchValue.split(",");
         map.put("baseInfoKey",key[0]);
@@ -107,11 +105,10 @@ public class LabServiceImp implements LabService {
         if(value.length>=2){
             map.put("statusValue",value[1]);
         }
-        System.out.println(map);
         List<Map> pageLabList = labDao.searchLab(map);
         int count = pageLabList.size();
         Map<String ,Object> resMap = new HashMap<String ,Object>();
-        resMap.put("labs",pageLabList);
+        resMap.put("labs",pageLabList.subList((page-1)*limit,page*limit));
         resMap.put("count",count);
         return resMap;
     }

@@ -129,7 +129,6 @@
             and ${searchKey} like concat('%',#{searchValue},'%')
         </where>
         order by sys_suggestion.create_time desc
-        limit #{p},#{m}
     </select>
 
 </mapper>
