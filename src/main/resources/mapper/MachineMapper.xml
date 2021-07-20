@@ -16,16 +16,16 @@
 
 
     <select id="getAllMachine" resultType="java.util.HashMap">
-       SELECT DISTINCT sys_machine.*,img_url,is_tar,sort_id,sort_name
+        SELECT DISTINCT sys_machine.*,img_url,is_tar,sort_id,sort_name
         from sys_machine,sys_machine_img,sys_machine_sort
         <where>
-            sys_machine_img.machine_code = sys_machine.machine_id
+            sys_machine.img_code = sys_machine_img.img_code
             and sys_machine.class_code=sys_machine_sort.sort_id
             and sys_machine.del_flag=0
             and sys_machine_img.del_flag=0
             and sys_machine_sort.del_flag=0
         </where>
-        order by create_time desc
+        order by sys_machine.create_time desc
     </select>
 
     <select id="getMachineCount" resultType="int">
@@ -46,13 +46,13 @@
         SELECT DISTINCT sys_machine.*,img_url,is_tar,sort_id,sort_name
         from sys_machine,sys_machine_img,sys_machine_sort
         <where>
-            sys_machine_img.machine_code = sys_machine.machine_id
+            sys_machine.img_code = sys_machine_img.img_code
             and sys_machine.class_code=sys_machine_sort.sort_id
             and sys_machine.del_flag=0
             and sys_machine_img.del_flag=0
             and sys_machine_sort.del_flag=0
         </where>
-        order by create_time desc
+        order by sys_machine.create_time desc
         limit #{page},#{limit}
     </select>
 
@@ -126,5 +126,141 @@
             locate(#{key},${value}) and del_flag=0 limit #{page},#{limit}
         </where>
     </select>
+
+    <insert id="addMachine" parameterType="map">
+        insert into sys_machine(
+            machine_id,
+            img_code,
+            class_code,
+            machine_name,
+            machine_locate,
+            machine_count,
+            machine_function,
+            machine_specify,
+            machine_abstract,
+            machine_remark,
+            machine_supplier,
+            machine_contacter,
+            machine_contacter_phone,
+            machine_life,
+            bookable_count,
+            unit_price,
+            buy_date,
+            total_money,
+            factory,
+            quality_time,
+            valid_status,
+            is_check,
+            creater,
+            create_time,
+            del_flag
+        )values(
+            #{machine_id},
+            #{img_code},
+            #{class_code},
+            #{machine_name},
+            #{machine_locate},
+            #{machine_count},
+            #{machine_function},
+            #{machine_specify},
+            #{machine_abstract},
+            #{machine_remark},
+            #{machine_supplier},
+            #{machine_contacter},
+            #{machine_contacter_phone},
+            #{machine_life},
+            #{bookable_count},
+            #{unit_price},
+            #{buy_date},
+            #{total_money},
+            #{factory},
+            #{quality_time},
+            #{valid_status},
+            #{is_check},
+            #{creater},
+            NOW(),
+            0
+        )
+    </insert>
+
+    <update id="updateMachine" parameterType="map">
+        update sys_machine set
+            class_code=#{class_code},
+            machine_name=#{machine_name},
+            machine_locate=#{machine_locate},
+            machine_count=#{machine_count},
+            machine_function=#{machine_function},
+            machine_specify=#{machine_specify},
+            machine_abstract=#{machine_abstract},
+            machine_remark=#{machine_remark},
+            machine_supplier=#{machine_supplier},
+            machine_contacter=#{machine_contacter},
+            machine_contacter_phone=#{machine_contacter_phone},
+            machine_life=#{machine_life},
+            bookable_count=#{bookable_count},
+            unit_price=#{unit_price},
+            buy_date=#{buy_date},
+            total_money=#{total_money},
+            factory=#{factory},
+            quality_time=#{quality_time},
+            valid_status=#{valid_status},
+            is_check=#{is_check},
+            updater=#{updater},
+            update_time=NOW(),
+        where id=#{id}
+    </update>
+
+    <update id="updateMachineCheck" parameterType="map">
+        update sys_machine set
+        is_check=#{is_check},updater=#{updater},update_time=NOW()
+        <where>
+            del_flag=0 and id=#{id}
+        </where>
+    </update>
+
+    <select id="searchMachine" parameterType="java.util.HashMap" resultType="map">
+        SELECT DISTINCT sys_machine.*,img_url,is_tar,sort_id,sort_name
+        from sys_machine,sys_machine_img,sys_machine_sort
+        <where>
+            sys_machine.img_code = sys_machine_img.img_code
+            and sys_machine.class_code=sys_machine_sort.sort_id
+            and sys_machine.del_flag=0
+            and sys_machine_img.del_flag=0
+            and sys_machine_sort.del_flag=0
+            and ${baseInfoKey} like concat('%',#{baseInfoValue},'%')
+            <if test="statusValue != null">
+                and ${statusKey} = #{statusValue}
+            </if>
+        </where>
+        order by sys_machine.create_time desc
+        limit #{p},#{m}
+    </select>
+
+    <select id="getSearchMachineCount" parameterType="java.util.HashMap" resultType="int">
+        SELECT DISTINCT COUNT(*)
+        from sys_machine,sys_machine_img,sys_machine_sort
+        <where>
+            sys_machine.img_code = sys_machine_img.img_code
+            and sys_machine.class_code=sys_machine_sort.sort_id
+            and sys_machine.del_flag=0
+            and sys_machine_img.del_flag=0
+            and sys_machine_sort.del_flag=0
+            and ${baseInfoKey} like concat('%',#{baseInfoValue},'%')
+            <if test="statusValue != null">
+                and ${statusKey} = #{statusValue}
+            </if>
+        </where>
+    </select>
+
+    <update id="deleteMachine" parameterType="java.lang.String">
+        update sys_machine
+        set del_flag=1,del_time=NOW()
+        <where>
+            del_flag=0 and id in
+            <foreach collection="array" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </update>
 
 </mapper>

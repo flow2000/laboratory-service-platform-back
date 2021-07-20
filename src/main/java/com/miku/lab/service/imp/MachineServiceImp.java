@@ -191,4 +191,67 @@ public class MachineServiceImp implements MachineService {
         }
     }
 
+    @Override
+    public int addMachine(Map<String, Object> param) {
+        String img_code = IdUtil.getSixNum();//生成六位随机图片编号
+        Object machineImg = machineImgDao.getOneImg(img_code);
+        while(machineImg!=null){
+            machineImg = machineImgDao.getOneImg(img_code);
+        }
+        System.out.println(param);
+        if(param.get("img_url")==null||param.get("img_url")==""){
+            param.put("img_url",Constant.IMGURL); //如果没有上传图片则设置图片的默认值
+        }
+        param.put("img_code",img_code);
+        int res = machineImgDao.addMachine_img(param);
+        if(res==1){//插入图片成功时才执行
+            return machineDao.addMachine(param);
+        }
+        return 0;
+    }
+
+    @Override
+    public int updateMachine(Map<String, Object> param) {
+        machineImgDao.updateMachine_img(param);
+        return  machineDao.updateMachine(param);
+    }
+
+    @Override
+    public int updateMachineCheck(Map<String, Object> param) {
+        return machineDao.updateMachineCheck(param);
+    }
+
+    @Override
+    public Object searchMachine(int page,int limit,String searchKey,String searchValue) {
+        Map<String ,Object> map = new HashMap<String ,Object>();
+        String [] key = searchKey.split(",");
+        String [] value = searchValue.split(",");
+        map.put("p",(page-1)*limit);
+        map.put("m",limit);
+        map.put("baseInfoKey",key[0]);
+        map.put("statusKey",key[1]);
+        map.put("baseInfoValue",value[0]);
+        if(value.length>=2){
+            map.put("statusValue",value[1]);
+        }
+        List<Map> pageMachineList = machineDao.searchMachine(map);
+        int count = machineDao.getSearchMachineCount(map);
+        Map<String ,Object> resMap = new HashMap<String ,Object>();
+        resMap.put("machines",pageMachineList);
+        resMap.put("count",count);
+        return resMap;
+    }
+
+    @Override
+    public int deleteMachine(Map<String, Object> param) {
+        String machineStr = (String) param.get("id");
+        String [] machineArr = machineStr.split(",");
+
+        String imgStr = (String) param.get("img_code");
+        String [] imgArr = imgStr.split(",");
+
+        machineImgDao.deleteMachineImg(imgArr);
+        return machineDao.deleteMachine(machineArr);
+    }
+
 }

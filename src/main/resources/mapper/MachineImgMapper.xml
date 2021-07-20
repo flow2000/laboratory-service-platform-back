@@ -19,7 +19,39 @@
             #{machine_code}
         </foreach>
 
-
     </select>
+
+    <select id="getOneImg" parameterType="java.lang.String" resultType="com.miku.lab.entity.Machine_img">
+        select * from sys_machine_img
+        <where>
+            del_flag=0 and img_code=#{img_code}
+        </where>
+    </select>
+
+    <insert id="addMachine_img" parameterType="map">
+        insert into sys_machine_img
+        (id,img_code,img_url,valid_status,machine_code,is_tar,creater,create_time,del_flag)values(
+            0,#{img_code},#{img_url},1,#{machine_id},#{is_tar},#{creater},NOW(),0
+        )
+    </insert>
+
+    <update id="updateMachine_img" parameterType="map">
+        update sys_machine_img
+        set img_url=#{img_url},updater=#{updater},update_time=NOW()
+        <where>
+            del_flag=0 and img_code=#{img_code}
+        </where>
+    </update>
+
+    <update id="deleteMachineImg" parameterType="java.lang.String">
+        update sys_machine_img
+        set del_flag=1,del_time=NOW()
+        <where>
+            del_flag=0 and img_code in
+            <foreach collection="array" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </update>
 
 </mapper>

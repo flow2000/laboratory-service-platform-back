@@ -28,6 +28,10 @@ public class MachineController {
     @Autowired
     private MachineService machineService;
 
+    /**
+     * 获取所有仪器
+     * @return
+     */
     @ApiOperation(value = "获取仪器接口")
     @ApiImplicitParam()
     @GetMapping("/getAllMachine")
@@ -40,6 +44,12 @@ public class MachineController {
         }
     }
 
+    /**
+     * 分页获取仪器
+     * @param page
+     * @param limit
+     * @return
+     */
     @ApiOperation(value="分页获取仪器接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page",value="页数",required=true),
@@ -53,6 +63,96 @@ public class MachineController {
         }else{
             return AjaxUtil.error(Constant.RESCODE_NOEXIST, "获取信息失败");
         }
+    }
+
+    /**
+     * 添加仪器
+     * @param param
+     * @return
+     */
+    @ApiOperation(value = "添加仪器接口")
+    @ApiImplicitParam()
+    @PostMapping("/addMachine")
+    public ReturnResult addMachine(@RequestBody Map<String,Object>param){
+        int res = machineService.addMachine(param);
+        if(res!=0){
+            return AjaxUtil.success("添加成功", Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_INSERTERROR, "添加失败");
+        }
+    }
+
+    /**
+     * 修改仪器基本信息
+     * @param param
+     * @return
+     */
+    @ApiOperation(value = "修改仪器基本信息接口")
+    @ApiImplicitParam()
+    @PostMapping("/updateMachine")
+    public ReturnResult updateMachine(@RequestBody Map<String,Object>param){
+        int res = machineService.updateMachine(param);
+        if(res!=0){
+            return AjaxUtil.success("修改成功", Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "修改失败");
+        }
+    }
+
+    /**
+     * 修改仪器是否需要审核状态
+     * @param param
+     * @return
+     */
+    @ApiOperation(value = "修改仪器是否需要审核状态")
+    @ApiImplicitParam()
+    @PostMapping("/updateMachineCheck")
+    public ReturnResult updateMachineCheck(@RequestBody Map<String,Object>param){
+        int res = machineService.updateMachineCheck(param);
+        if(res!=0){
+            return AjaxUtil.success("修改成功", Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "修改失败");
+        }
+    }
+
+    /**
+     * 搜索仪器
+     * @param page
+     * @param limit
+     * @param searchKey
+     * @param searchValue
+     * @return
+     */
+    @ApiOperation(value = "搜索仪器")
+    @ApiImplicitParam()
+    @PostMapping("/searchMachine")
+    public ReturnResult searchMachine(@RequestParam int page,@RequestParam int limit,
+                                      @RequestParam String searchKey,@RequestParam String searchValue){
+        Object object = machineService.searchMachine(page,limit,searchKey,searchValue);
+        if(object!=null){
+            return AjaxUtil.success(object, Constant.RESCODE_SUCCESS_MSG,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_NOEXIST, "搜索失败");
+        }
+    }
+
+    /**
+     * 删除仪器(逻辑删除)
+     * @param param
+     * @return
+     */
+    @ApiOperation(value = "删除仪器(逻辑删除)")
+    @ApiImplicitParam
+    @PostMapping("/deleteMachine")
+    public ReturnResult deleteMachine(@RequestBody Map<String,Object>param){
+        int res = machineService.deleteMachine(param);
+        if(res >= 1){
+            return AjaxUtil.success("删除成功",Constant.RESCODE_SUCCESS,res);
+        }else if(res == 0){
+            return AjaxUtil.error(Constant.RESCODE_DELETEERROR, "删除失败");
+        }
+        return AjaxUtil.error(Constant.RESCODE_EXCEPTION, "失败");
     }
 
     @ApiOperation(value = "获取所有仪器分类接口")

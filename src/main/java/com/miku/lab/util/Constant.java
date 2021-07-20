@@ -70,4 +70,9 @@ public class Constant {
 		}
 		
 	}
+
+    /**
+     * 图片默认值
+     */
+    public static final String IMGURL = "https://library-management-1305004688.cos.ap-guangzhou.myqcloud.com/noimg.jpg";
 }

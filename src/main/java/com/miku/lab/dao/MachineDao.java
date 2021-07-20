@@ -4,7 +4,6 @@ package com.miku.lab.dao;/*
  *@version:1.1
  */
 
-import com.miku.lab.entity.ArticleSort;
 import com.miku.lab.entity.Machine;
 
 import com.miku.lab.entity.Machine_sort;
@@ -46,5 +45,17 @@ public interface MachineDao {
     List<Machine_sort> searchSort(Map<String, Object> map);            //获取查询数据
 
     List<Machine_sort> getSearchPageSort(Map<String, Object> map);    //获取查询所有分页数据
+
+    int addMachine(Map<String, Object> param);
+
+    int updateMachine(Map<String, Object> param);
+
+    int updateMachineCheck(Map<String, Object> param);
+
+    List<Map> searchMachine(Map<String, Object> param);
+
+    int getSearchMachineCount(Map<String, Object> param);
+
+    int deleteMachine(String[] arr);
 }
 

@@ -25,7 +25,7 @@ public class IdUtil {
      * @return
      */
     public static String getSixNum() {
-        String str = "0123456789";
+        String str = "0123456789abcdefghijklmnopqrstuvwxyz";
         StringBuilder sb = new StringBuilder(4);
         for (int i = 0; i < 6; i++) {
             char ch = str.charAt(new Random().nextInt(str.length()));

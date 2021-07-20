@@ -22,6 +22,8 @@ public class Machine_img {
 
     private Integer id;                         //id
 
+    private String imgCode;                    //图片编号
+
     private String imgUrl;                      //图片地址
 
     private Integer validStatus;                //有效状态

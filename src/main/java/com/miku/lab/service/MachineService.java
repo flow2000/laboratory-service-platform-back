@@ -9,6 +9,7 @@ import com.miku.lab.entity.Machine_sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface MachineService {
@@ -32,4 +33,14 @@ public interface MachineService {
     //Object searchSort(String searchKey,String searchValue);
 
     Object searchSort(String searchKey,String searchValue,String page, String limit);
+
+    int addMachine(Map<String, Object> param);
+
+    int updateMachine(Map<String, Object> param);
+
+    int updateMachineCheck(Map<String, Object> param);
+
+    Object searchMachine(int page,int limit,String searchKey,String searchValue);
+
+    int deleteMachine(Map<String, Object> param);
 }
