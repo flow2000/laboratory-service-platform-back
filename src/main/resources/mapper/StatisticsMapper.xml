@@ -20,9 +20,9 @@
     <select id="getMachineStatistics" resultMap="machineTypeAndCount" >
         select sort_name, COUNT(class_code) as sort_count from sys_machine,sys_machine_sort
         <where>
-            sys_machine.class_code = sys_machine_sort.sort_name and sys_machine.del_flag=0
+            sys_machine.class_code = sys_machine_sort.sort_id and sys_machine.del_flag=0
         </where>
-        GROUP BY class_code
+        GROUP BY sort_name
     </select>
 
     <select id="getLabStatistics" resultMap="LabTypeAndCount" >
