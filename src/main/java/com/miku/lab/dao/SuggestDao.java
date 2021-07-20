@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
@@ -17,4 +18,14 @@ public interface SuggestDao {
     List<Suggestion> getAllSuggestion();
 
     int addSuggest(Suggestion suggestion);
+
+    List<Map> getPageSuggest(int p, int m);
+
+    int getSuggestCount();
+
+    List<Map> getOneSuggest(String openid);
+
+    int deleteSuggest(String[] arr);
+
+    List<Map> searchSuggest(Map<String, Object> map);
 }

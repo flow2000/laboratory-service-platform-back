@@ -4,13 +4,27 @@
 
 
 
-    <select id="getAllSuggestion" resultType="com.miku.lab.entity.Suggestion" parameterType="com.miku.lab.entity.Suggestion">
-        select *from sys_suggestion
+    <select id="getAllSuggestion" resultType="java.util.HashMap" >
+        select
+        sys_suggestion.id,
+        sys_suggestion.openid,
+        wx_booking_user.username,
+        suggest_phone,
+        suggest_content,
+        sys_suggestion.creater,
+        sys_suggestion.create_time,
+        sys_suggestion.updater,
+        sys_suggestion.update_time
+        from sys_suggestion,wx_booking_user
         <where>
-            del_flag=0
+            sys_suggestion.del_flag=0
+            and sys_suggestion.openid=wx_booking_user.openId
+            and sys_suggestion.create_time between DATE_SUB(NOW(),INTERVAL (
+                select value from sys_config where code='search_feedback_month'
+            ) month) and NOW()
         </where>
+        order by sys_suggestion.create_time desc
     </select>
-
 
     <insert id="addSuggest" parameterType="com.miku.lab.entity.Suggestion">
         insert
@@ -28,5 +42,94 @@
                 #{creater},#{createTime},0
                 )
     </insert>
+
+    <select id="getPageSuggest" parameterType="int" resultType="java.util.HashMap">
+        select
+        sys_suggestion.id,
+        sys_suggestion.openid,
+        wx_booking_user.username,
+        suggest_phone,
+        suggest_content,
+        sys_suggestion.creater,
+        sys_suggestion.create_time,
+        sys_suggestion.updater,
+        sys_suggestion.update_time
+        from sys_suggestion,wx_booking_user
+        <where>
+            sys_suggestion.del_flag=0
+            and sys_suggestion.openid=wx_booking_user.openId
+            and sys_suggestion.create_time between DATE_SUB(NOW(),INTERVAL (
+                select value from sys_config where code='search_feedback_month'
+            ) month) and NOW()
+        </where>
+        order by sys_suggestion.create_time desc
+        limit #{p},#{m}
+    </select>
+
+    <select id="getSuggestCount" resultType="int">
+        select COUNT(*) from sys_suggestion
+        <where>
+            del_flag=0 and sys_suggestion.create_time between DATE_SUB(NOW(),INTERVAL (
+                select value from sys_config where code='search_feedback_month'
+            ) month) and NOW()
+        </where>
+    </select>
+
+    <select id="getOneSuggest" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+        sys_suggestion.id,
+        sys_suggestion.openid,
+        wx_booking_user.username,
+        suggest_phone,
+        suggest_content,
+        sys_suggestion.creater,
+        sys_suggestion.create_time,
+        sys_suggestion.updater,
+        sys_suggestion.update_time
+        from sys_suggestion,wx_booking_user
+        <where>
+            sys_suggestion.del_flag=0
+            and sys_suggestion.openid=#{openid}
+            and sys_suggestion.openid=wx_booking_user.openId
+            and sys_suggestion.create_time between DATE_SUB(NOW(),INTERVAL (
+                select value from sys_config where code='search_feedback_month'
+            ) month) and NOW()
+        </where>
+    </select>
+
+    <update id="deleteSuggest" parameterType="java.lang.String">
+        update sys_suggestion
+        set del_flag=1,del_time=NOW()
+        <where>
+            del_flag=0 and id in
+            <foreach collection="array" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </update>
+
+    <select id="searchSuggest" parameterType="java.util.HashMap" resultType="map">
+        select
+        sys_suggestion.id,
+        sys_suggestion.openid,
+        wx_booking_user.username,
+        suggest_phone,
+        suggest_content,
+        sys_suggestion.creater,
+        sys_suggestion.create_time,
+        sys_suggestion.updater,
+        sys_suggestion.update_time
+        from sys_suggestion,wx_booking_user
+        <where>
+            sys_suggestion.del_flag=0
+            and sys_suggestion.openid=wx_booking_user.openId
+            and sys_suggestion.create_time between DATE_SUB(NOW(),INTERVAL (
+                select value from sys_config where code='search_feedback_month'
+            ) month) and NOW()
+            and ${searchKey} like concat('%',#{searchValue},'%')
+        </where>
+        order by sys_suggestion.create_time desc
+        limit #{p},#{m}
+    </select>
 
 </mapper>
