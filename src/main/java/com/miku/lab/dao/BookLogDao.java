@@ -23,6 +23,8 @@ public interface BookLogDao {
     WxUser getWxUserByOpenId(String openId);
     //获取仪器的数量
     Machine getMachineAndCount(Map<String,Object> map);
+
+    Machine getMachine(Map<String,Object> map);
     //增加仪器
     int addBookMachine(Map<String,Object>map);
     //更新仪器信息
@@ -37,5 +39,14 @@ public interface BookLogDao {
     int addBookLab(OrderCheck orderCheck);
     //通过Id取微信预约信息
     BookLog getBookLogById(String bookingCode);
+
+    //通过仪器编号和openid更新对应预约的数量
+    BookMachine getBookLogByOpenIdAndMachineId(Map<String,Object>map);
+
+    //更新数量
+    int updateNumberByOpenIdAndMachineId(Map<String,Object>map);
+
+    //删除预约信息
+    int delWxBookMachine(Map<String,Object>map);
 
 }

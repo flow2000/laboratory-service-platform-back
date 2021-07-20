@@ -31,10 +31,17 @@
         </where>
     </select>
 
+    <select id="getMachine" resultType="com.miku.lab.entity.Machine" parameterType="map">
+        select *from sys_machine
+        <where>
+            machine_id=#{machine_id}  and del_flag=0
+        </where>
+    </select>
+
     <insert id="addBookMachine" parameterType="map">
         insert
-        into wx_booking_machine(openId,booking_code,machine_code,machine_number,del_flag)
-        values(#{openId},#{booking_code},#{machine_id},#{book_number},0)
+        into wx_booking_machine(openId,booking_code,machine_code,machine_number,del_flag,create_time)
+        values(#{openId},#{booking_code},#{machine_id},#{book_number},0,NOW())
     </insert>
 
     <update id="updateMachine" parameterType="map">
@@ -54,11 +61,12 @@
 
     <update id="updateLabSetStatus" parameterType="com.miku.lab.entity.OrderCheck">
         update sys_lab_info
-        set lab_status=1
+        set lab_status=1,update_time=NOW()
         <where>
             lab_id=#{labId}
         </where>
     </update>
+
 
     <insert id="addBookLab" parameterType="com.miku.lab.entity.OrderCheck">
         insert
@@ -71,6 +79,29 @@
                 #{startTime},#{endTime},#{checker},0,#{createTime},0
                 )
     </insert>
+
+    <update id="updateNumberByOpenIdAndMachineId" parameterType="map">
+        update wx_booking_machine
+        set machine_number=#{machine_number},update_time=NOW()
+        <where>
+            openId=#{openId} and machine_code=#{machine_id} and del_flag=0
+        </where>
+    </update>
+
+    <select id="getBookLogByOpenIdAndMachineId" resultType="com.miku.lab.entity.BookMachine" parameterType="map">
+        select *from wx_booking_machine
+        <where>
+            openId=#{openId} and machine_code=#{machine_id} and del_flag=0
+        </where>
+    </select>
+
+    <update id="delWxBookMachine" parameterType="map">
+        update wx_booking_machine
+        set del_flag=1,del_time=NOW()
+        <where>
+            openId=#{openId} and machine_code=#{machine_id} and del_flag=0
+        </where>
+    </update>
 
 
 </mapper>

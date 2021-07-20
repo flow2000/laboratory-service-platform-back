@@ -56,7 +56,7 @@ public class BookLogServiceImp implements BookLogService{
     }
 
     /**
-     * 预约仪器
+     * 首次预约仪器
      * @param openId
      * @param machine_id
      * @param book_number
@@ -94,7 +94,76 @@ public class BookLogServiceImp implements BookLogService{
     }
 
     /**
-     *
+     * 增加一个预约仪器数量
+     * @param openId
+     * @param machine_id
+     * @return
+     */
+    @Override
+    public String addBookingNumber(String openId,String machine_id){
+        Map<String,Object>map = new HashMap<>();
+        map.put("machine_id",machine_id);
+        Machine machine = bookLogDao.getMachine(map);
+        int ableBookNumber =machine.getBookableCount();
+        if(ableBookNumber==0){
+            return  "库存不足";
+        }
+        map.put("openId",openId);
+        BookMachine bookOne = bookLogDao.getBookLogByOpenIdAndMachineId(map);
+
+        if(ableBookNumber>=1){
+            String last_number = String.valueOf(machine.getBookableCount()-1);//仪器表-1
+            map.put("last_number",last_number);                                 //仪器表-1
+            int machineUpdate  = bookLogDao.updateMachine(map);                  //仪器表-1
+
+            map.put("machine_number",bookOne.getMachineNumber()+1);             //预约仪器表+1
+            int numberUpdate = bookLogDao.updateNumberByOpenIdAndMachineId(map);//预约仪器表+1
+            if(numberUpdate>0&&machineUpdate>0){
+                return "增加成功";
+            }
+        }
+            return  "库存不足";
+    }
+
+    /**
+     * 减少一个预约仪器数量
+     * @param openId
+     * @param machine_id
+     * @return
+     */
+    @Override
+    public String subBookingNumber(String openId,String machine_id){
+        Map<String,Object>map = new HashMap<>();
+        map.put("machine_id",machine_id);
+        Machine machine = bookLogDao.getMachine(map);       //获取仪器信息
+
+        map.put("openId",openId);
+        BookMachine bookOne = bookLogDao.getBookLogByOpenIdAndMachineId(map);   //获取已添加预约仪器信息
+        if(bookOne==null){
+            return "不可再减少，请重新预约！";
+        }
+
+        String last_number = String.valueOf(machine.getBookableCount()+1);//仪器表+1
+        map.put("last_number",last_number);                                 //仪器表+1
+        int machineUpdate  = bookLogDao.updateMachine(map);                  //仪器表+1
+        //如果还剩1个，就删除整条记录
+        if((bookOne.getMachineNumber()-1)==0){
+            bookLogDao.delWxBookMachine(map);
+            return "减少成功";
+        }
+        map.put("machine_number",bookOne.getMachineNumber()-1);             //预约仪器表-1
+
+        int numberUpdate = bookLogDao.updateNumberByOpenIdAndMachineId(map);//预约仪器表-1
+        if(numberUpdate>0&&machineUpdate>0){
+            return "减少成功";
+        }
+        return "扣除失败";
+
+    }
+
+
+    /**
+     *添加实验室
      * @param orderCheck
      * @return
      */

@@ -57,15 +57,25 @@ public class BookLogController {
     @ApiImplicitParams({
             @ApiImplicitParam(name="openId",value="微信openid",required=true),
             @ApiImplicitParam(name="machine_id",value="仪器编号",required=true),
-            @ApiImplicitParam(name="book_number",value="预约数量",required=true)
+            @ApiImplicitParam(name="book_number",value="预约数量",required=true),
+            @ApiImplicitParam(name="status",value="增加add,减少sub，第一次预约任意填",required=true)
     })
     @PostMapping("/addMachineCheck")
-    public ReturnResult addMachineCheck(@RequestParam String openId,@RequestParam String machine_id,@RequestParam String book_number){
-        String msg = bookLogService.addBookMachineLog(openId,machine_id,book_number);
+    public ReturnResult addMachineCheck(@RequestParam String openId,@RequestParam String machine_id,
+                                        @RequestParam String book_number,@RequestParam String status){
+        String msg="";
+        if("add".equals(status)){
+            msg = bookLogService.addBookingNumber(openId,machine_id);
+        }else if("sub".equals(status)){
+            msg = bookLogService.subBookingNumber(openId,machine_id);
+        }else{
+            msg = bookLogService.addBookMachineLog(openId,machine_id,book_number);
+        }
         return AjaxUtil.error(Constant.RESCODE_SUCCESS, msg);
+
     }
 
-    @ApiOperation(value = "预约实验室接口")
+    @ApiOperation(value = "提交按钮实验室接口")
     @PostMapping("/addLabCheck")
     public ReturnResult addLabInfo(@RequestBody OrderCheck orderCheck){
         String msg = bookLogService.addLabLog(orderCheck);

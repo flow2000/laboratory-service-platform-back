@@ -18,4 +18,11 @@ public interface BookLogService {
     String addBookMachineLog(String openId,String machine_id,String book_number);
 
     String addLabLog(OrderCheck orderCheck);
+
+    //添加一个仪器数目
+    String addBookingNumber(String openId,String machine_id);
+    //减少一个仪器数目
+    String subBookingNumber(String openId,String machine_id);
+
+
 }
