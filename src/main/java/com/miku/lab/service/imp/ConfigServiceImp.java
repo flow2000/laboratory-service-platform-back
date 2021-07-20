@@ -4,14 +4,12 @@ package com.miku.lab.service.imp;/*
  *@version:1.1
  */
 
-import com.miku.lab.dao.ConfigDao;
-import com.miku.lab.entity.ArticleSort;
+import com.miku.lab.dao.SystemConfigDao;
 import com.miku.lab.entity.Config;
 import com.miku.lab.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,11 +18,11 @@ import java.util.Map;
 public class ConfigServiceImp implements ConfigService {
 
     @Autowired
-    private ConfigDao configDao;
+    private SystemConfigDao systemConfigDao;
 
     @Override
     public Object getAllConfig() {
-        List<Config> list = configDao.getAllConfig();
+        List<Config> list = systemConfigDao.getAllConfig();
         if(list!=null){
             return list;
         }else{
@@ -45,8 +43,8 @@ public class ConfigServiceImp implements ConfigService {
         int m = Integer.valueOf(limit);
         map.put("page",p);
         map.put("limit",m);
-        List<Config> configs = configDao.getPageConfig(map); //获取分页仪器数据
-        List<Config> allconfigs = configDao.getAllConfig();
+        List<Config> configs = systemConfigDao.getPageConfig(map); //获取分页仪器数据
+        List<Config> allconfigs = systemConfigDao.getAllConfig();
         map.put("configs",configs);
         map.put("count",allconfigs.size());
         return map;
@@ -60,7 +58,7 @@ public class ConfigServiceImp implements ConfigService {
     @Override
     public Object getConfigDetail(String id) {
         Map<String,Object> map = new HashMap<>();
-        Config config = configDao.getDetailConfiglById(id);
+        Config config = systemConfigDao.getDetailConfiglById(id);
         if(config!=null){
             map.put("configDetail",config);
             return map;
@@ -76,7 +74,7 @@ public class ConfigServiceImp implements ConfigService {
         map.put("id",config.getId());
         map.put("code",config.getCode());
         map.put("name",config.getName());
-        int updateConfig = configDao.updateConfig(map);
+        int updateConfig = systemConfigDao.updateConfig(map);
         if(updateConfig!=0){
             return "更新成功";
         }else{
