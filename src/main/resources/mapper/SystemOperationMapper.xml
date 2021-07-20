@@ -9,14 +9,25 @@
     </select>
 
     <select id="getPageOper" resultType="com.miku.lab.entity.SystemOperation" parameterType="map">
-        select * from log_system_operation where del_flag=0 limit #{page},#{limit}
+
+        select *
+        from log_system_operation
+        <where>
+         oper_time BETWEEN date_sub(Now(),interval (
+		        SELECT value FROM sys_config where code='search_operation_month') month) and now()
+        and del_flag=0
+        </where>
+		ORDER BY log_system_operation.oper_time DESC
+        limit #{page},#{limit}
     </select>
 
     <select id="searchOper" resultType="com.miku.lab.entity.SystemOperation" parameterType="map">
         select *
         from log_system_operation
         <where>
-            locate(#{key},${value}) and del_flag=0
+            locate(#{key},${value}) and del_flag=0 and oper_time BETWEEN date_sub(Now(),interval (
+                SELECT value FROM sys_config where code='search_operation_month') month) and now()
+                ORDER BY log_system_operation.oper_time DESC
         </where>
     </select>
 
@@ -24,7 +35,10 @@
         select *
         from log_system_operation
         <where>
-            locate(#{key},${value}) and del_flag=0 limit #{page},#{limit}
+            locate(#{key},${value}) and del_flag=0 and oper_time BETWEEN date_sub(Now(),interval (
+            SELECT value FROM sys_config where code='search_operation_month') month) and now()
+            ORDER BY log_system_operation.oper_time DESC
+            limit #{page},#{limit}
         </where>
     </select>
 

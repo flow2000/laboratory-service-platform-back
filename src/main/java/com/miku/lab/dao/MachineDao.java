@@ -19,18 +19,25 @@ import java.util.Map;
 public interface MachineDao {
     List<Machine> getAllMachine();
 
+    //获取分页仪器信息
     List<Machine> getPageMachine(int page, int limit);
 
+    //获取分页仪器分类
     List<Machine_sort> getPageMachineSort(Map<String, Object> map);
 
+    //获取所有仪器分类
     List<Machine_sort> getAllMachineSort();
 
+    //通过id获得分类信息
     Machine_sort getSortDetailById(String sortId);
 
+    //更新仪器分类
     int updateMachineSort(Map<String, Object> map);
 
+    //添加仪器分类
     int addMachineSort(Map<String, Object> map);
 
+    //通过分类id删除分类
     int delMachineSort(String sortId);
 
     List<Machine_sort> searchSort(Map<String, Object> map);            //获取查询数据

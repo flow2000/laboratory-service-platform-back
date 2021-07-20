@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miku.lab.dao.ConfigDao">
+
+
+
+    <select id="getAllConfig" resultType="java.util.HashMap">
+        select *from sys_config
+    </select>
+
+    <select id="getPageConfig" parameterType="map" resultType="java.util.HashMap">
+        select *from sys_config limit #{page},#{limit}
+    </select>
+
+    <select id="getDetailConfiglById" resultType="com.miku.lab.entity.Config" parameterType="com.miku.lab.entity.Config">
+        select * from sys_config
+        <where>
+            id=#{id}
+        </where>
+    </select>
+
+
+    <update id="updateConfig" parameterType="map">
+        update sys_config
+        set update_time=NOW()
+        <if test="code!=null and code!=''">
+            ,code=#{code}
+        </if>
+        <if test="value!=null and value!=''">
+            ,value=#{value}
+        </if>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
+</mapper>

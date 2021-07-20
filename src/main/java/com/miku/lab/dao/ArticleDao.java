@@ -17,18 +17,20 @@ import java.util.Map;
 @Repository
 public interface ArticleDao {
 
+    //获取所有文章
     List<Article> getAllArticle();
 
+    //获取所有文章分类
     List<ArticleSort>getAllArticleSort();
-
+    //分页获取文章分类
     List<ArticleSort> getPageArticleSort(Map<String,Object> map);
-
+    //通过id获取分类信息
     ArticleSort getSortDetailById(String sortId);
-
+    //更新文章分类信息
     int updateSort(Map<String,Object>map);
-
+    //添加文章分类
     int addSort(Map<String,Object>map);
-
+    //删除文章分类
     int delSort(String sortId);
 
     List<ArticleSort> searchSort(Map<String,Object>map);            //获取查询数据

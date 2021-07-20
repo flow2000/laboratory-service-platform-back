@@ -11,6 +11,11 @@ import java.util.Random;
 
 public class IdUtil {
 
+    /**
+     * 获得编号
+     * @param prefix
+     * @return
+     */
     public static String geneId(String prefix){
         return prefix+System.currentTimeMillis() +String.valueOf(new Random().nextInt(900)+100);
     }
