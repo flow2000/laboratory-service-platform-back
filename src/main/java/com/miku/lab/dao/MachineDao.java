@@ -17,7 +17,10 @@ import java.util.Map;
 @Mapper
 @Repository
 public interface MachineDao {
-    List<Machine> getAllMachine();
+
+    List<Map> getAllMachine();
+
+    int getMachineCount();
 
     //获取分页仪器信息
     List<Machine> getPageMachine(int page, int limit);

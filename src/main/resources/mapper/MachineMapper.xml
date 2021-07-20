@@ -15,8 +15,21 @@
     </sql>
 
 
-    <select id="getAllMachine" resultType="com.miku.lab.entity.Machine" parameterType="com.miku.lab.entity.Machine">
-        select *from sys_machine
+    <select id="getAllMachine" resultType="java.util.HashMap">
+       SELECT DISTINCT sys_machine.*,img_url,is_tar,sort_id,sort_name
+        from sys_machine,sys_machine_img,sys_machine_sort
+        <where>
+            sys_machine_img.machine_code = sys_machine.machine_id
+            and sys_machine.class_code=sys_machine_sort.sort_id
+            and sys_machine.del_flag=0
+            and sys_machine_img.del_flag=0
+            and sys_machine_sort.del_flag=0
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="getMachineCount" resultType="int">
+        select COUNT(*) from sys_machine
         <where>
             del_flag=0
         </where>
@@ -29,8 +42,18 @@
         </where>
     </select>
 
-    <select id="getPageMachine" resultType="com.miku.lab.entity.Machine" parameterType="map">
-        select * from (select * from sys_machine where del_flag=0) derived_machine limit #{page},#{limit}
+    <select id="getPageMachine" resultType="java.util.HashMap" parameterType="int">
+        SELECT DISTINCT sys_machine.*,img_url,is_tar,sort_id,sort_name
+        from sys_machine,sys_machine_img,sys_machine_sort
+        <where>
+            sys_machine_img.machine_code = sys_machine.machine_id
+            and sys_machine.class_code=sys_machine_sort.sort_id
+            and sys_machine.del_flag=0
+            and sys_machine_img.del_flag=0
+            and sys_machine_sort.del_flag=0
+        </where>
+        order by create_time desc
+        limit #{page},#{limit}
     </select>
 
     <select id="getPageMachineSort" resultType="com.miku.lab.entity.Machine_sort" parameterType="map">

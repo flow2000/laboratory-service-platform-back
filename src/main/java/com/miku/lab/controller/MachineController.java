@@ -30,13 +30,13 @@ public class MachineController {
 
     @ApiOperation(value = "获取仪器接口")
     @ApiImplicitParam()
-    @GetMapping("/getMachineList")
-    public ReturnResult getAllUser(){
+    @GetMapping("/getAllMachine")
+    public ReturnResult getAllMachine(){
         Object map = machineService.getAllMachine();
         if(map!=null){
             return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
         }else{
-            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+            return AjaxUtil.error(Constant.RESCODE_NOEXIST, "获取信息失败");
         }
     }
 
@@ -51,7 +51,7 @@ public class MachineController {
         if(map!=null){
             return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
         }else{
-            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+            return AjaxUtil.error(Constant.RESCODE_NOEXIST, "获取信息失败");
         }
     }
 

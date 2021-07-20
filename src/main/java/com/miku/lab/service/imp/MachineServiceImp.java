@@ -29,16 +29,15 @@ public class MachineServiceImp implements MachineService {
 
 
     /**
-     * 获取所有的仪器接口
+     * 获取所有仪器接口
      * @return
      */
     @Override
     public Object getAllMachine() {
-       /* List<Machine> machines =  ;
-        List<Machine_img> machine_imgs=;*/
         Map<String,Object> map = new HashMap<>();
-        map.put("machine",machineDao.getAllMachine());
-        map.put("machine_img", machineImgDao.getAllMachineImg());
+        List<Map> list = machineDao.getAllMachine();
+        map.put("machines",list);
+        map.put("count", list.size());
         return map;
     }
 
@@ -51,25 +50,20 @@ public class MachineServiceImp implements MachineService {
     @Override
     public Object getPageMachine(String page, String limit) {
         Map<String,Object> map = new HashMap<>();
-        List<String> machineIdList = new ArrayList<String>();
         int p = 0;
         int m = 10;
         try{
             p = (Integer.parseInt(page)-1)*Integer.parseInt(limit);
-            m = Integer.parseInt(limit)*(Integer.parseInt(page)-1+1);
+            m = Integer.parseInt(limit);
         }catch (Exception e){
             e.printStackTrace();
             map.put("msg","参数错误");
             return map;
         }
         List<Machine> machineList = machineDao.getPageMachine(p,m); //获取仪器数据
-        List<Machine> allMachineList = machineDao.getAllMachine();
+        int count = machineDao.getMachineCount();
         map.put("machine",machineList);
-        for (int i = 0; i < machineList.size(); i++) {
-            machineIdList.add(machineList.get(i).getMachineId());
-        }
-        map.put("machine_img",machineImgDao.getPageMachineImg(machineIdList)); //获取仪器对应图片数据
-        map.put("count",allMachineList.size());
+        map.put("count",count);
         return map;
     }
 
