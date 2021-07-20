@@ -36,4 +36,20 @@
         </where>
     </update>
 
+    <select id="searchConfig" resultType="com.miku.lab.entity.Config" parameterType="map">
+        select *
+        from sys_config
+        <where>
+            locate(#{key},${value})
+        </where>
+    </select>
+
+    <select id="getSearchPageConfig" resultType="com.miku.lab.entity.Config" parameterType="map">
+        select *
+        from sys_config
+        <where>
+            locate(#{key},${value})  limit #{page},#{limit}
+        </where>
+    </select>
+
 </mapper>

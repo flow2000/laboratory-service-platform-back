@@ -1,5 +1,6 @@
 package com.miku.lab.dao;
 
+import com.miku.lab.entity.ArticleSort;
 import com.miku.lab.entity.Config;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -35,4 +36,8 @@ public interface SystemConfigDao {
 
     //更新配置信息
     int updateConfig(Map<String,Object>map);
+
+    List<Config> searchConfig(Map<String,Object>map);            //获取查询数据
+
+    List<Config> getSearchPageConfig(Map<String,Object> map);    //获取查询所有分页数据
 }

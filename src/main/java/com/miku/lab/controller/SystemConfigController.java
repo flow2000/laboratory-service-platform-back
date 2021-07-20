@@ -1,8 +1,8 @@
 package com.miku.lab.controller;
 
+import com.miku.lab.dao.SystemConfigDao;
 import com.miku.lab.entity.Config;
 import com.miku.lab.entity.vo.ReturnResult;
-import com.miku.lab.service.ConfigService;
 import com.miku.lab.service.SystemConfigService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
@@ -42,8 +42,6 @@ public class SystemConfigController {
         return AjaxUtil.success(list,Constant.RESCODE_SUCCESS_MSG,list.size());
     }
 
-    @Autowired
-    private ConfigService configService;
 
     /**
      * 获取配置文件接口
@@ -53,7 +51,7 @@ public class SystemConfigController {
     @ApiImplicitParam()
     @GetMapping("/getAllConfig")
     public ReturnResult getAllConfig(){
-        Object map = configService.getAllConfig();
+        Object map = systemConfigService.getAllConfig();
         if(map!=null){
             return AjaxUtil.success(map, Constant.RESCODE_SUCCESS_MSG,1);
         }else{
@@ -68,7 +66,7 @@ public class SystemConfigController {
     })
     @GetMapping("/getPageConfig")
     public ReturnResult getPageConfig(@RequestParam String page, @RequestParam String limit){
-        Object map = configService.getPageConfig(page,limit);
+        Object map = systemConfigService.getPageConfig(page,limit);
         if(map!=null){
             return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
         }else{
@@ -80,7 +78,7 @@ public class SystemConfigController {
     @ApiImplicitParam(name = "id",value="配置编号",required=true)
     @GetMapping("/getConfigDetail")
     public ReturnResult getConfigDetail(@RequestParam String id){
-        Object map = configService.getConfigDetail(id);
+        Object map = systemConfigService.getConfigDetail(id);
         if(map!=null){
             return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
         }else{
@@ -91,7 +89,19 @@ public class SystemConfigController {
     @ApiOperation(value="更新配置信息")
     @PostMapping("/updateConfig")
     public ReturnResult updateConfig(@RequestBody Config config){
-        String map = (String) configService.updateConfig(config);
+        String map = (String) systemConfigService.updateConfig(config);
         return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,map);
+    }
+
+    @ApiOperation(value="查询仪器分类接口")
+    @GetMapping("/searchConfig")
+    public ReturnResult searchConfig(@RequestParam String searchKey,@RequestParam String searchValue,
+                                   @RequestParam String page, @RequestParam String limit ){
+        Object map = systemConfigService.searchConfig(searchKey,searchValue,page,limit);
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
     }
 }

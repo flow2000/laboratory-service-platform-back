@@ -75,7 +75,7 @@
         </where>
     </select>
 
-    <select id="getsearchPageSort" resultType="com.miku.lab.entity.ArticleSort" parameterType="map">
+    <select id="getSearchPageSort" resultType="com.miku.lab.entity.ArticleSort" parameterType="map">
         select *
         from sys_article_sort
         <where>
