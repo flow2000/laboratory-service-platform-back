@@ -104,7 +104,6 @@
             </if>
         </where>
         order by create_time desc
-        limit #{p},#{m}
     </select>
 
 </mapper>

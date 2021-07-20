@@ -90,7 +90,6 @@
             and ${searchKey} like concat('%',#{searchValue},'%')
         </where>
         order by sys_user.create_time desc
-        limit #{p},#{m}
     </select>
 
     <select id="getUserCount" resultType="int">
