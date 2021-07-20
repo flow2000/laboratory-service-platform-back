@@ -19,36 +19,56 @@
 
     <select id="getMachineStatistics" resultMap="machineTypeAndCount" >
         select sort_name, COUNT(class_code) as sort_count from sys_machine,sys_machine_sort
-        where sys_machine.class_code = sys_machine_sort.sort_name
+        <where>
+            sys_machine.class_code = sys_machine_sort.sort_name and sys_machine.del_flag=0
+        </where>
         GROUP BY class_code
     </select>
 
     <select id="getLabStatistics" resultMap="LabTypeAndCount" >
         select lab_address, COUNT(id) as sort_count from sys_lab_info
+        <where>
+            del_flag=0
+        </where>
         GROUP BY id
     </select>
 
     <select id="getUserCount" resultType="int">
         select COUNT(*) from sys_user
+        <where>
+            del_flag=0
+        </where>
     </select>
 
     <select id="getMachineCount" resultType="int">
         select COUNT(*) from sys_machine
+        <where>
+            del_flag=0
+        </where>
     </select>
 
     <select id="getBookingCount" resultType="int">
         select COUNT(*) from sys_booking_log
+        <where>
+            del_flag=0
+        </where>
     </select>
 
     <select id="getArticleCount" resultType="int">
         select COUNT(*) from sys_article
+        <where>
+            del_flag=0
+        </where>
     </select>
 
     <select id="getCountList" resultMap="MonthAndCountList" parameterType="String">
         select DATE_FORMAT(create_time,'%m') months,count(id) count from (
-        SELECT id,create_time FROM ${tableName}
-        WHERE create_time BETWEEN date_sub(DATE_FORMAT(NOW(),'%Y-%m-01 0:00:00'),interval 6 month)
-        and date_sub(DATE_FORMAT(NOW(),'%Y-%m-01 0:00:00'),interval 0 month)
-        ) lastSexMonths group by months;
+        select id,create_time FROM ${tableName}
+        <where>
+            del_flag=0 and create_time
+            BETWEEN date_sub(DATE_FORMAT(NOW(),'%Y-%m-01 0:00:00'),interval 6 month)
+            and date_sub(DATE_FORMAT(NOW(),'%Y-%m-01 0:00:00'),interval 0 month)) lastSexMonths
+            group by months;
+        </where>
     </select>
 </mapper>
