@@ -10,6 +10,8 @@ import com.miku.lab.entity.Machine;
 import com.miku.lab.entity.Machine_img;
 import com.miku.lab.entity.Machine_sort;
 import com.miku.lab.service.MachineService;
+import com.miku.lab.util.Constant;
+import com.miku.lab.util.IdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -146,7 +148,7 @@ public class MachineServiceImp implements MachineService {
     @Override
     public int addMachineSort(Machine_sort machine_sort) {
         Map<String,Object> map = new HashMap<>();
-        map.put("sortId",machine_sort.getSortId());
+        map.put("sortId", IdUtil.geneId(Constant.BUSINESS_SORT));
         map.put("sortName",machine_sort.getSortName());
         map.put("remark",machine_sort.getRemark());
         map.put("validStatus","1");

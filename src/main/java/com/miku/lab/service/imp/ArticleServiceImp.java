@@ -9,6 +9,8 @@ import com.miku.lab.entity.Article;
 import com.miku.lab.entity.ArticleSort;
 import com.miku.lab.entity.Machine_sort;
 import com.miku.lab.service.ArticleService;
+import com.miku.lab.util.Constant;
+import com.miku.lab.util.IdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,7 +112,7 @@ public class ArticleServiceImp implements ArticleService {
     @Override
     public int addSort(ArticleSort articleSort) {
         Map<String,Object> map = new HashMap<>();
-        map.put("sortId",articleSort.getSortId());
+        map.put("sortId", IdUtil.geneId(Constant.BUSINESS_SORT));
         map.put("sortName",articleSort.getSortName());
         map.put("remark",articleSort.getRemark());
         map.put("validStatus","1");
