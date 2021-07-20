@@ -37,6 +37,7 @@
     <update id="updateLabInfo" parameterType="map">
         update sys_lab_info
         set lab_address=#{lab_address},lab_admin=#{lab_admin},lab_admin_phone=#{lab_admin_phone},
+        lab_status=#{lab_status},
         updater=#{updater},update_time=NOW()
         <where>
             lab_id=#{lab_id} and del_flag=0
