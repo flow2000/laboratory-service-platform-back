@@ -26,7 +26,11 @@ public class LabController {
     @Autowired
     private LabService labService;
 
-    @ApiOperation(value = "获取实验室接口")
+    /**
+     * 获取所有实验室接口
+     * @return
+     */
+    @ApiOperation(value = "获取所有实验室接口")
     @ApiImplicitParam()
     @GetMapping("/getAllLab")
     public ReturnResult getAllLab(){
@@ -38,7 +42,13 @@ public class LabController {
         }
     }
 
-    @ApiOperation(value="分页获取用户信息")
+    /**
+     * 分页获取实验室信息
+     * @param page
+     * @param limit
+     * @return
+     */
+    @ApiOperation(value="分页获取实验室信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page",value="页数",required=true),
             @ApiImplicitParam(name = "limit", value = "每页数据量", required = true)
