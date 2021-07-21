@@ -198,7 +198,6 @@ public class MachineServiceImp implements MachineService {
         while(machineImg!=null){
             machineImg = machineImgDao.getOneImg(img_code);
         }
-        System.out.println(param);
         if(param.get("img_url")==null||param.get("img_url")==""){
             param.put("img_url",Constant.IMGURL); //如果没有上传图片则设置图片的默认值
         }
@@ -237,7 +236,7 @@ public class MachineServiceImp implements MachineService {
         List<Map> pageMachineList = machineDao.searchMachine(map);
         int count = machineDao.getSearchMachineCount(map);
         Map<String ,Object> resMap = new HashMap<String ,Object>();
-        resMap.put("machines",pageMachineList);
+        resMap.put("machine",pageMachineList);
         resMap.put("count",count);
         return resMap;
     }

@@ -126,7 +126,7 @@ public class MachineController {
      */
     @ApiOperation(value = "搜索仪器")
     @ApiImplicitParam()
-    @PostMapping("/searchMachine")
+    @GetMapping("/searchMachine")
     public ReturnResult searchMachine(@RequestParam int page,@RequestParam int limit,
                                       @RequestParam String searchKey,@RequestParam String searchValue){
         Object object = machineService.searchMachine(page,limit,searchKey,searchValue);
