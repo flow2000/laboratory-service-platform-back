@@ -49,4 +49,7 @@ public interface BookLogDao {
     //删除预约信息
     int delWxBookMachine(Map<String,Object>map);
 
+    //微信端预约时添加日志到此
+    int addBookingLog(Map<String,Object>map);
+
 }

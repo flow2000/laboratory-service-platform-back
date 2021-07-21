@@ -13,7 +13,7 @@
     <select id="getAllBookMachineById" resultType="com.miku.lab.entity.BookMachine" parameterType="com.miku.lab.entity.BookMachine">
         select *from wx_booking_machine
         <where>
-            openId=#{openId} and del_flag=0
+            openId=#{openId} and del_flag=0 and valid_status=1
         </where>
     </select>
 
@@ -76,7 +76,7 @@
         values(
                 #{openId},#{bookingCode},#{username},#{labId},
                 #{orderApplyer},#{orderPhone},#{orderNumber},#{labName},#{remark},
-                #{startTime},#{endTime},#{checker},0,#{createTime},0
+                #{startTime},#{endTime},#{checker},0,NOW(),0
                 )
     </insert>
 
@@ -102,6 +102,17 @@
             openId=#{openId} and machine_code=#{machine_id} and del_flag=0
         </where>
     </update>
+
+
+    <insert id="addBookingLog" parameterType="map">
+        insert
+        into sys_booking_log(booking_code,creater,create_time,del_flag)
+        values(
+                #{booking_code},#{creater},NOW(),0
+                )
+    </insert>
+
+
 
 
 </mapper>
