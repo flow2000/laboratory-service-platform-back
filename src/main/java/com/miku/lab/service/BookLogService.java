@@ -13,7 +13,7 @@ import java.util.List;
 public interface BookLogService {
     Object getAllBookLog();
 
-    Object getAllBookMachine();
+    Object getAllBookMachineById(String openId);
 
     String addBookMachineLog(String openId,String machine_id,String book_number);
 

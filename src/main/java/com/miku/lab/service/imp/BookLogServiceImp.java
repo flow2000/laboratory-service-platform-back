@@ -46,8 +46,8 @@ public class BookLogServiceImp implements BookLogService{
      * @return
      */
     @Override
-    public Object getAllBookMachine() {
-        List<BookMachine>bookMachines = bookLogDao.getAllBookMachine();
+    public Object getAllBookMachineById(String openId) {
+        List<BookMachine>bookMachines = bookLogDao.getAllBookMachineById(openId);
         if(bookMachines!=null){
             return bookMachines;
         }else {

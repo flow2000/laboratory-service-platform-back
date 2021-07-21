@@ -18,7 +18,7 @@ public interface BookLogDao {
     //获取所有预约记录
     List<BookLog> getAllBookLog();
     //获取所有预约仪器的记录
-    List<BookMachine> getAllBookMachine();
+    List<BookMachine> getAllBookMachineById(String openId);
     //通过opneid获取微信用户
     WxUser getWxUserByOpenId(String openId);
     //获取仪器的数量

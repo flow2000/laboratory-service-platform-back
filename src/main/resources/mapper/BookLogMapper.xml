@@ -10,10 +10,10 @@
         </where>
     </select>
 
-    <select id="getAllBookMachine" resultType="com.miku.lab.entity.BookMachine" parameterType="com.miku.lab.entity.BookMachine">
+    <select id="getAllBookMachineById" resultType="com.miku.lab.entity.BookMachine" parameterType="com.miku.lab.entity.BookMachine">
         select *from wx_booking_machine
         <where>
-            del_flag=0
+            openId=#{openId} and del_flag=0
         </where>
     </select>
 

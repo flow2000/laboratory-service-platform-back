@@ -41,11 +41,11 @@ public class BookLogController {
         }
     }
 
-    @ApiOperation(value = "查看所有预约仪器信息")
+    @ApiOperation(value = "查看对应openid预约仪器信息")
     @ApiImplicitParam()
     @GetMapping("/getBookMachine")
-    public ReturnResult getLabList(){
-        Object map = bookLogService.getAllBookMachine();
+    public ReturnResult getLabList(@RequestParam String openId){
+        Object map = bookLogService.getAllBookMachineById(openId);
         if(map!=null){
             return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
         }else{
