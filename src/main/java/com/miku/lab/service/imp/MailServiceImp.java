@@ -88,4 +88,55 @@ public class MailServiceImp implements MailService {
             return AjaxUtil.error(1001,"发送失败");
         }
     }
+
+    /**
+     * 通知审核通过邮箱
+     * @param email
+     * @return
+     */
+    @Override
+    public ReturnResult sendApplicationSucMail(String email,String remark) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("1257322785@qq.com");
+            message.setTo(email);
+            message.setSubject("审核通过");
+            if("".equals(remark)) {
+                message.setText("你好，你的申请已经通过审核\n请准时到指定地点领取仪器并签名\n");
+            }else{
+                message.setText("你好，你的申请已经通过审核\n"+remark+"\n");
+            }
+            javaMailSender.send(message);
+            return AjaxUtil.success("邮箱发送成功",1000,1);
+        }catch (Exception e){
+            e.printStackTrace();
+            return AjaxUtil.error(1001,"发送失败");
+        }
+    }
+
+    /**
+     * 通知审核不通过邮箱
+     * @param email
+     * @return
+     */
+    @Override
+    public ReturnResult sendApplicationErrMail(String email,String remark) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("1257322785@qq.com");
+            message.setTo(email);
+            message.setSubject("审核不通过");
+            if("".equals(remark)) {
+                message.setText("你好，你的申请没有通过审核\n请重新填写\n");
+            }else{
+                message.setText("你好，你的申请已经通过审核\n"+remark+"\n");
+            }
+            javaMailSender.send(message);
+            return AjaxUtil.success("邮箱发送成功",1000,1);
+        }catch (Exception e){
+            e.printStackTrace();
+            return AjaxUtil.error(1001,"发送失败");
+        }
+    }
+
 }

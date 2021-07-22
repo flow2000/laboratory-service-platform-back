@@ -18,5 +18,161 @@
         </where>
     </select>
 
+    <select id="getBookingInfo" resultType="map">
+
+    </select>
+
+    <select id="getAllBookingInfo" resultType="map">
+        select sys_order_check.*,lab_address,wx_booking_user.username
+        from sys_order_check,sys_lab_info,wx_booking_user
+        where sys_order_check.lab_id=sys_lab_info.lab_id
+        and check_status=0
+        and sys_order_check.valid_status=1
+        and end_time>=NOW()
+        and sys_order_check.del_flag=0
+        and wx_booking_user.openId=sys_order_check.openId
+        order by sys_order_check.create_time desc
+    </select>
+
+    <select id="getPageBookingInfo" resultType="map" parameterType="int">
+        select sys_order_check.*,lab_address,wx_booking_user.username,wx_booking_user.email
+        from sys_order_check,sys_lab_info,wx_booking_user
+        where sys_order_check.lab_id=sys_lab_info.lab_id
+        and check_status=0
+        and sys_order_check.valid_status=1
+        and end_time>=NOW()
+        and sys_order_check.del_flag=0
+        and wx_booking_user.openId=sys_order_check.openId
+        order by sys_order_check.create_time desc
+        limit #{p},#{m}
+    </select>
+
+    <select id="getBookingInfoCount" resultType="int">
+        select COUNT(*)
+        from sys_order_check
+        where check_status=0
+        and valid_status=1
+        and end_time>=NOW()
+        and del_flag=0
+        order by id
+    </select>
+
+    <select id="searchBookingInfo" resultType="map" parameterType="map">
+        select sys_order_check.*,lab_address,wx_booking_user.username,wx_booking_user.email
+        from sys_order_check,sys_lab_info,wx_booking_user
+        where sys_order_check.lab_id=sys_lab_info.lab_id
+        and check_status=0
+        and sys_order_check.valid_status=1
+        and end_time>=NOW()
+        and sys_order_check.del_flag=0
+        and wx_booking_user.openId=sys_order_check.openId
+        and ${searchKey} like concat('%',#{searchValue},'%')
+        order by sys_order_check.create_time desc
+        limit #{p},#{m}
+    </select>
+
+    <select id="searchBookingInfoCount" parameterType="map" resultType="int">
+        select COUNT(*)
+        from sys_order_check,sys_lab_info,wx_booking_user
+        where sys_order_check.lab_id=sys_lab_info.lab_id
+        and check_status=0
+        and sys_order_check.valid_status=1
+        and end_time>=NOW()
+        and sys_order_check.del_flag=0
+        and wx_booking_user.openId=sys_order_check.openId
+        and ${searchKey} like concat('%',#{searchValue},'%')
+        order by sys_order_check.id
+    </select>
+
+    <select id="getPageOrderMachine" resultType="map" parameterType="map">
+        SELECT wx_booking_machine.*,sys_machine.machine_name from wx_booking_machine,sys_machine
+        where wx_booking_machine.machine_code=sys_machine.machine_id
+        and booking_code=#{booking_code}
+        and wx_booking_machine.openId=#{openid}
+        and wx_booking_machine.del_flag=0
+        order by create_time desc
+        limit #{p},#{m}
+    </select>
+
+    <select id="getPageOrderMachineCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        from wx_booking_machine,sys_machine
+        where wx_booking_machine.machine_code=sys_machine.machine_id
+        and booking_code=#{booking_code}
+        and wx_booking_machine.openId=#{openid}
+        and wx_booking_machine.del_flag=0
+        order by wx_booking_machine.id
+    </select>
+
+    <update id="checkBooking" parameterType="map">
+        update sys_order_check
+        set check_status = #{check_status},checker=#{checker},updater=#{updater},update_time=NOW(),del_flag=1
+        where id=#{id}
+        and del_flag=0
+    </update>
+
+    <insert id="addOrderCheckLog" parameterType="map">
+        insert sys_booking_log(
+            booking_code,
+            booking_checker,
+            check_time,
+            check_result,
+            is_push,
+            valid_status,
+            creater,
+            create_time,
+            del_flag
+        )values(
+            #{booking_code},
+            #{checker},
+            NOW(),
+            #{check_result},
+            1,
+            1,
+            #{updater},
+            NOW(),
+            0
+        )
+    </insert>
+
+    <select id="getPageBookingLog" parameterType="map" resultType="map">
+        SELECT sys_booking_log.*,sys_user.username,lab_name from sys_booking_log,sys_user,sys_order_check
+        where sys_booking_log.booking_checker=sys_user.user_id
+        and sys_order_check.booking_code=sys_booking_log.booking_code
+        and sys_booking_log.del_flag=0
+        order by sys_booking_log.creater desc
+        limit #{p},#{m}
+    </select>
+
+    <select id="getPageBookingLogCount" resultType="int" parameterType="map">
+        SELECT COUNT(*) from sys_booking_log,sys_user,sys_order_check
+        where sys_booking_log.booking_checker=sys_user.user_id
+        and sys_order_check.booking_code=sys_booking_log.booking_code
+        and sys_booking_log.del_flag=0
+        order by sys_booking_log.id
+    </select>
+
+    <select id="searchBookingLog" parameterType="map" resultType="map">
+        SELECT * from(
+            SELECT sys_booking_log.*,sys_user.username,lab_name from sys_booking_log,sys_user,sys_order_check
+            where sys_booking_log.booking_checker=sys_user.user_id
+            and sys_order_check.booking_code=sys_booking_log.booking_code
+            and sys_booking_log.del_flag=0
+        ) log
+        where ${searchKey} like concat('%',#{searchValue},'%')
+        order by log.create_time desc
+        limit #{p},#{m}
+    </select>
+
+    <select id="searchBookingLogCount" resultType="int" parameterType="map">
+        SELECT COUNT(*) from(
+            SELECT sys_booking_log.*,sys_user.username,lab_name from sys_booking_log,sys_user,sys_order_check
+            where sys_booking_log.booking_checker=sys_user.user_id
+            and sys_order_check.booking_code=sys_booking_log.booking_code
+            and sys_booking_log.del_flag=0
+        ) log
+        where ${searchKey} like concat('%',#{searchValue},'%')
+        order by log.create_time desc
+    </select>
 
 </mapper>
