@@ -27,6 +27,9 @@ public class BookLogServiceImp implements BookLogService{
     private BookLogDao bookLogDao;
 
 
+
+
+
     /**
      * 获取所有预约记录
      * @return
@@ -64,6 +67,7 @@ public class BookLogServiceImp implements BookLogService{
      */
     @Override
     public String addBookMachineLog(String openId,String machine_id,String book_number){
+        String a = Constant.bookId;
         Map<String,Object>map = new HashMap<>();
         WxUser wxUser = bookLogDao.getWxUserByOpenId(openId);
         //确保用户已登录
@@ -79,7 +83,7 @@ public class BookLogServiceImp implements BookLogService{
             }
             map.put("openId",openId);
             map.put("createTime",new Date());
-            map.put("booking_code", IdUtil.geneId(Constant.BUSINESS_Book));
+            map.put("booking_code", Constant.bookId);
             String last_number = String.valueOf(machine.getBookableCount()-Integer.valueOf(book_number));
             int affectAdd = bookLogDao.addBookMachine(map);
             if(affectAdd>0){
@@ -189,14 +193,13 @@ public class BookLogServiceImp implements BookLogService{
             }
             int affectupdate = bookLogDao.updateLabSetStatus(orderCheck.getLabId());   //更改状态
             if(affectupdate>0){
-                String bookId= IdUtil.geneId(Constant.BUSINESS_Book);
-                orderCheck.setBookingCode(bookId);
+                orderCheck.setBookingCode(Constant.bookId);
                 orderCheck.setOrderApplyer(wxUser.getRealName());
                 orderCheck.setOrderPhone(wxUser.getUserPhone());
                 orderCheck.setUsername(wxUser.getUsername());
                 int affectAdd = bookLogDao.addBookLab(orderCheck);             //插入借用记录
                 if (affectAdd>0){
-                    map.put("booking_code",bookId);
+                    map.put("booking_code",Constant.bookId);
                     map.put("creater",orderCheck.getOrderApplyer());
                     bookLogDao.addBookingLog(map);
                     return "预约成功";

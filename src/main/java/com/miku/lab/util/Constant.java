@@ -60,7 +60,12 @@ public class Constant {
      * 验证码
      */
     public static String CODE = "";
-    
+    //预约编号
+    public static  String bookId=IdUtil.geneId(Constant.BUSINESS_Book);
+    public static String sortId=IdUtil.geneId(Constant.BUSINESS_SORT);
+
+
+
     static public void ReturnType(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			request.setCharacterEncoding("UTF-8");
