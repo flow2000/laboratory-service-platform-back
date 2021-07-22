@@ -67,4 +67,25 @@ public class MailServiceImp implements MailService {
            return AjaxUtil.error(1001,"发送失败");
        }
     }
+
+    /**
+     * 通知申请失效邮箱
+     * @param email
+     * @return
+     */
+    @Override
+    public ReturnResult sendApplicationExpireMail(String email,String booking_code) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("1257322785@qq.com");
+            message.setTo(email);
+            message.setSubject("申请失效通知");
+            message.setText("你好，你的申请已经失效\n失效的预约编号为:"+booking_code+"\n请您重新申请！");
+            javaMailSender.send(message);
+            return AjaxUtil.success("邮箱发送成功",1000,1);
+        }catch (Exception e){
+            e.printStackTrace();
+            return AjaxUtil.error(1001,"发送失败");
+        }
+    }
 }

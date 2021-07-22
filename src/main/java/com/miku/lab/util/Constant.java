@@ -80,4 +80,9 @@ public class Constant {
      * 图片默认值
      */
     public static final String IMGURL = "https://library-management-1305004688.cos.ap-guangzhou.myqcloud.com/noimg.jpg";
+
+    /**
+     * 定时器
+     */
+    public static final long TIMEINTERVAL = 1000*60*30; //30分钟
 }

@@ -13,4 +13,6 @@ public interface MailService {
     ReturnResult sendActiveMail( String email);
 
     ReturnResult sendNotifyMail( String email);
+
+    ReturnResult sendApplicationExpireMail( String email,String booking_code);
 }
