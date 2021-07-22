@@ -20,6 +20,7 @@ public class IdUtil {
         return prefix+System.currentTimeMillis() +String.valueOf(new Random().nextInt(900)+100);
     }
 
+
     /**
      * 获取六位随机字符串类型的数字
      * @return

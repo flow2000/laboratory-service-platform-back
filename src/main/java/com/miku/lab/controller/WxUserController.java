@@ -74,4 +74,18 @@ public class WxUserController {
         }
     }
 
+    @ApiOperation(value="查询单一微信用户接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId",value="微信授权id",required=true),
+    })
+    @PostMapping("/searchWxUser")
+    public ReturnResult searchWxUser(@RequestParam String openId){
+        WxUser wxUser = wxUserService.searchWxUserById(openId);
+        if (wxUser != null) {
+            return AjaxUtil.success(wxUser, Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取微信信息失败");
+        }
+    }
+
 }

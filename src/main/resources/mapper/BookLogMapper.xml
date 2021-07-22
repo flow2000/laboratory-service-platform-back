@@ -59,11 +59,11 @@
         </where>
     </select>
 
-    <update id="updateLabSetStatus" parameterType="com.miku.lab.entity.OrderCheck">
+    <update id="updateLabSetStatus" parameterType="map">
         update sys_lab_info
-        set lab_status=1,update_time=NOW()
+        set lab_status=#{labStatus},update_time=NOW()
         <where>
-            lab_id=#{labId}
+            lab_id=#{labId} and valid_status=1
         </where>
     </update>
 
@@ -111,6 +111,52 @@
                 #{booking_code},#{creater},NOW(),0
                 )
     </insert>
+
+    <update id="setWxOrderCheckStatus" parameterType="map">
+        update sys_order_check
+        set check_status=#{check_status}
+        <where>
+            openId=#{openId} and lab_id=#{labId}
+        </where>
+    </update>
+
+    <select id="getWxOrderCheck" resultType="com.miku.lab.entity.OrderCheck" parameterType="map">
+        select *from sys_order_check
+        <where>
+            openId=#{openId} and lab_id=#{labId} and valid_status=1 and check_status=#{checkStatus}
+        </where>
+    </select>
+
+    <update id="setBookingLogStatus" parameterType="map">
+        update sys_booking_log
+        set valid_status=#{validStatus}
+        <where>
+            booking_code=#{bookingCode}
+        </where>
+    </update>
+
+    <update id="setWxBookingMachineStatus" parameterType="map">
+        update wx_booking_machine
+        set valid_status=#{validStatus}
+        <where>
+            booking_code=#{bookingCode} and openId=#{openId}
+        </where>
+    </update>
+
+    <select id="getMachineById" resultType="com.miku.lab.entity.BookMachine" parameterType="map">
+        select *from wx_booking_machine
+        <where>
+            openId=#{openId}  and valid_status=#{validStatus} and booking_code=#{bookingCode}
+        </where>
+    </select>
+
+    <update id="setMachineNumber" parameterType="map">
+        update sys_machine
+        set bookable_count=#{last_number}
+        <where>
+            machine_id=#{machine_id} and del_flag=0
+        </where>
+    </update>
 
 
 

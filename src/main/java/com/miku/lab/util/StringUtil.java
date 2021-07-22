@@ -18,4 +18,13 @@ public class StringUtil {
         else
             return false;
     }
+
+     public String generateBookId(){
+        try {
+           Constant.bookId = IdUtil.geneId(Constant.BUSINESS_Book);
+        }catch (Exception e){
+            System.out.println("生成编号失败");
+        }
+        return "生成失败";
+    }
 }

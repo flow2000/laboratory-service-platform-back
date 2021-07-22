@@ -9,6 +9,7 @@ import com.miku.lab.entity.*;
 import com.miku.lab.service.BookLogService;
 import com.miku.lab.util.Constant;
 import com.miku.lab.util.IdUtil;
+import com.miku.lab.util.StringUtil;
 import com.miku.lab.util.TimeUtil;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,8 @@ public class BookLogServiceImp implements BookLogService{
     @Autowired
     private BookLogDao bookLogDao;
 
-
-
-
+    //生成编号
+    String flag = new StringUtil().generateBookId();
 
     /**
      * 获取所有预约记录
@@ -191,7 +191,9 @@ public class BookLogServiceImp implements BookLogService{
             }else if(labInfo.getLabStatus()==-1){
                 return "该实验室已被锁定，请更换实验室";
             }
-            int affectupdate = bookLogDao.updateLabSetStatus(orderCheck.getLabId());   //更改状态
+            map.put("labId",orderCheck.getLabId());
+            map.put("labStatus","1");
+            int affectupdate = bookLogDao.updateLabSetStatus(map);   //更改状态
             if(affectupdate>0){
                 orderCheck.setBookingCode(Constant.bookId);
                 orderCheck.setOrderApplyer(wxUser.getRealName());
@@ -210,4 +212,59 @@ public class BookLogServiceImp implements BookLogService{
         }
         return "预约失败，详细原因请联系管理员";
     }
+
+    @Override
+    //撤销申请，同时改微信预约表、预约审核表、预约日志表
+    public int drawApply(String openId,String lab_id){
+        Map<String,Object>map = new HashMap<>();
+        map.put("openId",openId);
+        map.put("labId",lab_id);
+        map.put("checkStatus","0");
+        //获得对应的预约信息
+        OrderCheck wxOrderCheck = bookLogDao.getWxOrderCheck(map);
+        if(wxOrderCheck==null){
+            return 0;
+        }
+
+        //不等于待审核的状态不急于撤销
+        if (wxOrderCheck.getCheckStatus()!=0){
+            return -1;
+        }
+        //审核表审核状态设置为已失效
+        map.put("check_status","3");
+        int wxStatus = bookLogDao.setWxOrderCheckStatus(map);
+        if (wxStatus!=0){
+            //实验室状态回到可借用状态
+            map.put("labStatus","0");
+            int labStatus = bookLogDao.updateLabSetStatus(map);
+
+            //预约日志表无效
+            map.put("bookingCode",wxOrderCheck.getBookingCode());
+            map.put("validStatus","0");
+            bookLogDao.setBookingLogStatus(map);
+
+            //更改仪器表数量信息
+            map.put("validStatus","1");
+            List<BookMachine> machineById =  bookLogDao.getMachineById(map);
+            for(int i=0;i<machineById.size();i++){
+                //更改微信预约表信息
+                map.put("validStatus","3");
+                map.put("bookingCode",machineById.get(i).getBookingCode());
+                //还原仪器表信息
+                bookLogDao.setWxBookingMachineStatus(map);
+                map.put("machineNumber",machineById.get(i).getMachineNumber());
+                map.put("machine_id",machineById.get(i).getMachineCode());
+                //回退数量
+                Machine machine = bookLogDao.getMachine(map);
+                String last_number = String.valueOf(machine.getBookableCount()+machineById.get(i).getMachineNumber());//仪器表
+                map.put("last_number",last_number);
+                bookLogDao.setMachineNumber(map);
+            }
+            return 1;
+        }else{
+            return 0;
+        }
+
+    }
+
 }

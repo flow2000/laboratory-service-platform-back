@@ -25,15 +25,16 @@ public class WxUserServiceImp implements WxUserService {
     @Override
     public Object getAllWxUser() {
         List<WxUser> wxUserList = wxUserDao.getAllWxUser();
-        if (wxUserList!=null){
+        if (wxUserList != null) {
             return wxUserList;
-        }else{
+        } else {
             return null;
         }
     }
 
     /**
      * 更新微信用户详细信息
+     *
      * @param wxUser
      * @return
      */
@@ -41,56 +42,76 @@ public class WxUserServiceImp implements WxUserService {
     public int updateWxUser(WxUser wxUser) {
         wxUser.setUpdateTime(new Date());
         int addAffect = wxUserDao.updateWxUser(wxUser);
-        if (addAffect!=0){
+        if (addAffect != 0) {
             return 1;
-        }else {
+        } else {
             return 0;
         }
     }
 
     /**
      * 更新微信推送信息
+     *
      * @param openId
      * @param isReceptMsg
      * @param isReceptPush
      * @return
      */
     @Override
-    public int updateWxPush(String openId,String isReceptMsg,String isReceptPush) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("openId",openId);
-        map.put("isReceptMsg",isReceptMsg);
-        map.put("isReceptPush",isReceptPush);
-        map.put("updateTime",new Date());
+    public int updateWxPush(String openId, String isReceptMsg, String isReceptPush) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("openId", openId);
+        map.put("isReceptMsg", isReceptMsg);
+        map.put("isReceptPush", isReceptPush);
+        map.put("updateTime", new Date());
         int updateAffect = wxUserDao.updateWxPush(map);
-        if (updateAffect!=0){
+        if (updateAffect != 0) {
             return 1;
-        }else {
+        } else {
             return 0;
         }
     }
 
     /**
      * 添加微信用户
+     *
      * @param openId
      * @param username
      * @return
      */
     @Override
-    public int addWxUser(String openId,String username) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("openId",openId);
-        map.put("username",username);
-        map.put("createTime",new Date());
+    public int addWxUser(String openId, String username) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("openId", openId);
+        map.put("username", username);
+        map.put("createTime", new Date());
         WxUser user = wxUserDao.getWxUserById(openId);
-        if(user==null){
+        if (user == null) {
             int addSort = wxUserDao.addWxUser(map);
-            if(addSort!=0){
+            if (addSort != 0) {
                 return 1;
             }
-        }else{
+        } else {
             return 0;
         }
         return 0;
     }
+
+    /**
+     * 获得对应微信用户
+     *
+     * @param openId
+     * @return
+     */
+    @Override
+    public WxUser searchWxUserById(String openId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("openId", openId);
+        WxUser user = wxUserDao.getWxUserById(openId);
+        if (user != null) {
+            return user;
+        }else {
+            return null;
+    }
+}
 }

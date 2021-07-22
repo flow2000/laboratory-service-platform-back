@@ -61,7 +61,8 @@ public class Constant {
      */
     public static String CODE = "";
     //预约编号
-    public static  String bookId=IdUtil.geneId(Constant.BUSINESS_Book);
+    public static  String bookId="";
+
     public static String sortId=IdUtil.geneId(Constant.BUSINESS_SORT);
 
 

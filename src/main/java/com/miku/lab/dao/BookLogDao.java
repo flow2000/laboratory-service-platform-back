@@ -30,11 +30,11 @@ public interface BookLogDao {
     //更新仪器信息
     int updateMachine(Map<String,Object>map);
     //通过id获取仪器
-    Machine getMachineById(Map<String,Object>map);
+    List<BookMachine> getMachineById(Map<String,Object>map);
     //通过id获取实验室
     LabInfo getLabById(String lab_id);
     //更新实验室的状态
-    int updateLabSetStatus(String lab_id);
+    int updateLabSetStatus(Map<String,Object>map);
     //添加预约实验室
     int addBookLab(OrderCheck orderCheck);
     //通过Id取微信预约信息
@@ -51,5 +51,15 @@ public interface BookLogDao {
 
     //微信端预约时添加日志到此
     int addBookingLog(Map<String,Object>map);
+
+    //更改审核表状态
+    int setWxOrderCheckStatus(Map<String,Object>map);
+    //获得微信预约审核信息
+    OrderCheck getWxOrderCheck(Map<String,Object>map);
+    //更改预约日志表
+    int setBookingLogStatus(Map<String,Object>map);
+
+    int setWxBookingMachineStatus(Map<String,Object>map);
+    int setMachineNumber(Map<String,Object>map);
 
 }

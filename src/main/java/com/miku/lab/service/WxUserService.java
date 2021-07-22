@@ -16,4 +16,7 @@ public interface WxUserService {
     int addWxUser(String openId,String username);
 
     int updateWxPush(String openId,String isReceptMsg,String isReceptPush);
+
+    //查询单一微信用户
+    WxUser searchWxUserById(String openId);
 }

@@ -10,6 +10,7 @@ import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.BookLogService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
+import com.miku.lab.util.StringUtil;
 import com.miku.lab.util.TimeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -27,6 +28,7 @@ public class BookLogController {
 
     @Autowired
     private BookLogService bookLogService;
+
 
 
     @ApiOperation(value = "获取预约记录接口")
@@ -82,6 +84,20 @@ public class BookLogController {
         return AjaxUtil.error(Constant.RESCODE_SUCCESS, msg);
     }
 
+
+    @ApiOperation(value = "撤销申请")
+    @PostMapping("/drawApply")
+    public ReturnResult drawApply(@RequestParam String openId,@RequestParam String lab_id){
+        int flag = bookLogService.drawApply(openId,lab_id);
+        if(flag==-1){
+            return AjaxUtil.error(500, "未处于待审核状态，不给予撤销");
+        }else if(flag==0){
+            return AjaxUtil.error(501, "你的申请未处于待审核状态，请联系管理员");
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "撤销成功");
+        }
+
+    }
 
 
 

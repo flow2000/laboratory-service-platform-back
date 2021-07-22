@@ -24,5 +24,8 @@ public interface BookLogService {
     //减少一个仪器数目
     String subBookingNumber(String openId,String machine_id);
 
+    //撤销申请
+    int drawApply(String openId,String lab_id);
+
 
 }
