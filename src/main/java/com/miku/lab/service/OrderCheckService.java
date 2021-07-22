@@ -28,4 +28,6 @@ public interface OrderCheckService {
     Object getPageBookingLog(int page, int limit);
 
     Object searchBookingLog(int page, int limit, String searchKey, String searchValue);
+
+    Object getAllBookingLog();
 }

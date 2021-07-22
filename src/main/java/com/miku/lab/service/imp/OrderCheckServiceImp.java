@@ -166,4 +166,9 @@ public class OrderCheckServiceImp implements OrderCheckService {
         return resMap;
     }
 
+    @Override
+    public Object getAllBookingLog() {
+        return orderCheckDao.getAllBookingLog();
+    }
+
 }

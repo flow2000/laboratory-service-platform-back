@@ -46,4 +46,6 @@ public interface OrderCheckDao {
     List<Map> searchBookingLog(Map<String, Object> map);
 
     int searchBookingLogCount(Map<String, Object> map);
+
+    List<Map> getAllBookingLog();
 }

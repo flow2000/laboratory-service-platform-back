@@ -115,6 +115,17 @@ public class OrderCheckController {
         }
     }
 
+    @ApiOperation(value = "获取所有预约记录的信息")
+    @GetMapping("/getAllBookingLog")
+    public ReturnResult getAllBookingLog(){
+        Object map = orderCheckService.getAllBookingLog();
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS_MSG,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
+
     @ApiOperation(value = "分页获取所有预约记录的信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page",value="页数",required=true),
