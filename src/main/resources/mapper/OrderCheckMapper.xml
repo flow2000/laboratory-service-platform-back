@@ -136,17 +136,20 @@
     </insert>
 
     <select id="getPageBookingLog" parameterType="map" resultType="map">
-        SELECT sys_booking_log.*,sys_user.username,lab_name from sys_booking_log,sys_user,sys_order_check
+        SELECT sys_booking_log.*,sys_user.username,lab_name,wx_booking_user.email
+        from sys_booking_log,sys_user,sys_order_check,wx_booking_user
         where sys_booking_log.booking_checker=sys_user.user_id
         and sys_order_check.booking_code=sys_booking_log.booking_code
+        and wx_booking_user.openId=sys_booking_log.openId
         and sys_booking_log.del_flag=0
         order by sys_booking_log.creater desc
         limit #{p},#{m}
     </select>
 
     <select id="getPageBookingLogCount" resultType="int" parameterType="map">
-        SELECT COUNT(*) from sys_booking_log,sys_user,sys_order_check
+        SELECT COUNT(*) from sys_booking_log,sys_user,sys_order_check,wx_booking_user
         where sys_booking_log.booking_checker=sys_user.user_id
+        and wx_booking_user.openId=sys_booking_log.openId
         and sys_order_check.booking_code=sys_booking_log.booking_code
         and sys_booking_log.del_flag=0
         order by sys_booking_log.id
@@ -154,8 +157,10 @@
 
     <select id="searchBookingLog" parameterType="map" resultType="map">
         SELECT * from(
-            SELECT sys_booking_log.*,sys_user.username,lab_name from sys_booking_log,sys_user,sys_order_check
+            SELECT sys_booking_log.*,sys_user.username,lab_name,wx_booking_user.email
+            from sys_booking_log,sys_user,sys_order_check,wx_booking_user
             where sys_booking_log.booking_checker=sys_user.user_id
+            and wx_booking_user.openId=sys_booking_log.openId
             and sys_order_check.booking_code=sys_booking_log.booking_code
             and sys_booking_log.del_flag=0
         ) log
@@ -166,8 +171,10 @@
 
     <select id="searchBookingLogCount" resultType="int" parameterType="map">
         SELECT COUNT(*) from(
-            SELECT sys_booking_log.*,sys_user.username,lab_name from sys_booking_log,sys_user,sys_order_check
+            SELECT sys_booking_log.*,sys_user.username,lab_name,wx_booking_user.email
+            from sys_booking_log,sys_user,sys_order_check,wx_booking_user
             where sys_booking_log.booking_checker=sys_user.user_id
+            and wx_booking_user.openId=sys_booking_log.openId
             and sys_order_check.booking_code=sys_booking_log.booking_code
             and sys_booking_log.del_flag=0
         ) log
