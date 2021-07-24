@@ -46,6 +46,7 @@ public class JwtUtil {
                 .setClaims(map)
                 .claim("user_id",user.getUserId())
                 .claim("role_code",user.getRoleCode())
+                .claim("user",user)
                 .setIssuedAt(new Date()) //设置jwt的签发时间
                 .signWith(SignatureAlgorithm.HS256, Constant.JWT_SECRET) //设置签名使用的签名算法和签名使用的密钥
                 .setExpiration(new Date((System.currentTimeMillis()+Constant.JWT_TTL)))
@@ -74,8 +75,8 @@ public class JwtUtil {
           */
     public static String getUsername(String token){
         Claims claims = Jwts.parser().setSigningKey(Constant.JWT_SECRET).parseClaimsJws(token).getBody();
-        System.out.println(claims.get("username").toString());
-            return claims.get("username").toString();
+        System.out.println(claims.get("user_id").toString());
+            return claims.get("user_id").toString();
     }
 
     /**
@@ -85,9 +86,10 @@ public class JwtUtil {
      */
     public static String getRole(String token){
         Claims claims = Jwts.parser().setSigningKey(Constant.JWT_SECRET).parseClaimsJws(token).getBody();
-        System.out.println("role:"+claims.get("role").toString());
-        return claims.get("role").toString();
+        System.out.println("role:"+claims.get("role_code").toString());
+        return claims.get("role_code").toString();
     }
+
 
     /**
      *

@@ -77,7 +77,7 @@ public class BookLogController {
 
     }
 
-    @ApiOperation(value = "提交按钮实验室接口")
+    @ApiOperation(value = "提交按钮实验室+仪器接口")
     @PostMapping("/addLabCheck")
     public ReturnResult addLabInfo(@RequestBody OrderCheck orderCheck){
         String msg = bookLogService.addLabLog(orderCheck);
@@ -96,7 +96,13 @@ public class BookLogController {
         }else{
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "撤销成功");
         }
+    }
 
+    @ApiOperation(value = "提交按钮实验室+仪器接口")
+    @PostMapping("orderInfo")
+    public ReturnResult orderInfo(@RequestBody Map<String, Object>map){
+        System.out.println(map);
+        return AjaxUtil.error(Constant.RESCODE_SUCCESS, "1");
     }
 
 

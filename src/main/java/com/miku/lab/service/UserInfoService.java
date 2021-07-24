@@ -12,7 +12,6 @@ import java.util.Map;
 
 @Service
 public interface UserInfoService {
-    UserInfo login(String token, UserInfo user, String captcha);
 
     int isValiToken(String user_id,String token);
 

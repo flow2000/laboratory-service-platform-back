@@ -26,16 +26,7 @@ public class UserInfoServiceImp implements UserInfoService {
     RedisUtil redisUtil = new RedisUtil();
 
 
-    @Override
-    public UserInfo login(String token,UserInfo user,String captcha){
-        RedisUtil redisUtil = new RedisUtil();
-        UserInfo userInfo = userInfoDao.loginVerify(user);
-        if(userInfo!=null){
-            return userInfo;
-        }else{
-            return null;
-        }
-    }
+
 
     /**
      * 获取全部用户信息

@@ -37,7 +37,13 @@ public class Constant {
     public static final int JWT_REFRESH_INTERVAL = 55*60*1000;  //millisecond
     public static final int JWT_REFRESH_TTL = 12*60*60*1000;  //millisecond
     public static final String JWT_ISSSUER = "119583010135";
-   
+
+    /**
+     * web请求码
+     */
+    public static final int USERNAME_DISABLE = 201;         //登录禁用
+    public static final int USERNAME_PASSWORD_ERROR = 202;         //账号密码错误
+
     /**
      * redis
      */
