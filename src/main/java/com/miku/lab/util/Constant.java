@@ -85,5 +85,7 @@ public class Constant {
     /**
      * 定时器
      */
-    public static final long TIMEINTERVAL = 1000*60*30; //30分钟
+    public static final long INTERVAL_BOOKING = 1000*60*30; //刷新预约申请，间隔30分钟
+    public static final long INTERVAL_MACHINE = 1000*60*60; //刷新仪器，间隔40分钟
+    public static final long INTERVAL_LAB = 1000*60*35;     //刷新实验室，间隔35分钟
 }

@@ -44,4 +44,38 @@
             0
         )
     </insert>
+
+    <select id="getExpireMachine" resultType="map">
+        SELECT sys_order_check.*,machine_code,machine_number from sys_order_check,wx_booking_machine
+        <where>
+            end_time &lt;=NOW()
+            and wx_booking_machine.del_flag=0
+            and wx_booking_machine.valid_status=1
+            and check_status=3
+            and sys_order_check.booking_code=wx_booking_machine.booking_code
+        </where>
+    </select>
+
+    <update id="freshBookingMachine" parameterType="String">
+        update sys_machine
+        set bookable_count=bookable_count+#{machine_number},update_time=NOW()
+        <where>
+            machine_id=#{machine_code}
+        </where>
+    </update>
+
+    <select id="getExpireLab" resultType="map">
+        SELECT sys_order_check.* from sys_order_check
+        where end_time&lt;=NOW()
+        and check_status in(2,3)
+    </select>
+
+    <update id="freshBookingLab" parameterType="String">
+        update sys_lab_info
+        set lab_status=0,update_time=NOW()
+        <where>
+            lab_id='3'
+        </where>
+    </update>
+
 </mapper>
