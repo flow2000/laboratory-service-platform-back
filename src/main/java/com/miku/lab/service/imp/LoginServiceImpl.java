@@ -110,22 +110,40 @@ public class LoginServiceImpl implements LoginService {
 
      */
     @Override
-    public List<Ztree> roleMenuTreeData(String token)
+    public Object roleMenuTreeData(String token)
     {
+        Map<String, Object>map = new HashMap<>();
         String roleId = JwtUtil.getRole(token);
         String userId = JwtUtil.getUsername(token);
         List<Ztree> ztrees = new ArrayList<Ztree>();
+        //获得对应用户的所有菜单
         List<SysMenu> menuList = selectMenuAll(userId);
         if (roleId!=null)
         {
             List<String> roleMenuList = loginDao.selectMenuTree(roleId);
             ztrees = initZtree(menuList, roleMenuList, true);
+            Ztree ztreeFirst = new Ztree();
+            ztreeFirst.setTitle("首页");
+            ztreeFirst.setHref("welcome/welcome.html");
+            ztreeFirst.setTarget("_self");
+            map.put("homeInfo",ztreeFirst);
+
+            Ztree ztreeSecond = new Ztree();
+            Map<String, Object>mapLogo = new HashMap<>();
+            mapLogo.put("title","首页");
+            mapLogo.put("image","../static/img/logo.png");
+            mapLogo.put("href","");
+            map.put("lofoInfo",mapLogo);
+
+            map.put("menuInfo",ztrees);
+
         }
         else
         {
             ztrees = initZtree(menuList, null, true);
+            map.put("roleNull",ztrees);
         }
-        return ztrees;
+        return map;
     }
 
 
@@ -146,32 +164,132 @@ public class LoginServiceImpl implements LoginService {
         }else{
             isCheck = false;
         }
+        Ztree ztreeThird = new Ztree();
+        ztreeThird.setTitle("");
+        ztreeThird.setIcon("fa fa-address-book");
+        ztreeThird.setHref("");
+        ztreeThird.setTarget("_self");
+        ztreeThird.setChild(addZtreeNode(menuList));
+        ztrees.add(ztreeThird);
+        return ztrees;
+    }
+
+    //添加树节点
+    public List<Ztree> addZtreeNode(List<SysMenu> menuList){
+        List<Ztree> ztrees = new ArrayList<Ztree>();
         for (SysMenu menu : menuList)
         {
+            //父Id！=0不直接添加到模块
+            if(menu.getParentId()!=0){
+                continue;
+            }
             Ztree ztree = new Ztree();
-            ztree.setId(menu.getMenuId());
-            ztree.setPId(menu.getParentId());
-            ztree.setName(transMenuName(menu, permsFlag));
             ztree.setTitle(menu.getTitle());
-            if (isCheck)
-            {
-                ztree.setChecked(roleMenuList.contains(menu.getMenuId() + menu.getPerms()));
+            ztree.setIcon(menu.getIcon());
+            ztree.setHref(menu.getHref());
+            ztree.setTarget(menu.getTarget());
+            //查询当前节点是否有孩子节点
+            for(SysMenu menuTmp : menuList){
+                if(menu.getMenuId()==menuTmp.getParentId()){
+                    List<SysMenu> childPerms = getChildPerms(menuList, menuTmp.getParentId());
+                    if(childPerms!=null){
+                        ztree.setChild(transMenuChild(childPerms));
+                    }
+                }
             }
             ztrees.add(ztree);
         }
         return ztrees;
     }
 
-    public String transMenuName(SysMenu menu, boolean permsFlag)
+    //子节点放入child中
+    public List<Ztree> transMenuChild(List<SysMenu> menuList)
     {
-        StringBuffer sb = new StringBuffer();
-        sb.append(menu.getTitle());
-        if (permsFlag)
+        List<Ztree> ztrees = new ArrayList<Ztree>();
+
+        for (SysMenu menu : menuList)
         {
-            sb.append("<font color=\"#888\">&nbsp;&nbsp;&nbsp;" + menu.getPerms() + "</font>");
+            Ztree ztree = new Ztree();
+                ztree.setTitle(menu.getTitle());
+                ztree.setIcon(menu.getIcon());
+                ztree.setHref(menu.getHref());
+                ztree.setTarget(menu.getTarget());
+            ztrees.add(ztree);
         }
-        return sb.toString();
+        return ztrees;
+
     }
+
+    /**
+     * 根据父节点的ID获取所有子节点
+     *
+     * @param list 分类表
+     * @param parentId 传入的父节点ID
+     * @return String
+     */
+    public List<SysMenu> getChildPerms(List<SysMenu> list, Long parentId)
+    {
+        List<SysMenu> returnList = new ArrayList<SysMenu>();
+        for (Iterator<SysMenu> iterator = list.iterator(); iterator.hasNext();)
+        {
+            SysMenu t = (SysMenu) iterator.next();
+            // 一、根据传入的某个父节点ID,遍历该父节点的所有子节点
+            if (t.getParentId() == parentId)
+            {
+                recursionFn(list, t);
+                returnList.add(t);
+            }
+        }
+        return returnList;
+    }
+
+    /**
+     * 递归列表
+     *
+     * @param list
+     * @param t
+     */
+    private void recursionFn(List<SysMenu> list, SysMenu t)
+    {
+        // 得到子节点列表
+        List<SysMenu> childList = getChildList(list, t);
+        t.setChildren(childList);
+        for (SysMenu tChild : childList)
+        {
+            if (hasChild(list, tChild))
+            {
+                recursionFn(list, tChild);
+            }
+        }
+    }
+
+    /**
+     * 得到子节点列表
+     */
+    private List<SysMenu> getChildList(List<SysMenu> list, SysMenu t)
+    {
+        List<SysMenu> tlist = new ArrayList<SysMenu>();
+        Iterator<SysMenu> it = list.iterator();
+        while (it.hasNext())
+        {
+            SysMenu n = (SysMenu) it.next();
+            if (n.getParentId().longValue() == t.getMenuId().longValue())
+            {
+                tlist.add(n);
+            }
+        }
+        return tlist;
+    }
+
+    /**
+     * 判断是否有子节点
+     */
+    private boolean hasChild(List<SysMenu> list, SysMenu t)
+    {
+        return getChildList(list, t).size() > 0 ? true : false;
+    }
+
+
     /**
      * 查询菜单集合
      *

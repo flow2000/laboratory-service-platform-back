@@ -21,7 +21,7 @@ public interface LoginService {
 
     Set<String> getRolePermission(UserInfo user);
 
-    public List<Ztree> roleMenuTreeData(String token);
+    public Object roleMenuTreeData(String token);
 
     public List<SysMenu> selectMenuAll(String userId);
 }
