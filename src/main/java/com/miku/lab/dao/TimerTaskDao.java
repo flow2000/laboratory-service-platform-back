@@ -2,6 +2,7 @@ package com.miku.lab.dao;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -21,4 +22,6 @@ public interface TimerTaskDao {
     int freshBookingMachine(String machine_code, String machine_number);
 
     int freshBookingLab(String lab_id);
+
+    int invalidOrderCheck(BigInteger id);
 }

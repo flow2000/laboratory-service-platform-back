@@ -68,14 +68,21 @@
         SELECT sys_order_check.* from sys_order_check
         where end_time&lt;=NOW()
         and check_status in(2,3)
+        and valid_status=1
     </select>
 
     <update id="freshBookingLab" parameterType="String">
         update sys_lab_info
         set lab_status=0,update_time=NOW()
         <where>
-            lab_id='3'
+            lab_id='3' and valid_status=1
         </where>
+    </update>
+
+    <update id="invalidOrderCheck" parameterType="BigInteger" >
+        update sys_order_check
+        set valid_status=0,update_time=NOW()
+        where id=#{id} and valid_status=1
     </update>
 
 </mapper>

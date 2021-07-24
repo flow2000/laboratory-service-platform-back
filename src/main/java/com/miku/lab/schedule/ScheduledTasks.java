@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
@@ -96,8 +97,10 @@ public class ScheduledTasks {
         for (int i = 0; i < list.size(); i++) {
             Map<String,Object> map = list.get(i);
             String lab_id = (String) map.get("lab_id");
+            BigInteger id = (BigInteger) map.get("id");
             log.info(lab_id);
             timerTaskDao.freshBookingLab(lab_id); //将实验室设为可借用
+            timerTaskDao.invalidOrderCheck(id);     //将审核数据设为无效
         }
         log.info("刷新实验室定时任务 处理结束");
     }
