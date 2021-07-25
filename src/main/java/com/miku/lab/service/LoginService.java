@@ -15,7 +15,7 @@ import java.util.Set;
 @Service
 public interface LoginService {
 
-    String login(String user_id,String password,String code);
+    Object login(String user_id,String password,String code);
 
     UserInfo getLoginUser(String token);
 

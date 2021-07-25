@@ -1,5 +1,6 @@
 package com.miku.lab.controller;
 
+import com.google.gson.Gson;
 import com.miku.lab.entity.LoginBody;
 import com.miku.lab.entity.UserInfo;
 import com.miku.lab.entity.Ztree;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,8 +39,10 @@ public class SysLoginController
     @PostMapping("/login")
     public ReturnResult login(@RequestBody LoginBody loginBody)
     {
+
+
         // 生成令牌
-        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode());
+        Object token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode());
         ReturnResult success = AjaxUtil.success(token, Constant.RESCODE_SUCCESS, 1);
         return success;
     }
@@ -49,10 +53,25 @@ public class SysLoginController
      */
     @GetMapping("/roleMenuTreeData")
     @ResponseBody
-    public Object roleMenuTreeData(@RequestHeader String token)
+    public void roleMenuTreeData(@RequestHeader String token,HttpServletRequest request, HttpServletResponse response)
     {
         Object ztrees =  loginService.roleMenuTreeData(token);
-        return ztrees;
+        Gson gson = new Gson();
+        String json = gson.toJson(ztrees);
+
+
+        response.setContentType("application/octet-stream");
+
+        response.setHeader("Content-disposition", "attachment;filename="+ "name.json");
+
+        try {
+            response.getOutputStream().write((json.getBytes(StandardCharsets.UTF_8)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //return ztrees;
     }
 
 

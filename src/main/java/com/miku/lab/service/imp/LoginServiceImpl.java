@@ -14,6 +14,7 @@ import com.miku.lab.service.LoginService;
 import com.miku.lab.util.Constant;
 import com.miku.lab.util.JwtUtil;
 import com.miku.lab.util.RedisUtil;
+import org.apache.catalina.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,19 +39,26 @@ public class LoginServiceImpl implements LoginService {
      * @return
      */
     @Override
-    public String login(String user_id,String password,String code) {
+    public Object login(String user_id,String password,String code) {
+        Map<String, Object>map = new HashMap<>();
         if(!code.equalsIgnoreCase(Constant.CODE)){
-            return "验证码错误";
+            map.put("code",String.valueOf(Constant.RESCODE_CAPTCHA_ERROR));
+            map.put("msg","验证码错误");
+            return map;
         }
         UserInfo user = new UserInfo();
         user.setUserId(user_id);
         user.setPassword(password);
         UserInfo userInfo = loginDao.getUserInfo(user);
         if (userInfo == null) {
-            return "账号或密码错误，请重新检查";
+            map.put("code",String.valueOf(Constant.USERNAME_PASSWORD_ERROR));
+            map.put("msg","账号或密码错误，请重新检查");
+            return map;
         }
         if (userInfo.getIsDisable() == 1) {
-            return "你的账号已经被禁用，请联系管理员";
+            map.put("code",String.valueOf(Constant.USERNAME_DISABLE));
+            map.put("msg","你的用户属于禁用状态!");
+            return map;
         }
 
 
@@ -59,9 +67,16 @@ public class LoginServiceImpl implements LoginService {
         if(token!=null){
             //放入redis
             redisUtil.setString(userInfo.getUserId(), token);
-            return token;
+            map.put("code",String.valueOf(Constant.RESCODE_SUCCESS));
+            map.put("token",token);
+            UserInfo userInfoToken =getLoginUser(token);
+            userInfoToken.setPassword("*******");
+            map.put("user",userInfoToken);
+            return map;
         }else{
-            return "token生成失败";
+            map.put("code",String.valueOf(Constant.RESCODE_LOGIN_ERROR));
+            map.put("msg","生成token失败!");
+            return map;
         }
     }
 
@@ -130,10 +145,10 @@ public class LoginServiceImpl implements LoginService {
 
             Ztree ztreeSecond = new Ztree();
             Map<String, Object>mapLogo = new HashMap<>();
-            mapLogo.put("title","首页");
+            mapLogo.put("title","实验室管理系统");
             mapLogo.put("image","../static/img/logo.png");
             mapLogo.put("href","");
-            map.put("lofoInfo",mapLogo);
+            map.put("logoInfo",mapLogo);
 
             map.put("menuInfo",ztrees);
 
