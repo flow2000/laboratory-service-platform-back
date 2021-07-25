@@ -74,9 +74,9 @@ public class ScheduledTasks {
         for (int i = 0; i < list.size(); i++) {
             Map<String,Object> map = list.get(i);
             String machine_code = (String) map.get("machine_code");
-            String machine_number = (String) map.get("machine_number");
+            Integer machine_number = (Integer) map.get("machine_number");
             log.info(machine_code);
-            timerTaskDao.freshBookingMachine(machine_code,machine_number); //增加仪器表的可预约数
+            timerTaskDao.freshBookingMachine(machine_code,String.valueOf(machine_number)); //增加仪器表的可预约数
         }
         log.info("刷新预约仪器定时任务 处理结束");
     }

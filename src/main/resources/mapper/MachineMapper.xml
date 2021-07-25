@@ -61,7 +61,7 @@
     </select>
 
     <select id="getAllMachineSort" resultType="com.miku.lab.entity.Machine_sort" parameterType="map">
-        select * from sys_machine_sort where del_flag=0
+        select * from sys_machine_sort where del_flag=0 and valid_status=1
     </select>
 
     <select id="getSortDetailById" resultType="com.miku.lab.entity.Machine_sort" parameterType="com.miku.lab.entity.Machine_sort">

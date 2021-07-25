@@ -5,7 +5,7 @@
     <select id="getAllRole" resultType="com.miku.lab.entity.Role">
         select * from sys_role
         <where>
-            del_flag = 0
+            del_flag = 0 and valid_status=1
         </where>
     </select>
 

@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +35,11 @@ public class UserInfoServiceImp implements UserInfoService {
      */
     @Override
     public List<Map> getAllUser(){
+        List<Map> wxUsers = userInfoDao.getAllWxUser();
         List<Map> users = userInfoDao.getAllUserInfo();
-        if(users!=null){
-            return users;
+        wxUsers.addAll(users);
+        if(wxUsers!=null){
+            return wxUsers;
         }else{
             return null;
         }
@@ -52,7 +55,9 @@ public class UserInfoServiceImp implements UserInfoService {
             return null;
         }
         Map<String,Object> map = userInfoDao.getOneUser(user_id);
-
+        if(map==null){
+            map = userInfoDao.getOneWxUser(user_id);
+        }
         return map;
     }
 
@@ -73,12 +78,13 @@ public class UserInfoServiceImp implements UserInfoService {
 
     @Override
     public int updateUserInfo(Map<String, Object> param) {
-        return userInfoDao.updateUserInfo(param);
+        return userInfoDao.updateUserInfo(param)+userInfoDao.updateWxUserInfo(param);
     }
 
     @Override
     public Map<String, Object> getPageUser(String page, String limit) {
         Map<String,Object> map = new HashMap<>();
+        List<Map> list = new ArrayList<>();
         int p = 0;
         int m = 10;
         try{
@@ -89,9 +95,25 @@ public class UserInfoServiceImp implements UserInfoService {
             map.put("msg","参数错误");
             return map;
         }
-        List<Map> pageUserList = userInfoDao.getPageUser(p,m);
-        int count = userInfoDao.getUserCount();
-        map.put("users",pageUserList);
+        int wxUserCount = userInfoDao.getWxUserCount();
+        int UserCount = userInfoDao.getUserCount();
+        List<Map> pageUserList = null;
+        List<Map> pageWxUserList = null;
+        pageWxUserList = userInfoDao.getPageWxUser(p,m);
+        for (int i = 0; i < pageWxUserList.size(); i++) {
+            Map wxMap = pageWxUserList.get(i);
+            wxMap.put("user_id",wxMap.get("openId"));
+            list.add(wxMap);
+        }
+        if(pageWxUserList.size()<m){
+            pageUserList = userInfoDao.getPageUser(p!=0?p-(wxUserCount%m):p,m-pageWxUserList.size());
+        }
+        int count = wxUserCount+UserCount;
+        if(pageUserList!=null){
+            list.addAll(pageUserList);
+        }
+
+        map.put("users",list);
         map.put("count",count);
         return map;
     }
@@ -112,9 +134,8 @@ public class UserInfoServiceImp implements UserInfoService {
     @Override
     public int deleteUser(Map<String, Object> param) {
         String str = (String) param.get("user_id");
-        str = str.substring(0,str.length());
         String [] arr = str.split(",");
-        return userInfoDao.deleteUser(arr);
+        return userInfoDao.deleteUser(arr)+userInfoDao.deleteWxUser(arr);
     }
 
     @Override
@@ -125,21 +146,54 @@ public class UserInfoServiceImp implements UserInfoService {
     @Override
     public Object searchUser(int page,int limit,String searchKey,String searchValue) {
         Map<String ,Object> map = new HashMap<String ,Object>();
-        map.put("searchKey",searchKey);
-        map.put("searchValue",searchValue);
-        map.put("p",(page-1)*limit);
-        map.put("m",limit);
-        List<Map> pageUserList = userInfoDao.searchUser(map);
-        int count = userInfoDao.searchUserCount(map);
+        List<Map> list = new ArrayList<>();
+        String key[] = searchKey.split(";");
+        String value[] = searchValue.split(";");
+        for (int i = 0; i < key.length; i++) {
+            if(value.length>i)
+                map.put(key[i],value[i]);
+            else
+                map.put(key[i],"");
+        }
+        int p = (page-1)*limit;
+        int m = limit;
+        map.put("p",p);
+        map.put("m",m);
+
+        int wxUserCount = userInfoDao.searchWxUserCount(map);
+        int UserCount = userInfoDao.searchUserCount(map);
+        List<Map> pageUserList = null;
+        List<Map> pageWxUserList = null;
+        pageWxUserList = userInfoDao.searchWxUser(map);
+        for (int i = 0; i < pageWxUserList.size(); i++) {
+            Map wxMap = pageWxUserList.get(i);
+            wxMap.put("user_id",wxMap.get("openId"));
+            list.add(wxMap);
+        }
+        if(pageWxUserList.size()<m){
+            map.put("p",p!=0?p-(wxUserCount%m):p);
+            map.put("m",m-pageWxUserList.size());
+            pageUserList = userInfoDao.searchUser(map);
+        }
+        int count = wxUserCount+UserCount;
+        if(pageUserList!=null){
+            list.addAll(pageUserList);
+        }
+
         Map<String ,Object> resMap = new HashMap<String ,Object>();
-        resMap.put("users",pageUserList);
+        resMap.put("users",list);
         resMap.put("count",count);
         return resMap;
     }
 
     @Override
     public int updatePersonDisable(Map<String, Object> param) {
-        return userInfoDao.updatePersonDisable(param);
+        return userInfoDao.updatePersonDisable(param)+userInfoDao.updateWxUserDisable(param);
+    }
+
+    @Override
+    public int updateWxUserBookingStatus(Map<String, Object> param) {
+        return userInfoDao.updateWxUserBookingStatus(param);
     }
 
     @Override

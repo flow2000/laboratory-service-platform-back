@@ -35,5 +35,7 @@ public interface UserInfoService {
 
     int updatePersonDisable(Map<String, Object> param);
 
+    int updateWxUserBookingStatus(Map<String, Object> param);
+
     int resetUser(Map<String, Object> param);
 }

@@ -209,6 +209,24 @@ public class UserController {
     }
 
     /**
+     * 修改微信用户预约状态
+     * @param param
+     * @return
+     */
+    @ApiOperation(value="修改微信用户预约状态")
+    @ApiImplicitParam
+    @PostMapping("/updateWxUserBookingStatus")
+    public ReturnResult updateWxUserBookingStatus(@RequestBody Map<String,Object>param){
+        int res = userInfoService.updateWxUserBookingStatus(param);
+        if(res == 1){
+            return AjaxUtil.success("修改成功",Constant.RESCODE_SUCCESS,res);
+        }else if(res == 0){
+            return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "修改失败");
+        }
+        return AjaxUtil.error(Constant.RESCODE_EXCEPTION, "失败");
+    }
+
+    /**
      * 重置用户密码
      * @param param
      * @return
