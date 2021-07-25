@@ -67,6 +67,9 @@ public class Constant {
      * 验证码
      */
     public static String CODE = "";
+    public static String SMS_CODE="";
+
+
     //预约编号
     public static  String bookId="";
 
