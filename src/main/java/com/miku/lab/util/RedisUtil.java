@@ -48,7 +48,7 @@ public class RedisUtil {
       * 释放资源
       * @param jedis
       */
-     public static void returnResource(final Jedis jedis) {
+     public void returnResource(final Jedis jedis) {
 		if(jedis !=null) {
 			jedisPool.returnResource(jedis);
 		}
@@ -111,5 +111,6 @@ public class RedisUtil {
          jedis.del(key);
          return 1;
      }
+
      
 }
