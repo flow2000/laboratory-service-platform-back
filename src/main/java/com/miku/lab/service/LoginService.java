@@ -15,13 +15,18 @@ import java.util.Set;
 @Service
 public interface LoginService {
 
+
     Object login(String user_id,String password,String code);
-
+    //获得登录用户信息
     UserInfo getLoginUser(String token);
-
+    //获得角色权限
     Set<String> getRolePermission(UserInfo user);
-
+    //生成角色菜单
     public Object roleMenuTreeData(String token);
 
+    //获得所有菜单
     public List<SysMenu> selectMenuAll(String userId);
+
+    //登录过滤
+    public Object loginFilter(String token);
 }

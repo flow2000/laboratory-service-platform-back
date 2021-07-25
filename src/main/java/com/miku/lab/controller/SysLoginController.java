@@ -53,26 +53,22 @@ public class SysLoginController
      */
     @GetMapping("/roleMenuTreeData")
     @ResponseBody
-    public void roleMenuTreeData(@RequestHeader String token,HttpServletRequest request, HttpServletResponse response)
+    public Object roleMenuTreeData(@RequestParam String token)
     {
         Object ztrees =  loginService.roleMenuTreeData(token);
-        Gson gson = new Gson();
-        String json = gson.toJson(ztrees);
-
-
-        response.setContentType("application/octet-stream");
-
-        response.setHeader("Content-disposition", "attachment;filename="+ "name.json");
-
-        try {
-            response.getOutputStream().write((json.getBytes(StandardCharsets.UTF_8)));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        //return ztrees;
+        return ztrees;
     }
+    /**
+     * 登录过滤
+     */
+    @GetMapping("/loginFilter")
+    @ResponseBody
+    public ReturnResult loginFilter(@RequestHeader String token)
+    {
+        Object map =  loginService.loginFilter(token);
+        return AjaxUtil.success(map,Constant.RESCODE_SUCCESS,1);
+    }
+
 
 
 

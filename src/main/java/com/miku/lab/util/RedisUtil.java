@@ -19,7 +19,7 @@ public class RedisUtil {
 			jedisPoolConfig.setMaxIdle(Constant.REDIS_MAX_IDLE);
 			jedisPoolConfig.setMaxWaitMillis(Constant.REDIS_MAX_WAIT);
 			jedisPoolConfig.setTestOnBorrow(Constant.TEST_ON_BORROW);
-			jedisPool = new JedisPool(jedisPoolConfig, Constant.REDIS_HOST, Constant.REDIS_PORT, Constant.REDIS_TIMEOUT);
+			jedisPool = new JedisPool(jedisPoolConfig, Constant.REDIS_HOST, Constant.REDIS_PORT, Constant.REDIS_TIMEOUT,Constant.REDIS_PASS);
 		} catch (Exception e) {
 			System.out.println("初始化redis失败");
 			e.printStackTrace();

@@ -17,18 +17,20 @@ import io.jsonwebtoken.*;
  * @version:1.0
  */
 public class JwtUtil {
+
+
     /**
      * 得到subject
      * @return
      */
     public static Claims checkJWT(String token) {
-    try {
-        final Claims claims = Jwts.parser().setSigningKey(Constant.JWT_SECRET).parseClaimsJws(token).getBody();
-        return claims;
-    } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-    }
+        try {
+            final Claims claims = Jwts.parser().setSigningKey(Constant.JWT_SECRET).parseClaimsJws(token).getBody();
+            return claims;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

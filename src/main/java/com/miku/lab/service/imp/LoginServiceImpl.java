@@ -14,6 +14,7 @@ import com.miku.lab.service.LoginService;
 import com.miku.lab.util.Constant;
 import com.miku.lab.util.JwtUtil;
 import com.miku.lab.util.RedisUtil;
+import io.jsonwebtoken.Claims;
 import org.apache.catalina.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     public Object login(String user_id,String password,String code) {
+
         Map<String, Object>map = new HashMap<>();
         if(!code.equalsIgnoreCase(Constant.CODE)){
             map.put("code",String.valueOf(Constant.RESCODE_CAPTCHA_ERROR));
@@ -60,7 +62,6 @@ public class LoginServiceImpl implements LoginService {
             map.put("msg","你的用户属于禁用状态!");
             return map;
         }
-
 
         //生成token
         String token = JwtUtil.geneToken(userInfo);
@@ -119,17 +120,59 @@ public class LoginServiceImpl implements LoginService {
         return roles;
     }
 
+
+    @Override
+    public Object loginFilter(String token){
+        Map<String, Object>map = new HashMap<>();
+        //是否是有效token字符串
+        Claims claims = JwtUtil.checkJWT(token);
+        if(claims==null){
+            map.put("code","201");
+            map.put("msg","无效token，请重新登录");
+            return map;
+        }
+
+        String userId = JwtUtil.getUsername(token);
+        if(userId!=""){
+            String userByRedis = redisUtil.getString(userId);
+            if(userByRedis==null){
+                map.put("code","206");
+                map.put("msg","token已失效，请重新登录");
+                return map;
+            }
+        }
+
+        map.put("code","200");
+        map.put("msg","操作成功");
+        return  map;
+
+    }
     /**
      * 根据角色ID查询菜单
      *
 
      */
     @Override
-    public Object roleMenuTreeData(String token)
-    {
+    public Object roleMenuTreeData(String token) {
+
         Map<String, Object>map = new HashMap<>();
+
+
+
+        //获取角色信息
         String roleId = JwtUtil.getRole(token);
         String userId = JwtUtil.getUsername(token);
+        if(roleId==""){
+            map.put("code","202");
+            map.put("msg","无效token，获取角色信息失败");
+            return map;
+        }
+
+        //获取用户信息
+
+
+
+
         List<Ztree> ztrees = new ArrayList<Ztree>();
         //获得对应用户的所有菜单
         List<SysMenu> menuList = selectMenuAll(userId);
