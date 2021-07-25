@@ -15,6 +15,8 @@ public interface StatisticsDao {
 
     int getUserCount();
 
+    int getWxUserCount();
+
     int getMachineCount();
 
     int getBookingCount();
