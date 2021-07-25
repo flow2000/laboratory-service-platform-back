@@ -23,7 +23,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public Map<String, Object> getTotal() {
         Map<String,Object> map = new HashMap<String, Object>();
-        map.put("user_count",statisticsDao.getUserCount());
+        map.put("user_count",statisticsDao.getUserCount()+statisticsDao.getWxUserCount());
         map.put("machine_count",statisticsDao.getMachineCount());
         map.put("booking_count",statisticsDao.getBookingCount());
         map.put("article_count",statisticsDao.getArticleCount());
