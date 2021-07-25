@@ -51,6 +51,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         List<Object> numberMonthList = getList(statisticsDao.getCountList("sys_user"),"months");
         List<Object> userCountList =  getList(statisticsDao.getCountList("sys_user"),"count");
+        List<Object> wxUserCountList =  getList(statisticsDao.getCountList("wx_booking_user"),"count");
         List<Object> machineCountList = getList(statisticsDao.getCountList("sys_machine"),"count");
         List<Object> booingCountList = getList(statisticsDao.getCountList("sys_booking_log"),"count");
         List<Object> articleCountList = getList(statisticsDao.getCountList("sys_article"),"count");
@@ -58,6 +59,13 @@ public class StatisticsServiceImpl implements StatisticsService {
         List<Object> ChineseMonthList = new ArrayList<>();
         for (int i = 0; i < numberMonthList.size(); i++) {
             ChineseMonthList.add(nameMap.get(numberMonthList.get(i)));
+        }
+
+        for (int i = 0; i < userCountList.size(); i++) {
+            long v = (long) userCountList.get(i);
+            if(wxUserCountList.size()>i){
+                userCountList.set(i,v+(long)wxUserCountList.get(i));
+            }
         }
 
         resMap.put("months",ChineseMonthList);
