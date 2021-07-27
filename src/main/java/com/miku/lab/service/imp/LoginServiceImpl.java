@@ -158,8 +158,6 @@ public class LoginServiceImpl implements LoginService {
 
         Map<String, Object>map = new HashMap<>();
 
-
-
         //获取角色信息
         String roleId = JwtUtil.getRole(token);
         String userId = JwtUtil.getUsername(token);
@@ -169,11 +167,7 @@ public class LoginServiceImpl implements LoginService {
             return map;
         }
 
-        //获取用户信息
-
-
-
-
+        //获取数据
         List<Ztree> ztrees = new ArrayList<Ztree>();
         //获得对应用户的所有菜单
         List<SysMenu> menuList = selectMenuAll(userId);

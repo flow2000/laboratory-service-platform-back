@@ -36,7 +36,7 @@ public interface BookLogDao {
     //更新实验室的状态
     int updateLabSetStatus(Map<String,Object>map);
     //添加预约实验室
-    int addBookLab(OrderCheck orderCheck);
+    int addBookLab(Map<String,Object>map);
     //通过Id取微信预约信息
     BookLog getBookLogById(String bookingCode);
 

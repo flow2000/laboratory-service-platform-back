@@ -19,7 +19,7 @@ public class RedisUtil {
 			jedisPoolConfig.setMaxIdle(Constant.REDIS_MAX_IDLE);
 			jedisPoolConfig.setMaxWaitMillis(Constant.REDIS_MAX_WAIT);
 			jedisPoolConfig.setTestOnBorrow(Constant.TEST_ON_BORROW);
-			jedisPool = new JedisPool(jedisPoolConfig, Constant.REDIS_HOST, Constant.REDIS_PORT, Constant.REDIS_TIMEOUT,Constant.REDIS_PASS);
+			jedisPool = new JedisPool(jedisPoolConfig, Constant.REDIS_HOST, Constant.REDIS_PORT, Constant.REDIS_TIMEOUT);
 		} catch (Exception e) {
 			System.out.println("初始化redis失败");
 			e.printStackTrace();
@@ -66,20 +66,20 @@ public class RedisUtil {
          jedis.set(key,value);
          jedis.expire(key,Constant.REDIS_EXPIRE_TIME);
          return 1;
-     }
-	/**
-	 * 
-	 * @param key
-	 * @param redisExpireTime
-	 * @return
-	 */
-     public int flushExpire(String key, int redisExpireTime) {
-         if(key==null)
-             return 0;
-         Jedis jedis = getJedis();
-         jedis.expire(key,Constant.REDIS_EXPIRE_TIME);
-         return 1;
-     }
+}
+    /**
+     *
+     * @param key
+     * @param redisExpireTime
+     * @return
+     */
+    public int flushExpire(String key, int redisExpireTime) {
+        if(key==null)
+            return 0;
+        Jedis jedis = getJedis();
+        jedis.expire(key,Constant.REDIS_EXPIRE_TIME);
+        return 1;
+    }
 
      /**
       * 

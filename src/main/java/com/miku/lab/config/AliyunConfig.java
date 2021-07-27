@@ -13,7 +13,7 @@ import java.util.Random;
 
 /**
  * @Description: 阿里云短信接口配置类
- * @author: yangxf
+ * @author: 涛
  * @date: 2019/4/11 15:01
  */
 public class AliyunConfig {
@@ -24,9 +24,9 @@ public class AliyunConfig {
     /* 短信API产品域名，接口地址固定，无需修改 */
     private static final String domain = "dysmsapi.aliyuncs.com";
 
-    /* 此处需要替换成开发者自己的accessKeyId和accessKeySecret(在阿里云访问控制台寻找) */
-    private static final String accessKeyId = "LTAI5tS3qUD5zyrfJsdLZmjb"; //TODO: 这里要写成你自己生成的
-    private static final String accessKeySecret = "62D2OXDQQDwlvy19IMm787hcvctbqL";//TODO: 这里要写成你自己生成的
+    
+    private static final String accessKeyId = "LTAI5tS3qUD5zyrfJsdLZmjb";
+    private static final String accessKeySecret = "62D2OXDQQDwlvy19IMm787hcvctbqL";
 
     /* 短信发送 */
     public static SendSmsResponse sendSms(String phone) throws ClientException {
@@ -66,7 +66,7 @@ public class AliyunConfig {
 
     /**
      * @Function: 生成验证码
-     * @author:   yangxf
+     * @author:   涛
      * @Date:     2019/4/11 15:30
      */
     private static String getMsgCode() {

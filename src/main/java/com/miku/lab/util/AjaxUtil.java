@@ -27,4 +27,11 @@ public class AjaxUtil {
         result.setMsg(msg);
         return result;
     }
+
+    public static ReturnResult bookError(Object object,Integer code){
+        ReturnResult result = new ReturnResult();
+        result.setData(object);
+        result.setCode(code);
+        return result;
+    }
 }

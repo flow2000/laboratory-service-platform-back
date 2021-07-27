@@ -4,22 +4,27 @@ package com.miku.lab.controller;/*
  *@version:1.1
  */
 
-import com.miku.lab.entity.LabInfo;
-import com.miku.lab.entity.OrderCheck;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.miku.lab.entity.*;
 import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.BookLogService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
 import com.miku.lab.util.StringUtil;
 import com.miku.lab.util.TimeUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/booking")
@@ -77,12 +82,12 @@ public class BookLogController {
 
     }
 
-    @ApiOperation(value = "提交按钮实验室+仪器接口")
-    @PostMapping("/addLabCheck")
-    public ReturnResult addLabInfo(@RequestBody OrderCheck orderCheck){
-        String msg = bookLogService.addLabLog(orderCheck);
-        return AjaxUtil.error(Constant.RESCODE_SUCCESS, msg);
-    }
+//    @ApiOperation(value = "提交按钮实验室+仪器接口")
+//    @PostMapping("/addLabCheck")
+//    public ReturnResult addLabInfo(@RequestBody OrderCheck orderCheck){
+//        String msg = bookLogService.addLabLog(orderCheck);
+//        return AjaxUtil.error(Constant.RESCODE_SUCCESS, msg);
+//    }
 
 
     @ApiOperation(value = "撤销申请")
@@ -98,13 +103,10 @@ public class BookLogController {
         }
     }
 
+
     @ApiOperation(value = "提交按钮实验室+仪器接口")
-    @PostMapping("orderInfo")
+    @PostMapping("/orderInfo")
     public ReturnResult orderInfo(@RequestBody Map<String, Object>map){
-        System.out.println(map);
-        return AjaxUtil.error(Constant.RESCODE_SUCCESS, "1");
+       return bookLogService.addBookingLog(map);
     }
-
-
-
 }

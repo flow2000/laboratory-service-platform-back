@@ -28,6 +28,7 @@ public class Constant {
     public static final int RESCODE_REDIS_SUCCESS = 1014;         //查询redis成功
     public static final int RESCODE_REDIS_TIME_OUT = 1015;         //查询redis成功
     public static final int RESCODE_SEARCHERROR = 1016;         //查询redis成功
+    public static final int RESCODE_BOOK_ERROR = 1017;         //预约仪器失败
     /**
      * token
      * */
@@ -47,15 +48,16 @@ public class Constant {
     /**
      * redis
      */
-    public static final String REDIS_HOST = "8.136.234.32";  //主机ip
-    public static final int REDIS_PORT = 6354;                //端口号
-    public static final String REDIS_PASS = "Admin123";        //连接redis密码
+//    public static final String REDIS_HOST = "8.136.234.32";  //主机ip
+    public static final String REDIS_HOST = "47.118.55.237";  //主机ip
+    public static final int REDIS_PORT = 6379;                //端口号
+//    public static final String REDIS_PASS = "Admin123";        //连接redis密码
     public static final int REDIS_EXPIRE_TIME = 60*30;        //设置TTL为30分钟
     public static final int REDIS_MAX_ACTIVE = 1024;          //最大连接数
     public static final int REDIS_MAX_IDLE = 100;             //最大空闲连接数
     public static final long REDIS_MAX_WAIT = 1000*10;        //获取可用连接的最大等待时间
     public static final int REDIS_TIMEOUT = 1000*10;		 //过期时间
-    public static final boolean TEST_ON_BORROW = true;         //清空
+    public static final boolean TEST_ON_BORROW = false;         //清空
     
     /**
      * 业务代码

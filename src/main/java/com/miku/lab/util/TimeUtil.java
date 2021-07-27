@@ -1,5 +1,7 @@
 package com.miku.lab.util;
 
+import org.apache.http.client.utils.DateUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,4 +48,20 @@ public class TimeUtil {
     	}
     	return timestamp;
     }
+
+	private static String[] parsePatterns = {"yyyy-MM-dd HH:mm:ss"};
+
+	public static boolean isParseDate(String time) {
+		if (time == null) {
+			return false;
+		}
+		try {
+			Date date = DateUtils.parseDate(time, parsePatterns);
+			return true;
+
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 }

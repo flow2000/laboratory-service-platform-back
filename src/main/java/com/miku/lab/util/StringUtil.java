@@ -21,7 +21,7 @@ public class StringUtil {
 
      public String generateBookId(){
         try {
-           Constant.bookId = IdUtil.geneId(Constant.BUSINESS_Book);
+           return IdUtil.geneId(Constant.BUSINESS_Book);
         }catch (Exception e){
             System.out.println("生成编号失败");
         }

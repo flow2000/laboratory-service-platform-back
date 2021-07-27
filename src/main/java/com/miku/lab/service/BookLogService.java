@@ -5,9 +5,11 @@ package com.miku.lab.service;/*
  */
 
 import com.miku.lab.entity.OrderCheck;
+import com.miku.lab.entity.vo.ReturnResult;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface BookLogService {
@@ -17,7 +19,7 @@ public interface BookLogService {
 
     String addBookMachineLog(String openId,String machine_id,String book_number);
 
-    String addLabLog(OrderCheck orderCheck);
+    //String addLabLog(OrderCheck orderCheck);
 
     //添加一个仪器数目
     String addBookingNumber(String openId,String machine_id);
@@ -26,6 +28,9 @@ public interface BookLogService {
 
     //撤销申请
     int drawApply(String openId,String lab_id);
+
+    //提交按钮
+    public ReturnResult addBookingLog(Map<String, Object> map);
 
 
 }

@@ -27,7 +27,7 @@
     <select id="getMachineAndCount" resultType="com.miku.lab.entity.Machine" parameterType="map">
         select *from sys_machine
         <where>
-            machine_id=#{machine_id} and bookable_count>=#{book_number} and del_flag=0
+            machine_id=#{machineCode} and bookable_count>=#{machineNumber} and del_flag=0
         </where>
     </select>
 
@@ -41,14 +41,14 @@
     <insert id="addBookMachine" parameterType="map">
         insert
         into wx_booking_machine(openId,booking_code,machine_code,machine_number,del_flag,create_time)
-        values(#{openId},#{booking_code},#{machine_id},#{book_number},0,NOW())
+        values(#{openId},#{bookingCode},#{machineCode},#{machineNumber},0,NOW())
     </insert>
 
     <update id="updateMachine" parameterType="map">
         update sys_machine
         set bookable_count=#{last_number}
         <where>
-            machine_id=#{machine_id}
+            machine_id=#{machineCode}
         </where>
     </update>
 
@@ -68,7 +68,7 @@
     </update>
 
 
-    <insert id="addBookLab" parameterType="com.miku.lab.entity.OrderCheck">
+    <insert id="addBookLab" parameterType="map">
         insert
         into sys_order_check(openId,booking_code,username,lab_id,
              order_applyer,order_phone,order_number,lab_name,remark,
@@ -76,7 +76,7 @@
         values(
                 #{openId},#{bookingCode},#{username},#{labId},
                 #{orderApplyer},#{orderPhone},#{orderNumber},#{labName},#{remark},
-                #{startTime},#{endTime},#{checker},0,NOW(),0
+                #{startTime},#{endTime},#{checker},#{chechStatus},NOW(),0
                 )
     </insert>
 
@@ -106,10 +106,15 @@
 
     <insert id="addBookingLog" parameterType="map">
         insert
-        into sys_booking_log(booking_code,creater,create_time,del_flag)
+        into sys_booking_log(openId,booking_code,booking_checker,creater,create_time,del_flag)
         values(
-                #{booking_code},#{creater},NOW(),0
-                )
+            #{openId},
+            #{bookingCode},
+            #{checker},
+            #{creater},
+            NOW(),
+            0
+        )
     </insert>
 
     <update id="setWxOrderCheckStatus" parameterType="map">
