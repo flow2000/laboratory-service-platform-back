@@ -29,4 +29,5 @@ public interface LabService {
 
     Object searchLab(int page, int limit, String searchKey, String searchValue);
 
+    Object getOneBorrowedLab(String lab_id);
 }

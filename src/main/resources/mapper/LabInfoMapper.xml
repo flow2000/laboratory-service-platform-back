@@ -34,6 +34,10 @@
         </where>
     </select>
 
+    <select id="getOneBorrowedLab" parameterType="String" resultType="map">
+        SELECT * from sys_order_check  where lab_id=#{lab_id} order by create_time desc limit 1
+    </select>
+
     <update id="updateLabInfo" parameterType="map">
         update sys_lab_info
         set lab_address=#{lab_address},lab_admin=#{lab_admin},lab_admin_phone=#{lab_admin_phone},

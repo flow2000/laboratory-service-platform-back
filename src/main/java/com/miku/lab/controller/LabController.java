@@ -81,6 +81,23 @@ public class LabController {
     }
 
     /**
+     * 获取已借用的实验室详情
+     * @param lab_id 实验室id
+     * @return 已借用的实验室详情
+     */
+    @ApiOperation(value = "获取已借用的实验室详情")
+    @ApiImplicitParam
+    @GetMapping("/getOneBorrowedLab")
+    public ReturnResult getOneBorrowedLab(@RequestParam String lab_id){
+        Object object = labService.getOneBorrowedLab(lab_id);
+        if(object!=null){
+            return AjaxUtil.success(object,Constant.RESCODE_SUCCESS_MSG,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_NOEXIST, "获取信息失败");
+        }
+    }
+
+    /**
      * 修改实验室基本信息
      * @param param
      * @return

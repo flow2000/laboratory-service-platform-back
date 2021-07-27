@@ -83,8 +83,14 @@ public class SuggestServiceImp implements SuggestService {
         Map<String ,Object> map = new HashMap<String ,Object>();
         map.put("p",(page-1)*limit);
         map.put("m",limit);
-        map.put("searchKey",searchKey);
-        map.put("searchValue",searchValue);
+        String [] key = searchKey.split(";");
+        String [] value = searchValue.split(";");
+        map.put("contentKey",key[0]);
+        map.put("phoneKey",key[1]);
+        map.put("contentValue",value[0]);
+        if(value.length>=2){
+            map.put("phoneValue",value[1]);
+        }
         List<Map> pageUserList = suggestDao.searchSuggest(map);
         int count = suggestDao.searchSuggestCount(map);
         Map<String ,Object> resMap = new HashMap<String ,Object>();

@@ -114,4 +114,9 @@ public class LabServiceImp implements LabService {
         resMap.put("count",count);
         return resMap;
     }
+
+    @Override
+    public Object getOneBorrowedLab(String lab_id) {
+        return labDao.getOneBorrowedLab(lab_id);
+    }
 }

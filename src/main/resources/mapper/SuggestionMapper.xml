@@ -126,7 +126,10 @@
             and sys_suggestion.create_time between DATE_SUB(NOW(),INTERVAL (
                 select value from sys_config where code='search_feedback_month'
             ) month) and NOW()
-            and ${searchKey} like concat('%',#{searchValue},'%')
+            and ${contentKey} like concat('%',#{contentValue},'%')
+            <if test="phoneValue != null">
+                and ${phoneKey} like concat('%',#{phoneValue},'%')
+            </if>
         </where>
         order by sys_suggestion.create_time desc
         limit #{p},#{m}
@@ -141,7 +144,10 @@
             and sys_suggestion.create_time between DATE_SUB(NOW(),INTERVAL (
             select value from sys_config where code='search_feedback_month'
             ) month) and NOW()
-            and ${searchKey} like concat('%',#{searchValue},'%')
+            and ${contentKey} like concat('%',#{contentValue},'%')
+            <if test="phoneValue != null">
+                and ${phoneKey} like concat('%',#{phoneValue},'%')
+            </if>
         </where>
     </select>
 
