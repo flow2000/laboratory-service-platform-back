@@ -64,6 +64,12 @@
         </where>
     </update>
 
+    <update id="delWxBookingMachine" parameterType="String">
+        update wx_booking_machine
+        set del_flag=1, del_time=NOW()
+        where booking_code=#{booking_code} and machine_code=#{machine_code}
+    </update>
+
     <select id="getExpireLab" resultType="map">
         SELECT sys_order_check.* from sys_order_check
         where end_time&lt;=NOW()

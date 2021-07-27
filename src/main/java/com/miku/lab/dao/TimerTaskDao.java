@@ -24,4 +24,6 @@ public interface TimerTaskDao {
     int freshBookingLab(String lab_id);
 
     int invalidOrderCheck(BigInteger id);
+
+    int delWxBookingMachine(String booking_code,String machine_code);
 }
