@@ -49,7 +49,7 @@ public class BookLogController {
     }
 
     @ApiOperation(value = "查看对应openid预约仪器信息")
-    @ApiImplicitParam()
+    @ApiImplicitParam(name = "openId",value="微信授权Id",required=true)
     @GetMapping("/getBookMachine")
     public ReturnResult getLabList(@RequestParam String openId){
         Object map = bookLogService.getAllBookMachineById(openId);
@@ -60,47 +60,15 @@ public class BookLogController {
         }
     }
 
-    @ApiOperation(value = "预约仪器接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name="openId",value="微信openid",required=true),
-            @ApiImplicitParam(name="machine_id",value="仪器编号",required=true),
-            @ApiImplicitParam(name="book_number",value="预约数量",required=true),
-            @ApiImplicitParam(name="status",value="增加add,减少sub，第一次预约任意填",required=true)
-    })
-    @PostMapping("/addMachineCheck")
-    public ReturnResult addMachineCheck(@RequestParam String openId,@RequestParam String machine_id,
-                                        @RequestParam String book_number,@RequestParam String status){
-        String msg="";
-        if("add".equals(status)){
-            msg = bookLogService.addBookingNumber(openId,machine_id);
-        }else if("sub".equals(status)){
-            msg = bookLogService.subBookingNumber(openId,machine_id);
-        }else{
-            msg = bookLogService.addBookMachineLog(openId,machine_id,book_number);
-        }
-        return AjaxUtil.error(Constant.RESCODE_SUCCESS, msg);
-
-    }
-
-//    @ApiOperation(value = "提交按钮实验室+仪器接口")
-//    @PostMapping("/addLabCheck")
-//    public ReturnResult addLabInfo(@RequestBody OrderCheck orderCheck){
-//        String msg = bookLogService.addLabLog(orderCheck);
-//        return AjaxUtil.error(Constant.RESCODE_SUCCESS, msg);
-//    }
-
 
     @ApiOperation(value = "撤销申请")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId",value="微信授权Id",required=true),
+            @ApiImplicitParam(name = "lab_id", value = "实验室编号", required = true)
+    })
     @PostMapping("/drawApply")
     public ReturnResult drawApply(@RequestParam String openId,@RequestParam String lab_id){
-        int flag = bookLogService.drawApply(openId,lab_id);
-        if(flag==-1){
-            return AjaxUtil.error(500, "未处于待审核状态，不给予撤销");
-        }else if(flag==0){
-            return AjaxUtil.error(501, "你的申请未处于待审核状态，请联系管理员");
-        }else{
-            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "撤销成功");
-        }
+        return bookLogService.drawApply(openId,lab_id);
     }
 
 

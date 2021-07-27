@@ -17,17 +17,17 @@ public interface BookLogService {
 
     Object getAllBookMachineById(String openId);
 
-    String addBookMachineLog(String openId,String machine_id,String book_number);
+    //String addBookMachineLog(String openId,String machine_id,String book_number);
 
     //String addLabLog(OrderCheck orderCheck);
 
     //添加一个仪器数目
-    String addBookingNumber(String openId,String machine_id);
+    //String addBookingNumber(String openId,String machine_id);
     //减少一个仪器数目
-    String subBookingNumber(String openId,String machine_id);
+   // String subBookingNumber(String openId,String machine_id);
 
     //撤销申请
-    int drawApply(String openId,String lab_id);
+    ReturnResult drawApply(String openId,String lab_id);
 
     //提交按钮
     public ReturnResult addBookingLog(Map<String, Object> map);
