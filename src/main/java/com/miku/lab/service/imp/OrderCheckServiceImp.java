@@ -117,12 +117,16 @@ public class OrderCheckServiceImp implements OrderCheckService {
     public Integer checkBooking(Map<String, Object> param) {
         String email =(String) param.get("email");
         String remark =(String) param.get("remark");
-        if(param.get("check_status")=="1"&&StringUtil.isEmail(email)){ //审核通过
+        if("1".equals(param.get("check_status"))){ //审核通过
             param.put("check_result",1);
-            mailService.sendApplicationSucMail(email, remark);
-        }else if(param.get("check_status")=="2"&&StringUtil.isEmail(email)){ //审核不通过
+            if(StringUtil.isEmail(email)){
+                mailService.sendApplicationSucMail(email, remark);
+            }
+        }else if("2".equals(param.get("check_status"))){ //审核不通过
             param.put("check_result",0);
-            mailService.sendApplicationErrMail(email,remark);
+            if(StringUtil.isEmail(email)){
+                mailService.sendApplicationErrMail(email,remark);
+            }
         }
         orderCheckDao.addOrderCheckLog(param);
         return orderCheckDao.checkBooking(param);

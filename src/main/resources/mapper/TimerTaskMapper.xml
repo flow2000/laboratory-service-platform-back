@@ -81,7 +81,7 @@
         update sys_lab_info
         set lab_status=0,update_time=NOW()
         <where>
-            lab_id='3' and valid_status=1
+            lab_id=#{lab_id} and valid_status=1
         </where>
     </update>
 

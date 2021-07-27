@@ -113,6 +113,7 @@
 
     <insert id="addOrderCheckLog" parameterType="map">
         insert sys_booking_log(
+            openId,
             booking_code,
             booking_checker,
             check_time,
@@ -123,6 +124,7 @@
             create_time,
             del_flag
         )values(
+            #{openid},
             #{booking_code},
             #{checker},
             NOW(),

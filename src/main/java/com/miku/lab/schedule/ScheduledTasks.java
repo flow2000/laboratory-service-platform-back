@@ -102,7 +102,7 @@ public class ScheduledTasks {
             BigInteger id = (BigInteger) map.get("id");
             log.info(lab_id);
             timerTaskDao.freshBookingLab(lab_id); //将实验室设为可借用
-            timerTaskDao.invalidOrderCheck(id);     //将审核数据设为无效
+            timerTaskDao.invalidOrderCheck(id);     //将审核数据逻辑删除
         }
         log.info("刷新实验室定时任务 处理结束");
     }
