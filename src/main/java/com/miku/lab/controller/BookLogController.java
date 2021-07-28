@@ -64,11 +64,11 @@ public class BookLogController {
     @ApiOperation(value = "撤销申请")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId",value="微信授权Id",required=true),
-            @ApiImplicitParam(name = "lab_id", value = "实验室编号", required = true)
+            @ApiImplicitParam(name = "labId", value = "实验室编号", required = true)
     })
     @PostMapping("/drawApply")
-    public ReturnResult drawApply(@RequestParam String openId,@RequestParam String lab_id){
-        return bookLogService.drawApply(openId,lab_id);
+    public ReturnResult drawApply(@RequestParam String openId,@RequestParam String labId){
+        return bookLogService.drawApply(openId,labId);
     }
 
 

@@ -4,6 +4,7 @@ package com.miku.lab.service.imp;/*
  *@version:1.1
  */
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.miku.lab.dao.BookLogDao;
@@ -56,6 +57,11 @@ public class BookLogServiceImp implements BookLogService{
         }
     }
 
+    /**
+     * 预约按钮实现
+     * @param map
+     * @return
+     */
     @Override
     public ReturnResult addBookingLog(Map<String, Object>map){
 
@@ -80,12 +86,51 @@ public class BookLogServiceImp implements BookLogService{
         String startTime = String.valueOf(map.get("startTime"));
         if(!TimeUtil.isParseDate(startTime)){
             return AjaxUtil.error(611,"开始时间格式错误");
-            //return 610; //开始时间格式错误
         }
 
 
-        //处理仪器---start
+        //处理实验室的预约---start
+        LabInfo labInfo = bookLogDao.getLabById(String.valueOf(map.get("labId")));
 
+        if(labInfo!=null){
+            if(labInfo.getLabStatus()==1){
+                return AjaxUtil.error(602,"实验室已借用，请更换！");
+            }else if((labInfo.getLabStatus()==(-1))){
+                return AjaxUtil.error(603,"实验室已锁定，请更换！");
+            }
+            map.put("labStatus","1");
+            int affectupdate = bookLogDao.updateLabSetStatus(map);   //更改状态(1=已借用，0=可借用，-1=已锁定；默认1)
+            if(affectupdate>0){
+                map.put("username",wxUser.getUsername());
+                map.put("orderApplyer",wxUser.getRealName());
+                map.put("orderPhone",wxUser.getUserPhone());
+                //没有审核人
+                if(map.get("checker")==null){
+                    map.put("checker","root");
+                }
+
+                //生成借用记录在预约审核表中
+                map.put("chechStatus","0");
+                int affectAdd = bookLogDao.addBookLab(map);
+
+                if (affectAdd>0){
+                    map.put("creater",wxUser.getRealName());
+                    int addBookingLog = bookLogDao.addBookingLog(map);
+                    if(addBookingLog<0){
+                        return AjaxUtil.error(620,"添加预约日志失败");
+                    }
+                }else{
+                    return AjaxUtil.error(607,"添加审核失败,请确保你的信息正确");
+                }
+            }
+        }else{
+            return AjaxUtil.error(604,"实验室为空");
+
+        }
+        //处理实验室---end
+
+
+        //处理仪器---start
         String machines =  String.valueOf(map.get("machines"));
         JSONArray jsonMachines = JSONArray.parseArray(machines);
 
@@ -112,8 +157,6 @@ public class BookLogServiceImp implements BookLogService{
                     Map<String,String> error = new HashMap<>();
                     error.put("编号:"+machineCode,",该仪器属于无效状态，不能预约");
                     machineListError.add(error);
-                    //return 606;
-                    //  return "该仪器属于无效状态，不能预约";
                 }
                 //剩余的仪器数=可借用的-借用的数量
                 String last_number = String.valueOf(machineAndCount.getBookableCount()-Integer.valueOf(String.valueOf(machine.get("machineNumber"))));
@@ -136,17 +179,11 @@ public class BookLogServiceImp implements BookLogService{
                     error.put("编号:"+machineCode,",该仪器库存不足");
                     machineListError.add(error);
 
-                    // machineListError.put("仪器编号:"+machineAndCount.getMachineId(),"该仪器库存不足");
-                    // machineListError.add(machineAndCount);
-                    //return 608;//库存不足
                 }
             }else{
                 Map<String,String> error = new HashMap<>();
                 error.put("编号:"+machineCode,",该仪器为空或可借用数量为0，请联系管理员添加仪器");
                 machineListError.add(error);
-                //machineListError.put("仪器编号:"+machineAndCount.getMachineId(),"该仪器为空，请联系管理员添加仪器");
-                // machineListError.add(machineAndCount);
-                //return 609; //return "仪器为空，请联系管理员添加仪器";
 
             }
 
@@ -154,59 +191,25 @@ public class BookLogServiceImp implements BookLogService{
 
         //处理仪器---end
 
-        //处理实验室的预约---start
-        LabInfo labInfo = bookLogDao.getLabById(String.valueOf(map.get("labId")));
 
-        if(labInfo!=null){
-            if(labInfo.getLabStatus()==1){
-                return AjaxUtil.error(602,"实验室已借用，请更换！");
-                //return "该实验室已借用，请更换实验室";
-            }else if((labInfo.getLabStatus()!=0)&&(labInfo.getLabStatus()!=1)){
-                return AjaxUtil.error(603,"实验室已锁定，请更换！");
-                //return "该实验室已被锁定，请更换实验室";
-            }
-            map.put("labStatus","1");
-            int affectupdate = bookLogDao.updateLabSetStatus(map);   //更改状态(1=已借用，0=可借用，-1=已锁定；默认1)
-            if(affectupdate>0){
-                map.put("username",wxUser.getUsername());
-                map.put("orderApplyer",wxUser.getRealName());
-                map.put("orderPhone",wxUser.getUserPhone());
-                //没有审核人
-                if(map.get("checker")==null){
-                    map.put("checker","root");
-                }
-
-                //生成借用记录在预约审核表中
-                map.put("chechStatus","0");
-                int affectAdd = bookLogDao.addBookLab(map);
-
-                if (affectAdd>0){
-                    map.put("creater",wxUser.getRealName());
-                    int addBookingLog = bookLogDao.addBookingLog(map);
-                    if(addBookingLog>0){
-                        count++;
-                    }
-                }else{
-                    return AjaxUtil.error(607,"添加审核失败,请确保你的信息正确");
-                }
-            }
-        }else{
-            return AjaxUtil.error(604,"实验室为空");
-
-        }
-        //处理实验室---end
-        if(count==(shouldSuccess+1)){
-            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"预约成功");
+        if(count==shouldSuccess){
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"实验室和仪器预约成功");
         }else{
             Map<String, Object>mapResult = new HashMap<>();
             if(machineListError!=null){
-                mapResult.put("以下是仪器预约失败的信息：",machineListError);
+                mapResult.put("实验室预约成功,以下是仪器预约失败的信息：",machineListError);
             }
-            mapResult.put("实验室预约成功",Constant.RESCODE_SUCCESS);
+            //mapResult.put("",Constant.RESCODE_SUCCESS);
             return AjaxUtil.bookError(mapResult,Constant.RESCODE_BOOK_ERROR);
         }
     }
 
+    /**
+     * 撤销申请
+     * @param openId
+     * @param lab_id
+     * @return
+     */
     @Override
     //撤销申请，同时改微信预约表、预约审核表、预约日志表
     public ReturnResult drawApply(String openId,String lab_id){
@@ -218,7 +221,7 @@ public class BookLogServiceImp implements BookLogService{
         //获得对应的预约信息
         OrderCheck wxOrderCheck = bookLogDao.getWxOrderCheck(map);
         if(wxOrderCheck==null){
-            return AjaxUtil.error(601,"该用户未授权,不可预约");
+            return AjaxUtil.error(601,"获取预约记录失败，请确保你输入的信息无误");
         }
 
         //不等于待审核的状态不能撤销
