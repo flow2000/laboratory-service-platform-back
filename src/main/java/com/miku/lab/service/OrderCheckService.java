@@ -23,6 +23,8 @@ public interface OrderCheckService {
 
     Object searchBookingInfo(int page,int limit,String searchKey,String searchValue);
 
+    Object getOneBookingInfo(String booking_code, String openId);
+
     Object getPageOrderMachine(String openid, String booking_code, int page, int limit);
 
     Object getPageBookingLog(int page, int limit);

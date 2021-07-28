@@ -29,6 +29,8 @@ public interface OrderCheckDao {
 
     List<Map> searchBookingInfo(Map<String, Object> map);
 
+    Object getOneBookingInfo(String booking_code, String openId);
+
     int searchBookingInfoCount(Map<String, Object> map);
 
     List<Map> getPageOrderMachine(Map<String, Object> map);

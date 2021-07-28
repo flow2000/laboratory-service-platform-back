@@ -88,6 +88,17 @@ public class OrderCheckController {
         }
     }
 
+    @ApiOperation(value = "搜索预约信息")
+    @GetMapping("/getOneBookingInfo")
+    public ReturnResult getOneBookingInfo(@RequestParam String booking_code,@RequestParam String openId){
+        Object map = orderCheckService.getOneBookingInfo(booking_code,openId);
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS_MSG,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
+
     @ApiOperation(value = "分页获取本次预约的仪器")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page",value="页数",required=true),

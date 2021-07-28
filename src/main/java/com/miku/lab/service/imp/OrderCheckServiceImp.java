@@ -89,6 +89,11 @@ public class OrderCheckServiceImp implements OrderCheckService {
     }
 
     @Override
+    public Object getOneBookingInfo(String booking_code, String openId) {
+        return orderCheckDao.getOneBookingInfo(booking_code,openId);
+    }
+
+    @Override
     public Object getPageOrderMachine(String openid, String booking_code, int page, int limit) {
         Map<String,Object> map = new HashMap<>();
         Map<String,Object> resMap = new HashMap<>();
@@ -158,10 +163,16 @@ public class OrderCheckServiceImp implements OrderCheckService {
     @Override
     public Object searchBookingLog(int page, int limit, String searchKey, String searchValue) {
         Map<String ,Object> map = new HashMap<String ,Object>();
-        map.put("searchKey",searchKey);
-        map.put("searchValue",searchValue);
         map.put("p",(page-1)*limit);
         map.put("m",limit);
+        String [] key = searchKey.split(";");
+        String [] value = searchValue.split(";");
+        map.put("baseInfoKey",key[0]);
+        map.put("statusKey",key[1]);
+        map.put("baseInfoValue",value[0]);
+        if(value.length>=2){
+            map.put("statusValue",value[1]);
+        }
         List<Map> pageBookingLogList = orderCheckDao.searchBookingLog(map);
         int count = orderCheckDao.searchBookingLogCount(map);
         Map<String ,Object> resMap = new HashMap<String ,Object>();

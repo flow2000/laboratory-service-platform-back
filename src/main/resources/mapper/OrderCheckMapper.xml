@@ -71,6 +71,14 @@
         limit #{p},#{m}
     </select>
 
+    <select id="getOneBookingInfo" parameterType="String" resultType="map">
+        SELECT sys_order_check.*,sys_lab_info.lab_address FROM sys_order_check,sys_lab_info
+        where booking_code=#{booking_code} and openId=#{openId}
+        and sys_lab_info.lab_id=sys_order_check.lab_id
+        order by create_time desc
+        limit 1
+    </select>
+
     <select id="searchBookingInfoCount" parameterType="map" resultType="int">
         select COUNT(*)
         from sys_order_check,sys_lab_info,wx_booking_user
@@ -144,7 +152,7 @@
         and sys_order_check.booking_code=sys_booking_log.booking_code
         and wx_booking_user.openId=sys_booking_log.openId
         and sys_booking_log.del_flag=0
-        order by sys_booking_log.creater desc
+        order by sys_booking_log.create_time desc
         limit #{p},#{m}
     </select>
 
@@ -166,7 +174,10 @@
             and sys_order_check.booking_code=sys_booking_log.booking_code
             and sys_booking_log.del_flag=0
         ) log
-        where ${searchKey} like concat('%',#{searchValue},'%')
+        where ${baseInfoKey} like concat('%',#{baseInfoValue},'%')
+        <if test="statusValue != null">
+            and ${statusKey} = #{statusValue}
+        </if>
         order by log.create_time desc
         limit #{p},#{m}
     </select>
@@ -180,7 +191,10 @@
             and sys_order_check.booking_code=sys_booking_log.booking_code
             and sys_booking_log.del_flag=0
         ) log
-        where ${searchKey} like concat('%',#{searchValue},'%')
+        where ${baseInfoKey} like concat('%',#{baseInfoValue},'%')
+        <if test="statusValue != null">
+            and ${statusKey} = #{statusValue}
+        </if>
         order by log.create_time desc
     </select>
 
