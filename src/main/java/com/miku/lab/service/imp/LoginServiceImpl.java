@@ -15,22 +15,45 @@ import com.miku.lab.util.Constant;
 import com.miku.lab.util.JwtUtil;
 import com.miku.lab.util.RedisUtil;
 import io.jsonwebtoken.Claims;
-import org.apache.catalina.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import java.util.*;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class LoginServiceImpl implements LoginService, UserDetailsService {
 
 
     @Autowired
     private LoginDao loginDao;
 
     RedisUtil redisUtil = new RedisUtil();
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        UserInfo user = getLoginUser(username);
+
+        //判断用户是否存在
+        if(user == null) {
+            throw new UsernameNotFoundException("用户名不存在");
+        }
+
+        List<String> roleMenuList = loginDao.selectMenuTree(user.getRoleCode());
+        for(String roleName:roleMenuList){
+            authorities.add(new SimpleGrantedAuthority(roleName));
+        }
+        String password = user.getPassword();
+        return new User(user.getUsername(),password,authorities);
+    }
 
 
     /**
@@ -121,6 +144,11 @@ public class LoginServiceImpl implements LoginService {
         return roles;
     }
 
+    /**
+     * 登录过滤
+     * @param token
+     * @return
+     */
 
     @Override
     public Object loginFilter(String token){
@@ -148,6 +176,51 @@ public class LoginServiceImpl implements LoginService {
         return  map;
 
     }
+
+    /**
+     * 获取权限树
+     * @param roleId
+     * @return
+     */
+    @Override
+    public List<SysMenu> getRoleMenuTree(String roleId) {
+        Map<String, Object>map = new HashMap<>();
+
+        //获取角色信息
+
+        //String roleId = JwtUtil.getRole(token);
+       // String userId = JwtUtil.getUsername(token);
+//        if(roleId==""){
+//            map.put("code","202");
+//            map.put("msg","无效token，获取角色信息失败");
+//            return map;
+//        }
+
+
+
+        List<SysMenu> menuList = selectMenuAll("admin");
+        if(roleId!=null){
+            List<String> roleMenuList = loginDao.selectMenuTree(roleId);
+            if(roleMenuList==null){
+                return null;
+            }
+            for(int i=0;i<menuList.size();i++) {
+                String menuPerm = menuList.get(i).getPerms();
+                for (int j = 0; j < roleMenuList.size(); j++) {
+                    String rolePerm = roleMenuList.get(j);
+                    if(menuPerm.equals(rolePerm)){
+                        menuList.get(i).setStatus(true);
+                    }
+
+                }
+            }
+            if(menuList!=null){
+                return menuList;
+            }
+        }
+        return null;
+    }
+
     /**
      * 根据角色ID查询菜单
      *
@@ -198,6 +271,8 @@ public class LoginServiceImpl implements LoginService {
         }
         return map;
     }
+
+
 
 
     /**
@@ -384,6 +459,7 @@ public class LoginServiceImpl implements LoginService {
         }
         return permsSet;
     }
+
 
 
 }

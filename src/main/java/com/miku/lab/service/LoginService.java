@@ -24,6 +24,9 @@ public interface LoginService {
     //生成角色菜单
     public Object roleMenuTreeData(String token);
 
+    //权限菜单
+    public List<SysMenu> getRoleMenuTree(String roleId);
+
     //获得所有菜单
     public List<SysMenu> selectMenuAll(String userId);
 

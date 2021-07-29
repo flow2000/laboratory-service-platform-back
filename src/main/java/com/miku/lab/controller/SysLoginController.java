@@ -2,6 +2,7 @@ package com.miku.lab.controller;
 
 import com.google.gson.Gson;
 import com.miku.lab.entity.LoginBody;
+import com.miku.lab.entity.SysMenu;
 import com.miku.lab.entity.UserInfo;
 import com.miku.lab.entity.Ztree;
 import com.miku.lab.entity.vo.ReturnResult;
@@ -69,6 +70,20 @@ public class SysLoginController
         return AjaxUtil.success(map,Constant.RESCODE_SUCCESS,1);
     }
 
+
+    /**
+     * 权限管理菜单树
+     */
+    @GetMapping("/getRoleMenuTree")
+    @ResponseBody
+    public ReturnResult getRoleMenuTree(@RequestParam String roleCode)
+    {
+        List<SysMenu> roleMenuTree = loginService.getRoleMenuTree(roleCode);
+        if(roleMenuTree==null){
+            return AjaxUtil.error(Constant.RESCODE_LOGIN_ERROR,"验证失败");
+        }
+        return AjaxUtil.success(roleMenuTree,0,roleMenuTree.size());
+    }
 
 
 

@@ -45,13 +45,16 @@ public class SysMenu
     private String target;
 
     /**菜单状态*/
-    private String status;
+    private boolean status;
 
     /** 权限字符串 */
     private String perms;
 
     /** 菜单图标 */
     private String icon;
+
+    //是否展开
+    private String open;
 
     /** 子菜单 */
     private List<SysMenu> children = new ArrayList<SysMenu>();

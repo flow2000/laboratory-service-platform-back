@@ -58,6 +58,11 @@
         </dependency>
         <!--阿里云的短信服务SDK end-->
 
+<!--        spring security-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.alibaba</groupId>
