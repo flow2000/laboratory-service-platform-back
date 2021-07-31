@@ -12,6 +12,7 @@ import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -37,12 +38,10 @@ public class SysLoginController
     @Autowired
     private LoginService loginService;
 
+    @ApiOperation(value="登录")
     @PostMapping("/login")
     public ReturnResult login(@RequestBody LoginBody loginBody)
     {
-
-
-        // 生成令牌
         Object token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode());
         ReturnResult success = AjaxUtil.success(token, Constant.RESCODE_SUCCESS, 1);
         return success;
@@ -52,6 +51,7 @@ public class SysLoginController
     /**
      * 加载角色菜单列表树
      */
+    @ApiOperation(value="加载左边菜单列表树")
     @GetMapping("/roleMenuTreeData")
     @ResponseBody
     public Object roleMenuTreeData(@RequestParam String token)
@@ -62,6 +62,7 @@ public class SysLoginController
     /**
      * 登录过滤
      */
+    @ApiOperation(value="登录过滤")
     @GetMapping("/loginFilter")
     @ResponseBody
     public ReturnResult loginFilter(@RequestHeader String token)
@@ -74,6 +75,7 @@ public class SysLoginController
     /**
      * 权限管理菜单树
      */
+    @ApiOperation(value="权限管理菜单树")
     @GetMapping("/getRoleMenuTree")
     @ResponseBody
     public ReturnResult getRoleMenuTree(@RequestParam String roleCode)
@@ -87,9 +89,9 @@ public class SysLoginController
 
 
 
-    @GetMapping("/unauth")
-    public String unauth()
-    {
-        return "error/unauth";
-    }
+//    @GetMapping("/unauth")
+//    public String unauth()
+//    {
+//        return "error/unauth";
+//    }
 }

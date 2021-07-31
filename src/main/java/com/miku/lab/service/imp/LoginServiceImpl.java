@@ -210,6 +210,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
                     String rolePerm = roleMenuList.get(j);
                     if(menuPerm.equals(rolePerm)){
                         menuList.get(i).setStatus(true);
+
                     }
 
                 }
