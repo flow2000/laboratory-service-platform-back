@@ -60,16 +60,16 @@ public class SysLoginController
         return ztrees;
     }
     /**
-     * 登录过滤
-     */
-    @ApiOperation(value="登录过滤")
-    @GetMapping("/loginFilter")
-    @ResponseBody
-    public ReturnResult loginFilter(@RequestHeader String token)
-    {
-        Object map =  loginService.loginFilter(token);
-        return AjaxUtil.success(map,Constant.RESCODE_SUCCESS,1);
-    }
+ * 登录过滤
+ */
+@ApiOperation(value="登录过滤")
+@GetMapping("/loginFilter")
+@ResponseBody
+public ReturnResult loginFilter(@RequestHeader String token)
+{
+    Object map =  loginService.loginFilter(token);
+    return AjaxUtil.success(map,Constant.RESCODE_SUCCESS,1);
+}
 
 
     /**

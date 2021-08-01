@@ -118,6 +118,11 @@ public class OrderCheckServiceImp implements OrderCheckService {
         return resMap;
     }
 
+    /**
+     * 审核结果推送
+     * @param param
+     * @return
+     */
     @Override
     public Integer checkBooking(Map<String, Object> param) {
         String email =(String) param.get("email");

@@ -186,16 +186,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
     public List<SysMenu> getRoleMenuTree(String roleId) {
         Map<String, Object>map = new HashMap<>();
 
-        //获取角色信息
-
-        //String roleId = JwtUtil.getRole(token);
-       // String userId = JwtUtil.getUsername(token);
-//        if(roleId==""){
-//            map.put("code","202");
-//            map.put("msg","无效token，获取角色信息失败");
-//            return map;
-//        }
-
 
 
         List<SysMenu> menuList = selectMenuAll("admin");
