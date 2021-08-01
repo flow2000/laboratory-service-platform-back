@@ -4,6 +4,8 @@ package com.miku.lab.service.imp;/*
  *@version:1.1
  */
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.miku.lab.dao.OrderCheckDao;
 import com.miku.lab.entity.BookMachine;
 import com.miku.lab.entity.OrderCheck;
@@ -12,6 +14,7 @@ import com.miku.lab.service.OrderCheckService;
 import com.miku.lab.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.HashMap;
 import java.util.List;
@@ -189,6 +192,44 @@ public class OrderCheckServiceImp implements OrderCheckService {
     @Override
     public Object getAllBookingLog() {
         return orderCheckDao.getAllBookingLog();
+    }
+
+    /**
+     * 获取小程序token
+     * @return
+     */
+    public  String getAccessToken() {
+        String appId = "wx53295620b3e8adf1";
+        String appSecret = "f2d8491867cc5926deee9df2dddd7955";
+        String result = cn.hutool.http.HttpUtil.get("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appId + "&secret=" + appSecret);
+        JSONObject jsonObject = JSONUtil.parseObj(result);
+        return jsonObject.getStr("access_token");
+    }
+
+    /**
+     * 推送到小程序
+     * phrase1：预约结果
+     * thing6：预约业务
+     * character_string4：预约时段
+     * thing9：预约地点
+     * thing8：温馨提示
+     */
+    public String send(Map<String,String>map){
+        JSONObject body=new JSONObject();
+        body.set("touser","oAhSV4p4qtOsRFXbDaf_ES_B-wmU");
+        body.set("template_id","Y9FgbI6u8_xp7UOfxGUtQ8xZ8_QyeW5tMNWQanOHa9g");
+        JSONObject json=new JSONObject();
+        json.set("phrase1",new JSONObject().set("value","初音未来"));
+        json.set("thing6",new JSONObject().set("value","我的未来"));
+        json.set("character_string4",new JSONObject().set("value","2022-08-01"));
+        json.set("thing9",new JSONObject().set("value", "我爱初音"));
+        json.set("thing8",new JSONObject().set("value","世界第一公主殿下"));
+        body.set("data",json);
+
+        //发送
+        String accessToken= getAccessToken();
+        String post =  cn.hutool.http.HttpUtil.post("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + accessToken, body.toString());
+        return "ok";
     }
 
 }
