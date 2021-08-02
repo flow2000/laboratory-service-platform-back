@@ -4,6 +4,7 @@ package com.miku.lab.service.imp;/*
  *@version:1.1
  */
 
+import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.miku.lab.dao.OrderCheckDao;
@@ -128,21 +129,15 @@ public class OrderCheckServiceImp implements OrderCheckService {
      */
     @Override
     public Integer checkBooking(Map<String, Object> param) {
-        String email =(String) param.get("email");
-        String remark =(String) param.get("remark");
         if("1".equals(param.get("check_status"))){ //审核通过
             param.put("check_result",1);
-            if(StringUtil.isEmail(email)){
-                mailService.sendApplicationSucMail(email, remark);
-            }
         }else if("2".equals(param.get("check_status"))){ //审核不通过
             param.put("check_result",0);
-            if(StringUtil.isEmail(email)){
-                mailService.sendApplicationErrMail(email,remark);
-            }
         }
-        orderCheckDao.addOrderCheckLog(param);
-        return orderCheckDao.checkBooking(param);
+        send(param);  //推送
+        return 1;
+        //orderCheckDao.addOrderCheckLog(param);
+        //return orderCheckDao.checkBooking(param);
     }
 
     @Override
@@ -214,21 +209,24 @@ public class OrderCheckServiceImp implements OrderCheckService {
      * thing9：预约地点
      * thing8：温馨提示
      */
-    public String send(Map<String,String>map){
+    public String send(Map<String,Object>map){
         JSONObject body=new JSONObject();
-        body.set("touser","oAhSV4p4qtOsRFXbDaf_ES_B-wmU");
+        body.set("touser",map.get("openid"));
         body.set("template_id","Y9FgbI6u8_xp7UOfxGUtQ8xZ8_QyeW5tMNWQanOHa9g");
         JSONObject json=new JSONObject();
-        json.set("phrase1",new JSONObject().set("value","初音未来"));
-        json.set("thing6",new JSONObject().set("value","我的未来"));
-        json.set("character_string4",new JSONObject().set("value","2022-08-01"));
-        json.set("thing9",new JSONObject().set("value", "我爱初音"));
-        json.set("thing8",new JSONObject().set("value","世界第一公主殿下"));
+        json.set("phrase1",new JSONObject().set("value",map.get("phrase1")));
+        json.set("thing6",new JSONObject().set("value",map.get("thing6")));
+        json.set("character_string4",new JSONObject().set("value",map.get("character_string4")));
+        json.set("thing9",new JSONObject().set("value", map.get("thing9")));
+        json.set("thing8",new JSONObject().set("value",map.get("thing8")));
         body.set("data",json);
 
         //发送
         String accessToken= getAccessToken();
-        String post =  cn.hutool.http.HttpUtil.post("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + accessToken, body.toString());
+        String post =  HttpRequest.post("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + accessToken)
+                .body(String.valueOf(body))
+                .execute().body();
+        System.out.println("推送结果："+post);
         return "ok";
     }
 
