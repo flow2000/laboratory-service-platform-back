@@ -135,9 +135,8 @@ public class OrderCheckServiceImp implements OrderCheckService {
             param.put("check_result",0);
         }
         send(param);  //推送
-        return 1;
-        //orderCheckDao.addOrderCheckLog(param);
-        //return orderCheckDao.checkBooking(param);
+        orderCheckDao.addOrderCheckLog(param);
+        return orderCheckDao.checkBooking(param);
     }
 
     @Override
