@@ -71,11 +71,16 @@
     </update>
 
     <select id="searchRole" resultType="com.miku.lab.entity.Role" parameterType="map">
+
         select *
         from sys_role
         <where>
-            locate(#{key},${value}) and del_flag=0
+            locate(#{role_code},role_code)
+            and locate(#{role_name},role_name)
+            and del_flag=0
         </where>
+        order by create_time desc
+        limit #{page},#{limit}
     </select>
 
     <select id="getSearchPageRole" resultType="com.miku.lab.entity.Role" parameterType="map">

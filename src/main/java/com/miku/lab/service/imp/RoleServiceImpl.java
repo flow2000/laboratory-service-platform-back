@@ -2,6 +2,7 @@ package com.miku.lab.service.imp;
 
 import com.miku.lab.dao.RoleDao;
 import com.miku.lab.entity.ArticleSort;
+import com.miku.lab.entity.Machine_sort;
 import com.miku.lab.entity.Role;
 import com.miku.lab.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -146,21 +147,36 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public  Object searchRole(String searchKey,String searchValue,String page, String limit) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("key",searchValue);
-        map.put("value",searchKey);
-        List<Role> searchRole = roleDao.searchRole(map);
+
+        Map<String, Object>map = new HashMap<>();
+        String key[] = searchKey.split(",");
+        String value[]=searchValue.split(",");
+        //逐一赋值
+        for (int i = 0; i < key.length; i++) {
+            if(value.length>i)
+                map.put(key[i],value[i]);
+            else
+                map.put(key[i],"");
+        }
+        //设置分页
+        setPageLimit(map,page,limit);
+        //查找用户
+        List<Role> roles = roleDao.searchRole(map);
+        if(roles!=null){
+            map.put("roles",roles);
+            map.put("count",roles.size());
+            return map;
+        }else{
+            return null;
+        }
+    }
+
+    //设置分页到map中
+    public Map<String, Object>setPageLimit(Map<String, Object>map,String page,String limit){
         int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
         int m = Integer.valueOf(limit);
         map.put("page",p);
         map.put("limit",m);
-        List<Role> roles = roleDao.getSearchPageRole(map);
-        if(roles!=null){
-            map.put("roles",roles);
-            map.put("count",searchRole.size());
-            return map;
-        }else {
-            return null;
-        }
+        return map;
     }
 }

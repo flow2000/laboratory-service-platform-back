@@ -23,13 +23,13 @@ public interface SystemConfigDao {
     List<Map> getAllSystemConfig();
 
     //获取所有的配置信息
-    List<Config> getAllConfig();
+    List<Map> getAllConfig();
 
     /**
      * 分页获取所有配置信息
      * @return
      */
-    List<Config>getPageConfig(Map<String,Object> map);
+    List<Map>getPageConfig(Map<String,Object> map);
 
     //获取配置详细信息
     Config getDetailConfiglById(String id);

@@ -25,7 +25,13 @@
         select *
         from log_system_operation
         <where>
-            locate(#{key},${value}) and del_flag=0 and oper_time BETWEEN date_sub(Now(),interval (
+            locate(#{ip_address},ip_address)
+            and locate(#{opertor},opertor)
+            <if test="is_ok!=null and is_ok!=''">
+                and is_ok = #{is_ok}
+            </if>
+            and del_flag=0
+             and oper_time BETWEEN date_sub(Now(),interval (
                 SELECT value FROM sys_config where code='search_operation_month') month) and now()
                 ORDER BY log_system_operation.oper_time DESC
         </where>
@@ -35,11 +41,17 @@
         select *
         from log_system_operation
         <where>
-            locate(#{key},${value}) and del_flag=0 and oper_time BETWEEN date_sub(Now(),interval (
+            locate(#{ip_address},ip_address)
+            and locate(#{opertor},opertor)
+            <if test="is_ok!=null and is_ok!=''">
+                and is_ok = #{is_ok}
+            </if>
+            and del_flag=0
+            and oper_time BETWEEN date_sub(Now(),interval (
             SELECT value FROM sys_config where code='search_operation_month') month) and now()
             ORDER BY log_system_operation.oper_time DESC
-            limit #{page},#{limit}
         </where>
+        limit #{page},#{limit}
     </select>
 
     <update id="delOper" parameterType="com.miku.lab.entity.SystemOperation">
@@ -54,11 +66,11 @@
         insert
         into log_system_operation(
                 ip_address,module_code,opertor,oper_time,
-                oper_type,oper_content,is_ok,del_flag
+                oper_type,oper_content,is_ok,del_flag,module_name
                 )
         values(
                 #{ip_address},#{module_code},#{operator},#{oper_time},
-                #{oper_type},#{oper_content},#{is_ok},0
+                #{oper_type},#{oper_content},#{is_ok},0,#{moduleName}
                 )
     </insert>
 

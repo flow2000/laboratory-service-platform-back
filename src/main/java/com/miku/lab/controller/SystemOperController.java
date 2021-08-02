@@ -11,6 +11,7 @@ import com.miku.lab.service.OperService;
 import com.miku.lab.service.SuggestService;
 import com.miku.lab.util.AjaxUtil;
 import com.miku.lab.util.Constant;
+import com.miku.lab.util.IpUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -99,7 +100,7 @@ public class SystemOperController {
     @ApiOperation(value="添加日志接口")
     @PostMapping("/addOper")
     public ReturnResult addOper(@RequestBody SystemOperation operation, HttpServletRequest request){
-//        operation.setIpAddress(request.getRemoteAddr());
+        operation.setIpAddress(IpUtil.getIpAddr(request));
         int flag = operService.addOper(operation);
         if (flag == 0) {
             return AjaxUtil.sucessUpdate(Constant.RESCODE_INSERTERROR,"添加失败，记录重复");

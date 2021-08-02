@@ -142,22 +142,37 @@ public class ArticleServiceImp implements ArticleService {
 
     @Override
     public  Object searchSort(String searchKey,String searchValue,String page, String limit) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("key",searchValue);
-        map.put("value",searchKey);
-        List<ArticleSort> searchSort = articleDao.searchSort(map);
 
+        Map<String, Object>map = new HashMap<>();
+        String key[] = searchKey.split(",");
+        String value[]=searchValue.split(",");
+        //逐一赋值
+        for (int i = 0; i < key.length; i++) {
+            if(value.length>i)
+                map.put(key[i],value[i]);
+            else
+                map.put(key[i],"");
+        }
+        //设置分页
+        setPageLimit(map,page,limit);
+        //查找用户
+        List<ArticleSort> articleSorts = articleDao.searchSort(map);
+        if(articleSorts!=null){
+            map.put("article_sorts",articleSorts);
+            map.put("count",articleSorts.size());
+            return map;
+        }else{
+            return null;
+        }
+
+    }
+
+    //设置分页到map中
+    public Map<String, Object>setPageLimit(Map<String, Object>map,String page,String limit){
         int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
         int m = Integer.valueOf(limit);
         map.put("page",p);
         map.put("limit",m);
-        List<ArticleSort> articleSorts = articleDao.getSearchPageSort(map);
-        if(articleSorts!=null){
-            map.put("article_sorts",articleSorts);
-            map.put("count",searchSort.size());
-            return map;
-        }else {
-            return null;
-        }
+        return map;
     }
 }

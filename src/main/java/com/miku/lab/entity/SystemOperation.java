@@ -30,6 +30,8 @@ public class SystemOperation {
 
     private String opertor;         //操作人
 
+    private String moduleName;         //模块名称
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date operTime;          //操作时间
 

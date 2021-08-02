@@ -31,17 +31,25 @@
         <if test="value!=null and value!=''">
             ,value=#{value}
         </if>
+        <if test="remark!=null and remark!=''">
+            ,remark=#{remark}
+        </if>
         <where>
             id=#{id}
         </where>
     </update>
 
     <select id="searchConfig" resultType="com.miku.lab.entity.Config" parameterType="map">
+
         select *
         from sys_config
         <where>
-            locate(#{key},${value})
+            locate(#{code},code)
+            and locate(#{name},name)
+            and locate(#{value},value)
         </where>
+        order by create_time desc
+        limit #{page},#{limit}
     </select>
 
     <select id="getSearchPageConfig" resultType="com.miku.lab.entity.Config" parameterType="map">

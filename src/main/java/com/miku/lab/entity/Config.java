@@ -31,6 +31,8 @@ public class Config {
     //名称
     @ApiModelProperty(hidden=true)
     private String name;
+    //备注
+    private String remark;
     //值
     @ApiModelProperty(value="对应值")
     private int value;
@@ -40,4 +42,6 @@ public class Config {
     @ApiModelProperty(hidden=true)
     // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;                   //更新时间
+
+
 }

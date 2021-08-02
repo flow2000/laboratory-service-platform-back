@@ -243,7 +243,7 @@ public class MachineController {
     }
 
     @ApiOperation(value="查询仪器分类接口")
-    @PostMapping("/searchSort")
+    @GetMapping("/searchSort")
     public ReturnResult searchSort(@RequestParam String searchKey,@RequestParam String searchValue,
                                    @RequestParam String page, @RequestParam String limit ){
         Object map = machineService.searchSort(searchKey,searchValue,page,limit);

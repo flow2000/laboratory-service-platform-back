@@ -7,6 +7,7 @@ package com.miku.lab.service.imp;/*
         import com.miku.lab.dao.SystemOperationDao;
         import com.miku.lab.entity.ArticleSort;
         import com.miku.lab.entity.LabInfo;
+        import com.miku.lab.entity.Machine_sort;
         import com.miku.lab.entity.SystemOperation;
         import com.miku.lab.service.OperService;
         import org.springframework.beans.factory.annotation.Autowired;
@@ -55,23 +56,38 @@ public class OperServiceImp implements OperService {
 
     @Override
     public  Object searchOper(String searchKey,String searchValue,String page, String limit) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("key",searchValue);
-        map.put("value",searchKey);
-        List<SystemOperation> AllOperations = systemOperationDao.searchOper(map);
 
+
+        Map<String, Object>map = new HashMap<>();
+        String key[] = searchKey.split(",");
+        String value[]=searchValue.split(",");
+        //逐一赋值
+        for (int i = 0; i < key.length; i++) {
+            if(value.length>i)
+                map.put(key[i],value[i]);
+            else
+                map.put(key[i],"");
+        }
+        //设置分页
+        setPageLimit(map,page,limit);
+        //查找用户
+        List<SystemOperation> systemOperations = systemOperationDao.searchOper(map);
+        List<SystemOperation> searchPageOper = systemOperationDao.getSearchPageOper(map);
+        if(systemOperations!=null){
+            map.put("operations",searchPageOper);
+            map.put("count",systemOperations.size());
+            return map;
+        }else{
+            return null;
+        }
+    }
+    //设置分页到map中
+    public Map<String, Object>setPageLimit(Map<String, Object>map,String page,String limit){
         int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
         int m = Integer.valueOf(limit);
         map.put("page",p);
         map.put("limit",m);
-        List<SystemOperation> systemOperations = systemOperationDao.getSearchPageOper(map);
-        if(systemOperations!=null){
-            map.put("operations",systemOperations);
-            map.put("count",AllOperations.size());
-            return map;
-        }else {
-            return null;
-        }
+        return map;
     }
 
     @Override
@@ -94,6 +110,7 @@ public class OperServiceImp implements OperService {
         map.put("oper_type",operation.getOperType());
         map.put("oper_content",operation.getOperContent());
         map.put("is_ok",operation.getIsOk());
+        map.put("moduleName",operation.getModuleName());
         int addAffect = systemOperationDao.addOper(map);
         if(addAffect!=0){
             return addAffect;

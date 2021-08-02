@@ -6,6 +6,7 @@ package com.miku.lab.service.imp;/*
 
 import com.miku.lab.dao.MachineDao;
 import com.miku.lab.dao.MachineImgDao;
+import com.miku.lab.entity.ArticleSort;
 import com.miku.lab.entity.Machine;
 import com.miku.lab.entity.Machine_img;
 import com.miku.lab.entity.Machine_sort;
@@ -129,6 +130,10 @@ public class MachineServiceImp implements MachineService {
         }
     }
 
+    /**
+     * 获得所有仪器分类信息
+     * @return
+     */
     @Override
     public List<Machine_sort> getMachineType() {
         return machineDao.getAllMachineSort();
@@ -160,6 +165,11 @@ public class MachineServiceImp implements MachineService {
         return 0;
     }
 
+    /**
+     * 删除仪器分类信息
+     * @param sortId
+     * @return
+     */
     @Override
     public int delMachineSort(String sortId) {
         int delSort = machineDao.delMachineSort(sortId);
@@ -170,25 +180,47 @@ public class MachineServiceImp implements MachineService {
         }
     }
 
+    /**
+     * 查询分类信息
+     * @param searchKey
+     * @param searchValue
+     * @param page
+     * @param limit
+     * @return
+     */
     @Override
     public Object searchSort(String searchKey,String searchValue,String page, String limit){
-        Map<String,Object> map = new HashMap<>();
-        map.put("key",searchValue);
-        map.put("value",searchKey);
-        List<Machine_sort> searchAllSort = machineDao.searchSort(map);
 
+        Map<String, Object>map = new HashMap<>();
+        String key[] = searchKey.split(",");
+        String value[]=searchValue.split(",");
+        //逐一赋值
+        for (int i = 0; i < key.length; i++) {
+            if(value.length>i)
+                map.put(key[i],value[i]);
+            else
+                map.put(key[i],"");
+        }
+        //设置分页
+        setPageLimit(map,page,limit);
+        //查找用户
+        List<Machine_sort> searchSorts = machineDao.searchSort(map);
+        if(searchSorts!=null){
+            map.put("machine_sort",searchSorts);
+            map.put("count",searchSorts.size());
+            return map;
+        }else{
+            return null;
+        }
+    }
+
+    //设置分页到map中
+    public Map<String, Object>setPageLimit(Map<String, Object>map,String page,String limit){
         int p = (Integer.valueOf(page)-1)*Integer.valueOf(limit);
         int m = Integer.valueOf(limit);
         map.put("page",p);
         map.put("limit",m);
-        List<Machine_sort> machinePageList = machineDao.getSearchPageSort(map);
-        if(machinePageList!=null){
-            map.put("machine_sort",machinePageList);
-            map.put("count",searchAllSort.size());
-            return map;
-        }else {
-            return null;
-        }
+        return map;
     }
 
     @Override
