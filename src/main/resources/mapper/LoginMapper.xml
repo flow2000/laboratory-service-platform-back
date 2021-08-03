@@ -31,7 +31,7 @@
     </select>
 
     <select id="selectMenuAll" resultType="com.miku.lab.entity.SysMenu">
-        select menu_id,open, title, parent_id, order_num, href, target, status, ifnull(perms,'') as perms, icon, create_by, create_time
+        select menu_id,open, title, parent_id, order_num, href, target, status, ifnull(perms,'') as perms, icon, create_by, create_time,menu_type
 		from sys_menu
         order by parent_id, order_num
     </select>
@@ -43,7 +43,7 @@
 				left join sys_role_menu rm on m.menu_id = rm.menu_id
 				left join sys_user ur on rm.role_id = ur.role_code
 				LEFT JOIN sys_role ro on rm.role_id = ro.role_code
-			where ur.user_id = #{userId} order by m.parent_id, m.order_num
+			where ur.user_id = #{userId} and m.menu_type='M' order by m.parent_id, m.order_num
 	</select>
 
 <!--    concat(m.menu_id, ifnull(m.perms,'')) as perms-->
@@ -51,7 +51,7 @@
 		select m.perms
 		from sys_menu m
 			left join sys_role_menu rm on m.menu_id = rm.menu_id
-		where rm.role_id = #{roleId}
+		where rm.role_id = #{roleId} and m.menu_type='M'
 		order by m.parent_id, m.order_num
 	</select>
 

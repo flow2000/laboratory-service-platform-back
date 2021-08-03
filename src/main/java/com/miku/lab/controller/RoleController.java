@@ -91,7 +91,7 @@ public class RoleController {
         }
     }
 
-    @ApiOperation(value="删除文章分类接口")
+    @ApiOperation(value="删除角色接口")
     @PostMapping("/delRole")
     public ReturnResult delRole(@RequestParam String roleCode){
         int flag = roleService.delRole(roleCode);
@@ -102,7 +102,7 @@ public class RoleController {
         }
     }
 
-    @ApiOperation(value="批量删除文章分类接口")
+    @ApiOperation(value="批量删除角色接口")
     @PostMapping("/combineDelRole")
     public ReturnResult combineDelRole(@RequestParam String ids){
         String[] roleCodes = ids.split(",");
@@ -121,7 +121,7 @@ public class RoleController {
         }
     }
 
-    @ApiOperation(value="查询仪器分类接口")
+    @ApiOperation(value="查询角色口")
     @GetMapping("/searchRole")
     public ReturnResult searchRole(@RequestParam String searchKey,@RequestParam String searchValue,
                                    @RequestParam String page, @RequestParam String limit ){

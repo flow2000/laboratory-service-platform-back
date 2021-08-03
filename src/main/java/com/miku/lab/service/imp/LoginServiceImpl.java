@@ -309,7 +309,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
             ztree.setTarget(menu.getTarget());
             //查询当前节点是否有孩子节点
             for(SysMenu menuTmp : menuList){
-                if(menu.getMenuId()==menuTmp.getParentId()){
+                if(menu.getMenuId()==menuTmp.getParentId()&&("M".equals(menuTmp.getMenuType()))){
                     List<SysMenu> childPerms = getChildPerms(menuList, menuTmp.getParentId());
                     if(childPerms!=null){
                         ztree.setChild(transMenuChild(childPerms));

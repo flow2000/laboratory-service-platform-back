@@ -56,6 +56,9 @@ public class SysMenu
     //是否展开
     private String open;
 
+    //菜单类型
+    private String menuType;
+
     /** 子菜单 */
     private List<SysMenu> children = new ArrayList<SysMenu>();
 
