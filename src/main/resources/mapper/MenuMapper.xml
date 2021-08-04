@@ -7,12 +7,58 @@
     <select id="getAllMenu" resultType="com.miku.lab.entity.SysMenu" parameterType="com.miku.lab.entity.SysMenu">
         select * from sys_menu
         <where>
-             del_flag=0
+             del_flag=0 and valid_status=0
         </where>
     </select>
 
     <select id="getPageMenu" resultType="com.miku.lab.entity.SysMenu" parameterType="map">
        select * from sys_menu where del_flag=0 limit #{page},#{limit}
+    </select>
+
+    <select id="searchMenu" resultType="com.miku.lab.entity.SysMenu" parameterType="map">
+        select *
+        from sys_menu
+        <where>
+            locate(#{title},title)
+            and locate(#{perms},perms)
+            and locate(#{menu_type},menu_type)
+            and del_flag=0
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="getMenu" resultType="com.miku.lab.entity.SysMenu" parameterType="map">
+       select * from sys_menu where del_flag=0 and menu_type='M' and valid_status=0
+    </select>
+
+    <insert id="addMenu" parameterType="map">
+        insert
+        into sys_menu(menu_id,title,parent_id,
+        order_num,icon,href,
+        target,status,menu_type,remark,
+        perms,creater,create_time)
+        values(
+                #{menu_id},#{title},#{parent_id},
+                #{order_num},#{icon},#{href},
+                #{target},0,#{menu_type},#{title},
+                #{perms},#{creater},NOW()
+                )
+    </insert>
+
+    <select id="getMenuByMenuId" resultType="com.miku.lab.entity.SysMenu" parameterType="map">
+       select * from sys_menu where del_flag=0 and menu_id=#{menu_id}
+    </select>
+
+    <select id="getMenuByHref" resultType="com.miku.lab.entity.SysMenu" parameterType="map">
+       select * from sys_menu where del_flag=0 and href=#{href}
+    </select>
+
+    <select id="getMenuByTitle" resultType="com.miku.lab.entity.SysMenu" parameterType="map">
+       select * from sys_menu where del_flag=0 and title=#{title}
+    </select>
+
+    <select id="getMenuByPerms" resultType="com.miku.lab.entity.SysMenu" parameterType="map">
+       select * from sys_menu where del_flag=0 and perms=#{perms}
     </select>
 
 

@@ -20,5 +20,23 @@ public interface MenuDao {
     List<SysMenu> getAllMenu();
 
     //分页获取菜单信息
-    List<ArticleSort> getPageMenu(Map<String,Object> map);
+    List<SysMenu> searchMenu(Map<String,Object>map);
+
+    //获取单纯单菜单的信息
+    List<SysMenu> getMenu();
+
+    //添加菜单信息
+    int addMenu(Map<String,Object>map);
+
+    //通过菜单id查询菜单
+    SysMenu getMenuByMenuId(String menu_id);
+
+    //通过href查询菜单
+    SysMenu getMenuByHref(String href);
+
+    //通过title查询菜单
+    SysMenu getMenuByTitle(String title);
+
+    //通过perms查询菜单
+    SysMenu getMenuByPerms(String perms);
 }
