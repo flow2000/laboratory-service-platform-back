@@ -38,7 +38,7 @@
 
 
     <select id="selectMenuAllByUserId" parameterType="String" resultType="com.miku.lab.entity.SysMenu">
-		select distinct m.menu_id,m.open, m.parent_id, m.title, m.href, ifnull(m.perms,'') as perms, m.target, m.icon, m.order_num, m.create_time
+		select distinct m.menu_id,m.open, m.parent_id, m.title, m.href, ifnull(m.perms,'') as perms, m.target, m.icon, m.order_num, m.create_time,m.menu_type
 			from sys_menu m
 				left join sys_role_menu rm on m.menu_id = rm.menu_id
 				left join sys_user ur on rm.role_id = ur.role_code
@@ -51,7 +51,11 @@
 		select m.perms
 		from sys_menu m
 			left join sys_role_menu rm on m.menu_id = rm.menu_id
-		where rm.role_id = #{roleId} and m.menu_type='M'
+		where rm.role_id = #{roleId}
+        <if test="menu_type!=null and menu_type!=''">
+            and m.menu_type='M'
+        </if>
+
 		order by m.parent_id, m.order_num
 	</select>
 

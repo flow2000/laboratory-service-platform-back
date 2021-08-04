@@ -34,5 +34,5 @@ public interface LoginDao {
      * @param roleId 角色ID
      * @return 菜单列表
      */
-    public List<String> selectMenuTree(String roleId);
+    public List<String> selectMenuTree(String roleId,String menu_type);
 }

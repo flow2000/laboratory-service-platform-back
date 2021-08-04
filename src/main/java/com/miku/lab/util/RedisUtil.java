@@ -10,6 +10,8 @@ import redis.clients.jedis.*;
  */
 public class RedisUtil {
 	private static JedisPool jedisPool = null;
+
+
 	/**
 	 * 初始化
 	 */
@@ -32,23 +34,35 @@ public class RedisUtil {
       * @return
       */
      public synchronized static Jedis getJedis() {
+
+         Jedis jedis = null;
          try {
-             if (jedisPool != null) {
-                 Jedis resource = jedisPool.getResource();
-                 return resource;
-             } else {
-                 return null;
-             }
+             jedis = jedisPool.getResource();
+             return jedis;
          } catch (Exception e) {
-             e.printStackTrace();
-             return null;
+         } finally {
+             //注意这里不是关闭连接，在JedisPool模式下，Jedis会被归还给资源池。
+             if (jedis != null)
+                 jedis.close();
          }
+         return null;
+//         try {
+//             if (jedisPool != null) {
+//                 Jedis resource = jedisPool.getResource();
+//                 return resource;
+//             } else {
+//                 return null;
+//             }
+//         } catch (Exception e) {
+//             e.printStackTrace();
+//             return null;
+//         }
      }
      /**
       * 释放资源
       * @param jedis
       */
-     public void returnResource(final Jedis jedis) {
+     public synchronized void returnResource(final Jedis jedis) {
 		if(jedis !=null) {
 			jedisPool.returnResource(jedis);
 		}

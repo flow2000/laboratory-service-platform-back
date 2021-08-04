@@ -47,7 +47,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
             throw new UsernameNotFoundException("用户名不存在");
         }
 
-        List<String> roleMenuList = loginDao.selectMenuTree(user.getRoleCode());
+        String menu_type = "M";
+        List<String> roleMenuList = loginDao.selectMenuTree(user.getRoleCode(),menu_type);
         for(String roleName:roleMenuList){
             authorities.add(new SimpleGrantedAuthority(roleName));
         }
@@ -97,6 +98,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
             UserInfo userInfoToken =getLoginUser(token);
             userInfoToken.setPassword("*******");
             map.put("user",userInfoToken);
+            redisUtil.returnResource(RedisUtil.getJedis());
             return map;
         }else{
             map.put("code",String.valueOf(Constant.RESCODE_LOGIN_ERROR));
@@ -120,6 +122,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
                 return userInfoByUserName;
             }
         }
+        redisUtil.returnResource(RedisUtil.getJedis());
         return null;
     }
 
@@ -169,6 +172,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
                 map.put("msg","token已失效，请重新登录");
                 return map;
             }
+            redisUtil.returnResource(RedisUtil.getJedis());
         }
 
         map.put("code","200");
@@ -185,12 +189,10 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
     @Override
     public List<SysMenu> getRoleMenuTree(String roleId) {
         Map<String, Object>map = new HashMap<>();
-
-
-
         List<SysMenu> menuList = selectMenuAll("admin");
         if(roleId!=null){
-            List<String> roleMenuList = loginDao.selectMenuTree(roleId);
+            String menu_type = null;
+            List<String> roleMenuList = loginDao.selectMenuTree(roleId,menu_type);
             if(roleMenuList==null){
                 return null;
             }
@@ -237,7 +239,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
         List<SysMenu> menuList = selectMenuAll(userId);
         if (roleId!=null)
         {
-            List<String> roleMenuList = loginDao.selectMenuTree(roleId);
+            String menu_type = "M";
+            List<String> roleMenuList = loginDao.selectMenuTree(roleId,menu_type);
             ztrees = initZtree(menuList, roleMenuList, true);
             Ztree ztreeFirst = new Ztree();
             ztreeFirst.setTitle("首页");
@@ -309,7 +312,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
             ztree.setTarget(menu.getTarget());
             //查询当前节点是否有孩子节点
             for(SysMenu menuTmp : menuList){
-                if(menu.getMenuId()==menuTmp.getParentId()&&("M".equals(menuTmp.getMenuType()))){
+                if(menu.getMenuId()==menuTmp.getParentId()&&((menu.getMenuType().equals(menuTmp.getMenuType())))){
                     List<SysMenu> childPerms = getChildPerms(menuList, menuTmp.getParentId());
                     if(childPerms!=null){
                         ztree.setChild(transMenuChild(childPerms));
