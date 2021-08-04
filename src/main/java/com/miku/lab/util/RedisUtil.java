@@ -17,6 +17,7 @@ public class RedisUtil {
 		try {
 			JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
 			jedisPoolConfig.setMaxIdle(Constant.REDIS_MAX_IDLE);
+            jedisPoolConfig.setMaxTotal(Constant.REDIS_MAX_ACTIVE);
 			jedisPoolConfig.setMaxWaitMillis(Constant.REDIS_MAX_WAIT);
 			jedisPoolConfig.setTestOnBorrow(Constant.TEST_ON_BORROW);
 			jedisPool = new JedisPool(jedisPoolConfig, Constant.REDIS_HOST, Constant.REDIS_PORT, Constant.REDIS_TIMEOUT);
