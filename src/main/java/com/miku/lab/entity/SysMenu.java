@@ -59,6 +59,9 @@ public class SysMenu
     //菜单类型
     private String menuType;
 
+    //有效状态
+    private String validStatus;
+
     /** 子菜单 */
     private List<SysMenu> children = new ArrayList<SysMenu>();
 

@@ -29,6 +29,7 @@ public class Constant {
     public static final int RESCODE_REDIS_TIME_OUT = 1015;         //查询redis成功
     public static final int RESCODE_SEARCHERROR = 1016;         //查询redis成功
     public static final int RESCODE_BOOK_ERROR = 1017;         //预约仪器失败
+    public static final int RESCODE_MENU_ERROR = 1018;         //获取菜单失败
     /**
      * token
      * */
