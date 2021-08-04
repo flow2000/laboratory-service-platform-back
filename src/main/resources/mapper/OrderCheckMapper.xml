@@ -66,7 +66,15 @@
         and end_time>=NOW()
         and sys_order_check.del_flag=0
         and wx_booking_user.openId=sys_order_check.openId
-        and ${searchKey} like concat('%',#{searchValue},'%')
+        <if test="usernameValue != null">
+            and ${usernameKey} like concat('%',#{usernameValue},'%')
+        </if>
+        <if test="lab_addressValue != null">
+            and ${lab_addressKey} like concat('%',#{lab_addressValue},'%')
+        </if>
+        <if test="lab_nameValue != null">
+            and ${lab_nameKey} like concat('%',#{lab_nameValue},'%')
+        </if>
         order by sys_order_check.create_time desc
         limit #{p},#{m}
     </select>
@@ -88,7 +96,15 @@
         and end_time>=NOW()
         and sys_order_check.del_flag=0
         and wx_booking_user.openId=sys_order_check.openId
-        and ${searchKey} like concat('%',#{searchValue},'%')
+        <if test="usernameValue != null">
+            and ${usernameKey} like concat('%',#{usernameValue},'%')
+        </if>
+        <if test="lab_addressValue != null">
+            and ${lab_addressKey} like concat('%',#{lab_addressValue},'%')
+        </if>
+        <if test="lab_nameValue != null">
+            and ${lab_nameKey} like concat('%',#{lab_nameValue},'%')
+        </if>
         order by sys_order_check.id
     </select>
 
@@ -206,4 +222,8 @@
         order by sys_booking_log.creater desc
     </select>
 
+    <select id="getWxUserToken" parameterType="String" resultType="map">
+        select * from wx_booking_user where openId=#{openid}
+    </select>
+    
 </mapper>

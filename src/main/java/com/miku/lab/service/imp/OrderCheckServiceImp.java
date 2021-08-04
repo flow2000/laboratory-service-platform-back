@@ -79,11 +79,24 @@ public class OrderCheckServiceImp implements OrderCheckService {
 
     @Override
     public Object searchBookingInfo(int page,int limit,String searchKey,String searchValue) {
-        Map<String ,Object> map = new HashMap<String ,Object>();
-        map.put("searchKey",searchKey);
-        map.put("searchValue",searchValue);
+        Map<String ,Object> map = new HashMap<>();
         map.put("p",(page-1)*limit);
         map.put("m",limit);
+        String [] key = searchKey.split(";");
+        String [] value = searchValue.split(";");
+        map.put("usernameKey",key[0]);
+        map.put("lab_addressKey",key[1]);
+        map.put("lab_nameKey",key[2]);
+
+        if(value.length>=1 && !value[0].equals("")){
+            map.put("usernameValue",value[0]);
+        }
+        if(value.length>=2 && !value[1].equals("")){
+            map.put("lab_addressValue",value[1]);
+        }
+        if(value.length>=3 && !value[2].equals("")) {
+            map.put("lab_nameValue", value[2]);
+        }
         List<Map> pageBookingInfoList = orderCheckDao.searchBookingInfo(map);
         int count = orderCheckDao.searchBookingInfoCount(map);
         Map<String ,Object> resMap = new HashMap<String ,Object>();
@@ -190,14 +203,15 @@ public class OrderCheckServiceImp implements OrderCheckService {
 
     /**
      * 获取小程序token
-     * @return
+     * @return token
      */
-    public  String getAccessToken() {
-        String appId = "wx53295620b3e8adf1";
-        String appSecret = "f2d8491867cc5926deee9df2dddd7955";
-        String result = cn.hutool.http.HttpUtil.get("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appId + "&secret=" + appSecret);
-        JSONObject jsonObject = JSONUtil.parseObj(result);
-        return jsonObject.getStr("access_token");
+    public  String getAccessToken(String openid) {
+        List<Map> list = orderCheckDao.getWxUserToken(openid);
+        if(list!=null&&!list.isEmpty()){
+            System.out.println("token====="+ list.get(0).get("token"));
+            return (String) list.get(0).get("token");
+        }
+        return "";
     }
 
     /**
@@ -221,7 +235,7 @@ public class OrderCheckServiceImp implements OrderCheckService {
         body.set("data",json);
 
         //发送
-        String accessToken= getAccessToken();
+        String accessToken= getAccessToken(String.valueOf(map.get("openid")));
         String post =  HttpRequest.post("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + accessToken)
                 .body(String.valueOf(body))
                 .execute().body();

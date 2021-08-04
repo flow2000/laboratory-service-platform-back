@@ -62,4 +62,5 @@ public interface BookLogDao {
     int setWxBookingMachineStatus(Map<String,Object>map);
     int setMachineNumber(Map<String,Object>map);
 
+    int updateWxUserToken(String token,String openid);
 }
