@@ -50,4 +50,6 @@ public interface OrderCheckDao {
     int searchBookingLogCount(Map<String, Object> map);
 
     List<Map> getAllBookingLog();
+
+    List<Map> getWxUserToken(String openid);
 }

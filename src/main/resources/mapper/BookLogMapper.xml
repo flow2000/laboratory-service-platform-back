@@ -163,7 +163,9 @@
         </where>
     </update>
 
-
+    <update id="updateWxUserToken" parameterType="String">
+        update wx_booking_user set token=#{token} where openId=#{openid};
+    </update>
 
 
 </mapper>

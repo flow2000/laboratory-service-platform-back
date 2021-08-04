@@ -96,16 +96,31 @@ public class LabServiceImp implements LabService {
 
     @Override
     public Object searchLab(int page, int limit, String searchKey, String searchValue) {
-        Map<String ,Object> map = new HashMap<String ,Object>();
+        Map<String ,Object> map = new HashMap<>();
         map.put("p",(page-1)*limit);
         map.put("m",limit);
-        String [] key = searchKey.split(",");
-        String [] value = searchValue.split(",");
-        map.put("baseInfoKey",key[0]);
-        map.put("statusKey",key[1]);
-        map.put("baseInfoValue",value[0]);
-        if(value.length>=2){
-            map.put("statusValue",value[1]);
+        String [] key = searchKey.split(";");
+        String [] value = searchValue.split(";");
+        map.put("idKey",key[0]);
+        map.put("addressKey",key[1]);
+        map.put("adminKey",key[2]);
+        map.put("phoneKey",key[3]);
+        map.put("statusKey",key[4]);
+
+        if(value.length>=1 && !value[0].equals("")){
+            map.put("idValue",value[0]);
+        }
+        if(value.length>=2 && !value[1].equals("")){
+            map.put("addressValue",value[1]);
+        }
+        if(value.length>=3 && !value[2].equals("")) {
+            map.put("adminValue", value[2]);
+        }
+        if(value.length>=4 && !value[3].equals("")) {
+            map.put("phoneValue", value[3]);
+        }
+        if(value.length>=5 && !value[4].equals("")) {
+            map.put("statusValue", value[4]);
         }
         List<Map> pageLabList = labDao.searchLab(map);
         int count = labDao.searchLabCount(map);

@@ -129,6 +129,12 @@ public class BookLogServiceImp implements BookLogService{
         }
         //处理实验室---end
 
+        //更新微信用户的token以便推送
+        String token = (String) map.get("token");
+        if(token!=null){
+            System.out.println("前端：token=="+token);
+            bookLogDao.updateWxUserToken(token,String.valueOf(map.get("openId")));
+        }
 
         //处理仪器---start
         String machines =  String.valueOf(map.get("machines"));
