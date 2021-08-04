@@ -102,9 +102,21 @@
     <select id="searchLab" parameterType="java.util.HashMap" resultType="map">
         select * from sys_lab_info
         <where>
-            del_flag=0 and ${baseInfoKey} like concat('%',#{baseInfoValue},'%')
+            del_flag=0
+            <if test="idValue != null">
+                and ${idKey} like concat('%',#{idValue},'%')
+            </if>
+            <if test="addressValue != null">
+                and ${addressKey} like concat('%',#{addressValue},'%')
+            </if>
+            <if test="adminValue != null">
+                and ${adminKey} like concat('%',#{adminValue},'%')
+            </if>
+            <if test="phoneValue != null">
+                and ${phoneKey} like concat('%',#{phoneValue},'%')
+            </if>
             <if test="statusValue != null">
-                and ${statusKey} = #{statusValue}
+                and ${statusKey} like concat('%',#{statusValue},'%')
             </if>
         </where>
         order by create_time desc
@@ -114,9 +126,21 @@
     <select id="searchLabCount" parameterType="map" resultType="int">
         select COUNT(*) from sys_lab_info
         <where>
-            del_flag=0 and ${baseInfoKey} like concat('%',#{baseInfoValue},'%')
+            del_flag=0
+            <if test="idValue != null">
+                and ${idKey} like concat('%',#{idValue},'%')
+            </if>
+            <if test="addressValue != null">
+                and ${addressKey} like concat('%',#{addressValue},'%')
+            </if>
+            <if test="adminValue != null">
+                and ${adminKey} like concat('%',#{adminValue},'%')
+            </if>
+            <if test="phoneValue != null">
+                and ${phoneKey} like concat('%',#{phoneValue},'%')
+            </if>
             <if test="statusValue != null">
-                and ${statusKey} = #{statusValue}
+                and ${statusKey} like concat('%',#{statusValue},'%')
             </if>
         </where>
     </select>

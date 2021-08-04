@@ -254,16 +254,27 @@ public class MachineServiceImp implements MachineService {
 
     @Override
     public Object searchMachine(int page,int limit,String searchKey,String searchValue) {
-        Map<String ,Object> map = new HashMap<String ,Object>();
-        String [] key = searchKey.split(",");
-        String [] value = searchValue.split(",");
+        Map<String ,Object> map = new HashMap<>();
         map.put("p",(page-1)*limit);
         map.put("m",limit);
-        map.put("baseInfoKey",key[0]);
-        map.put("statusKey",key[1]);
-        map.put("baseInfoValue",value[0]);
-        if(value.length>=2){
-            map.put("statusValue",value[1]);
+        String [] key = searchKey.split(";");
+        String [] value = searchValue.split(";");
+        map.put("idKey",key[0]);
+        map.put("nameKey",key[1]);
+        map.put("locateKey",key[2]);
+        map.put("typeKey",key[3]);
+
+        if(value.length>=1 && !value[0].equals("")){
+            map.put("idValue",value[0]);
+        }
+        if(value.length>=2 && !value[1].equals("")){
+            map.put("nameValue",value[1]);
+        }
+        if(value.length>=3 && !value[2].equals("")) {
+            map.put("locateValue", value[2]);
+        }
+        if(value.length>=4 && !value[3].equals("")) {
+            map.put("typeValue", value[3]);
         }
         List<Map> pageMachineList = machineDao.searchMachine(map);
         int count = machineDao.getSearchMachineCount(map);
