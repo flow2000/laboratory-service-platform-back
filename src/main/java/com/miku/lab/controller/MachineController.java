@@ -10,15 +10,18 @@ import com.miku.lab.entity.vo.ReturnResult;
 import com.miku.lab.service.MachineService;
 import com.miku.lab.util.Constant;
 import com.miku.lab.util.AjaxUtil;
+import com.miku.lab.util.FileUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/machine")
@@ -79,6 +82,46 @@ public class MachineController {
             return AjaxUtil.success("添加成功", Constant.RESCODE_SUCCESS,1);
         }else{
             return AjaxUtil.error(Constant.RESCODE_INSERTERROR, "添加失败");
+        }
+    }
+
+    @PostMapping("/projectPictureUpload")
+    @ResponseBody
+    public ReturnResult projectPictureUpload(@RequestParam(value = "projectImg",required = true) MultipartFile file){
+        //将图片上传到服务器
+        if(file.isEmpty()){
+            return AjaxUtil.error(Constant.RESCODE_NOEXIST,"项目图片不能为空");
+        }
+        //原始文件名
+        String originalFilename = file.getOriginalFilename();
+        //文件后缀
+        String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+        //图片名称为uuid+图片后缀防止冲突
+        String fileName = UUID.randomUUID().toString()+"."+suffix;
+        String os = System.getProperty("os.name");
+        //文件保存路径
+        String filePath="";
+        if(os.toLowerCase().startsWith("win")){
+            //windows下的路径
+            filePath ="c:/pictureUpload/project/";
+        }else {
+            //linux下的路径
+            filePath="/root/pictureUpload/project/";
+        }
+        try {
+            //写入图片
+            Boolean writePictureflag = FileUtils.uploadFile(file.getBytes(),filePath,fileName);
+            if(!writePictureflag){
+                //上传图片失败
+                return AjaxUtil.error(Constant.UPLOAD_FAIL,"上传项目图片失败");
+            }
+            //上传成功后，将可以访问的完整路径返回
+            String fullImgpath = "/pictureUpload/project/"+fileName;
+            return AjaxUtil.success(fullImgpath,Constant.RESCODE_SUCCESS_MSG,1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //上传图片失败
+            return AjaxUtil.error(Constant.UPLOAD_FAIL,"上传项目图片失败");
         }
     }
 
