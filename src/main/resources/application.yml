@@ -11,7 +11,13 @@ spring:
       connection-test-query: SELECT 1
 server:
   port: 9000
-
+## 文件访问路径
+file:
+  common:
+    ## windows系统下访问路径
+    uploadWindow: C:\pictureUpload\project\
+    ## windows系统下访问路径
+    uploadLinux: /root/pictureUpload/project/
 logging:
   level:
     root: info
