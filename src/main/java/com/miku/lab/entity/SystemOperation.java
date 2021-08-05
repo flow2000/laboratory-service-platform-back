@@ -41,4 +41,7 @@ public class SystemOperation {
 
     private String  isOk;    //操作成功否
 
+    private String respResult;  //返回数据
+
+
 }

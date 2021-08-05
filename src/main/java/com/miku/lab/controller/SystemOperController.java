@@ -41,7 +41,7 @@ public class SystemOperController {
         }
     }
 
-    @ApiOperation(value="获取所有文章分类接口")
+    @ApiOperation(value="获取所有操作记录类接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page",value="页数",required=true),
             @ApiImplicitParam(name = "limit", value = "每页数据量", required = true)

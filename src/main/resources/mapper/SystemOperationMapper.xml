@@ -66,11 +66,11 @@
         insert
         into log_system_operation(
                 ip_address,module_code,opertor,oper_time,
-                oper_type,oper_content,is_ok,del_flag,module_name
+                oper_type,oper_content,is_ok,del_flag,module_name,resp_result
                 )
         values(
                 #{ip_address},#{module_code},#{operator},#{oper_time},
-                #{oper_type},#{oper_content},#{is_ok},0,#{moduleName}
+                #{oper_type},#{oper_content},#{is_ok},0,#{moduleName},#{respResult}
                 )
     </insert>
 

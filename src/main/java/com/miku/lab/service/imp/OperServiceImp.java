@@ -100,6 +100,11 @@ public class OperServiceImp implements OperService {
         }
     }
 
+    /**
+     * 添加日志
+     * @param operation
+     * @return
+     */
     @Override
     public int addOper(SystemOperation operation) {
         Map<String,Object> map = new HashMap<>();
@@ -111,6 +116,7 @@ public class OperServiceImp implements OperService {
         map.put("oper_content",operation.getOperContent());
         map.put("is_ok",operation.getIsOk());
         map.put("moduleName",operation.getModuleName());
+        map.put("respResult",operation.getRespResult());
         int addAffect = systemOperationDao.addOper(map);
         if(addAffect!=0){
             return addAffect;
