@@ -3,12 +3,110 @@
 <mapper namespace="com.miku.lab.dao.ArticleDao">
 
 
-    <select id="getAllArticle" resultType="com.miku.lab.entity.Article" parameterType="com.miku.lab.entity.Article">
-        select *from sys_article
+    <select id="getAllArticle" resultType="map">
+        SELECT sys_article.*,sys_article_sort.sort_name
+        FROM sys_article,sys_article_sort
         <where>
-            del_flag=0
+            sys_article.article_class=sys_article_sort.sort_id
+            and sys_article.del_flag=0
+            and sys_article_sort.del_flag=0
+            and sys_article.valid_status=1
+            and sys_article_sort.valid_status=1
         </where>
+        order by sys_article.create_time desc
     </select>
+
+    <select id="getPageArticle" resultType="map">
+        SELECT sys_article.*,sys_article_sort.sort_name
+        FROM sys_article,sys_article_sort
+        <where>
+            sys_article.article_class=sys_article_sort.sort_id
+            and sys_article.del_flag=0
+            and sys_article_sort.del_flag=0
+            and sys_article.valid_status=1
+            and sys_article_sort.valid_status=1
+        </where>
+        order by sys_article.create_time desc
+    </select>
+
+    <select id="getOneArticle" parameterType="String" resultType="map">
+        select * from sys_article where article_code=#{article_code}
+    </select>
+
+    <select id="searchArticle" resultType="map" parameterType="map">
+        SELECT sys_article.*,sys_article_sort.sort_name
+        FROM sys_article,sys_article_sort
+        <where>
+            sys_article.article_class=sys_article_sort.sort_id
+            <if test="titleValue != null">
+                and ${titleKey} like concat('%',#{titleValue},'%')
+            </if>
+            <if test="actorValue != null">
+                and ${actorKey} like concat('%',#{actorValue},'%')
+            </if>
+            <if test="classValue != null">
+                and ${classKey} like concat('%',#{classValue},'%')
+            </if>
+            and sys_article.del_flag=0
+            and sys_article_sort.del_flag=0
+            and sys_article.valid_status=1
+            and sys_article_sort.valid_status=1
+        </where>
+        order by sys_article.create_time desc
+    </select>
+
+    <insert id="addArticle" parameterType="map">
+        insert into sys_article(
+            article_code,
+            article_class,
+            article_title,
+            article_actor,
+            article_content,
+            article_date,
+            article_abstract,
+            is_push,
+            valid_status,
+            creater,
+            create_time,
+            del_flag
+        )value(
+            #{article_code},
+            #{article_class},
+            #{article_title},
+            #{article_actor},
+            #{article_content},
+            NOW(),
+            #{article_abstract},
+            1,
+            #{valid_status},
+            #{creater},
+            NOW(),
+            0
+        )
+    </insert>
+
+    <update id="deleteArticle" parameterType="java.lang.String">
+        update sys_article set del_flag=1 and del_time=NOW()
+        <where>
+            del_flag=0 and article_code in
+            <foreach collection="array" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </update>
+
+    <update id="updateArticle" parameterType="map">
+        update sys_article
+        set article_class=#{article_class},
+        article_title=#{article_title},
+        article_actor=#{article_actor},
+        article_content=#{article_content},
+        article_date=#{article_date},
+        article_abstract=#{article_abstract},
+        valid_status=#{valid_status},
+        updater=#{updater},
+        update_time=NOW(),
+    </update>
 
     <select id="getAllArticleSort" resultType="com.miku.lab.entity.ArticleSort" parameterType="com.miku.lab.entity.ArticleSort">
         select *from sys_article_sort

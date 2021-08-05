@@ -4,6 +4,8 @@ package com.miku.lab.service.imp;/*
  *@version:1.1
  */
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.miku.lab.dao.ArticleDao;
 import com.miku.lab.entity.Article;
 import com.miku.lab.entity.ArticleSort;
@@ -11,6 +13,7 @@ import com.miku.lab.entity.Machine_sort;
 import com.miku.lab.service.ArticleService;
 import com.miku.lab.util.Constant;
 import com.miku.lab.util.IdUtil;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +37,62 @@ public class ArticleServiceImp implements ArticleService {
         }else{
             return null;
         }
+    }
+
+    public Object getOneArticle(String article_code) {
+        return articleDao.getOneArticle(article_code);
+    }
+
+    @Override
+    public Object getPageArticle(int page, int limit) {
+        PageHelper.startPage(page, limit);//开始分页
+        List<Map> articleList = articleDao.getPageArticle(); //拼接sql语句
+        return new PageInfo<>(articleList); //将分页结果放入pageUserList
+    }
+
+    @Override
+    public Object searchArticle(String searchKey, String searchValue, int page, int limit) {
+        Map<String ,Object> map = new HashMap<>();
+        String [] key = searchKey.split(";");
+        String [] value = searchValue.split(";");
+        map.put("titleKey",key[0]);
+        map.put("actorKey",key[1]);
+        map.put("classKey",key[2]);
+
+        if(value.length >= 1 && !value[0].equals("") &&!value[0].equals("null")){
+            map.put("titleValue",value[0]);
+        }
+        if(value.length>=2 && !value[1].equals("") &&!value[1].equals("null")){
+            map.put("actorValue",value[1]);
+        }
+        if(value.length>=3 && !value[2].equals("") &&!value[2].equals("null")) {
+            map.put("classValue", value[2]);
+        }
+        PageHelper.startPage(page, limit);
+        List<Map> articleList = articleDao.searchArticle(map);
+        return new PageInfo<>(articleList);
+    }
+
+    @Override
+    public int addArticle(Map<String, Object> map) {
+        String article_code = IdUtil.getSixNum();
+        while(getOneArticle(article_code)!=null){
+            article_code = IdUtil.getSixNum();
+        }
+        map.put("article_code",article_code);
+        return articleDao.addArticle(map);
+    }
+
+    @Override
+    public int deleteArticle(Map<String, Object> map) {
+        String str = (String) map.get("article_code");
+        String [] arr = str.split(",");
+        return articleDao.deleteArticle(arr);
+    }
+
+    @Override
+    public int updateArticle(Map<String, Object> map) {
+        return articleDao.updateArticle(map);
     }
 
     @Override

@@ -7,10 +7,22 @@ package com.miku.lab.service;/*
 import com.miku.lab.entity.ArticleSort;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public interface ArticleService {
 
     Object getAllArticle();
+
+    Object getPageArticle(int page, int limit);
+
+    Object searchArticle(String searchKey, String searchValue, int page, int limit);
+
+    int addArticle(Map<String, Object> map);
+
+    int deleteArticle(Map<String, Object> map);
+
+    int updateArticle(Map<String, Object> map);
 
     Object getAllArticleSort();
 

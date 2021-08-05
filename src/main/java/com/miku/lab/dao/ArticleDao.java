@@ -20,6 +20,18 @@ public interface ArticleDao {
     //获取所有文章
     List<Article> getAllArticle();
 
+    List<Map> getPageArticle();
+
+    Map<String, Object> getOneArticle(String article_code);
+
+    List<Map> searchArticle(Map<String, Object> map);
+
+    int addArticle(Map<String, Object> map);
+
+    int deleteArticle(String[] arr);
+
+    int updateArticle(Map<String, Object> map);
+
     //获取所有文章分类
     List<ArticleSort>getAllArticleSort();
     //分页获取文章分类
