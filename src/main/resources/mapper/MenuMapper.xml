@@ -62,4 +62,28 @@
     </select>
 
 
+    <update id="delMenu" parameterType="com.miku.lab.entity.SysMenu">
+        update sys_menu
+        set del_flag=1
+        <where>
+            menu_id = #{menuId}
+        </where>
+    </update>
+
+    <update id="updateMenu" parameterType="map">
+        update sys_menu
+        set update_time=NOW(),
+        title=#{title},
+        parent_id=#{parent_id},
+        order_num=#{order_num},
+        href=#{href},
+        menu_type=#{menu_type},
+        perms=#{perms},
+        updater=#{updater}
+        <where>
+            menu_id=#{menu_id}
+        </where>
+    </update>
+
+
 </mapper>

@@ -39,4 +39,12 @@ public interface MenuDao {
 
     //通过perms查询菜单
     SysMenu getMenuByPerms(String perms);
+
+    //删除菜单
+    int delMenu(String menuId);
+
+    //更新菜单信息
+    int updateMenu(Map<String,Object>map);
+
+
 }

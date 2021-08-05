@@ -4,6 +4,7 @@ package com.miku.lab.service;/*
  *@version:1.1
  */
 
+import com.miku.lab.entity.ArticleSort;
 import com.miku.lab.entity.SysMenu;
 import org.springframework.stereotype.Service;
 
@@ -24,4 +25,13 @@ public interface MenuService {
 
     //添加菜单
     public String addMenu(Map<String, Object> map);
+
+    //删除菜单
+    public int delMenu(String menuId);
+
+    //获取菜单详细接口
+    Object getMenuDetail(String menuId);
+
+    //更新菜单信息
+    public int updateMenu(Map<String, Object>map);
 }

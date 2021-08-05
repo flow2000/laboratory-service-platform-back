@@ -20,7 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/menu")
-@Api(value="MenuController",tags="菜单接口")
+@Api(value="MenuController",tags="后台菜单接口")
 public class MenuController {
 
     @Autowired
@@ -66,5 +66,58 @@ public class MenuController {
     public ReturnResult addMenu(@RequestBody Map<String, Object>map){
         String res = menuService.addMenu(map);
         return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,res);
+    }
+
+    @ApiOperation(value="批量删除菜单接口")
+    @PostMapping("/combineDelMenu")
+    public ReturnResult combineDelMenu(@RequestParam String ids){
+        String[] menuIs = ids.split(",");
+        int count=menuIs.length;
+        int delCount=0;
+        for(String menuId:menuIs){
+            int flag = menuService.delMenu(menuId);
+            if (flag == 1) {
+                delCount++;
+            }
+        }
+        if(delCount==count){
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"批量删除成功");
+        }else{
+            return AjaxUtil.success("已删除",Constant.RESCODE_DELETEERROR,delCount);
+        }
+    }
+
+    @ApiOperation(value="删除菜单接口")
+    @PostMapping("/delMenu")
+    public ReturnResult delMenu(@RequestParam String menuId){
+        int flag = menuService.delMenu(menuId);
+        if (flag == 0) {
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_INSERTERROR,"删除失败");
+        }else{
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"删除成功");
+        }
+    }
+
+    @ApiOperation(value="获取菜单详细接口")
+    @ApiImplicitParam(name = "menuId",value="菜单编号",required=true)
+    @GetMapping("/getMenuDetail")
+    public ReturnResult getMenuDetail(@RequestParam String menuId){
+        Object map = menuService.getMenuDetail(menuId);
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
+
+    @ApiOperation(value="修改菜单接口")
+    @PostMapping("/updateMenu")
+    public ReturnResult updateMenu(@RequestBody Map<String, Object>map){
+        int res = menuService.updateMenu(map);
+        if(res==1){
+            return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"修改成功");
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "修改失败");
+        }
     }
 }

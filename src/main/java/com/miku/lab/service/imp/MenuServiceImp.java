@@ -5,6 +5,7 @@ package com.miku.lab.service.imp;/*
  */
 
 import com.miku.lab.dao.MenuDao;
+import com.miku.lab.dao.PermissionDao;
 import com.miku.lab.entity.Article;
 import com.miku.lab.entity.ArticleSort;
 import com.miku.lab.entity.SysMenu;
@@ -24,6 +25,9 @@ public class MenuServiceImp implements MenuService {
 
     @Autowired
     private MenuDao menuDao;
+
+    @Autowired
+    private PermissionDao permissionDao;
 
 
     /**
@@ -107,13 +111,59 @@ public class MenuServiceImp implements MenuService {
         if(perms!=null){
             return "权限标识重复";
         }
+
+        //添加到用户菜单表
+        Map<String, Object>roleMenuMap = new HashMap<>();
+        roleMenuMap.put("roleId","root");
+        roleMenuMap.put("menuId",String.valueOf(map.get("menu_id")));
+        int addRoleMenu = permissionDao.addRoleMenu(roleMenuMap);
+
+        //添加到菜单表
         int addMenu = menuDao.addMenu(map);
-        if(addMenu>0){
+        if(addMenu>0&&addRoleMenu>0){
             return "添加成功";
         }
         else{
             return "添加失败";
         }
 
+    }
+
+    @Override
+    public int delMenu(String menuId) {
+        int delMenu = menuDao.delMenu(menuId);
+        if(delMenu!=0){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+    /**
+     * 获取菜单详细
+     * @param menuId
+     * @return
+     */
+    @Override
+    public Object getMenuDetail(String menuId) {
+        Map<String,Object> map = new HashMap<>();
+        SysMenu sysMenu = menuDao.getMenuByMenuId(menuId);
+        if(sysMenu!=null){
+            map.put("menuDetail",sysMenu);
+            return map;
+        }else{
+            map.put("menuDetail","查询失败");
+            return map;
+        }
+    }
+
+    /**
+     * 更新菜单
+     * @param map
+     * @return
+     */
+    @Override
+    public int updateMenu(Map<String, Object>map){
+        return menuDao.updateMenu(map);
     }
 }
