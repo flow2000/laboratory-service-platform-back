@@ -16,7 +16,7 @@ public class SourceConfiguration extends WebMvcConfigurationSupport {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         String os = System.getProperty("os.name");
-
+        registry.addResourceHandler("swagger-ui.html");
         //如果是Windows系统
         if (os.toLowerCase().startsWith("win")) {
             registry.addResourceHandler("/**")
