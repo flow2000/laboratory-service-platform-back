@@ -194,18 +194,15 @@ public class BookLogServiceImp implements BookLogService{
             }
 
         }
-
         //处理仪器---end
-
-
         if(count==shouldSuccess){
             return AjaxUtil.sucessUpdate(Constant.RESCODE_SUCCESS,"实验室和仪器预约成功");
         }else{
             Map<String, Object>mapResult = new HashMap<>();
             if(machineListError!=null){
                 mapResult.put("实验室预约成功,以下是仪器预约失败的信息：",machineListError);
+                mapResult.put("code",Constant.RESCODE_SUCCESS_MSG);
             }
-            //mapResult.put("",Constant.RESCODE_SUCCESS);
             return AjaxUtil.bookError(mapResult,Constant.RESCODE_BOOK_ERROR);
         }
     }
