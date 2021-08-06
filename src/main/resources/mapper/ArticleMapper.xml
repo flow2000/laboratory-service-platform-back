@@ -27,6 +27,20 @@
             and sys_article_sort.valid_status=1
         </where>
         order by sys_article.create_time desc
+        limit #{p},#{m}
+    </select>
+
+    <select id="getPageArticleCount" resultType="int">
+        SELECT COUNT(*)
+        FROM sys_article,sys_article_sort
+        <where>
+            sys_article.article_class=sys_article_sort.sort_id
+            and sys_article.del_flag=0
+            and sys_article_sort.del_flag=0
+            and sys_article.valid_status=1
+            and sys_article_sort.valid_status=1
+        </where>
+        order by sys_article.create_time desc
     </select>
 
     <select id="getOneArticle" parameterType="String" resultType="map">
@@ -35,6 +49,29 @@
 
     <select id="searchArticle" resultType="map" parameterType="map">
         SELECT sys_article.*,sys_article_sort.sort_name
+        FROM sys_article,sys_article_sort
+        <where>
+            sys_article.article_class=sys_article_sort.sort_id
+            <if test="titleValue != null">
+                and ${titleKey} like concat('%',#{titleValue},'%')
+            </if>
+            <if test="actorValue != null">
+                and ${actorKey} like concat('%',#{actorValue},'%')
+            </if>
+            <if test="classValue != null">
+                and ${classKey} like concat('%',#{classValue},'%')
+            </if>
+            and sys_article.del_flag=0
+            and sys_article_sort.del_flag=0
+            and sys_article.valid_status=1
+            and sys_article_sort.valid_status=1
+        </where>
+        order by sys_article.create_time desc
+        limit #{p},#{m}
+    </select>
+
+    <select id="searchArticleCount" resultType="int" parameterType="map">
+        SELECT COUNT(*)
         FROM sys_article,sys_article_sort
         <where>
             sys_article.article_class=sys_article_sort.sort_id

@@ -4,8 +4,6 @@ package com.miku.lab.service.imp;/*
  *@version:1.1
  */
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.miku.lab.dao.ArticleDao;
 import com.miku.lab.entity.Article;
 import com.miku.lab.entity.ArticleSort;
@@ -31,7 +29,7 @@ public class ArticleServiceImp implements ArticleService {
 
     @Override
     public Object getAllArticle() {
-        List<Article> articles = articleDao.getAllArticle();
+        List<Map> articles = articleDao.getAllArticle();
         if (articles!=null){
             return articles;
         }else{
@@ -45,14 +43,39 @@ public class ArticleServiceImp implements ArticleService {
 
     @Override
     public Object getPageArticle(int page, int limit) {
-        PageHelper.startPage(page, limit);//开始分页
-        List<Map> articleList = articleDao.getPageArticle(); //拼接sql语句
-        return new PageInfo<>(articleList); //将分页结果放入pageUserList
+        Map<String,Object> map = new HashMap<>();
+        int p = 0;
+        int m = 10;
+        try{
+            p = (page-1)*limit;
+            m = limit;
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("msg","参数错误");
+            return map;
+        }
+        List<Map> pageUserList = articleDao.getPageArticle(p,m);
+        int count = articleDao.getPageArticleCount();
+        map.put("list",pageUserList);
+        map.put("total",count);
+        return map;
     }
 
     @Override
     public Object searchArticle(String searchKey, String searchValue, int page, int limit) {
         Map<String ,Object> map = new HashMap<>();
+        int p = 0;
+        int m = 10;
+        try{
+            p = (page-1)*limit;
+            m = limit;
+        }catch (Exception e){
+            e.printStackTrace();
+            map.put("msg","参数错误");
+            return map;
+        }
+        map.put("p",p);
+        map.put("m",m);
         String [] key = searchKey.split(";");
         String [] value = searchValue.split(";");
         map.put("titleKey",key[0]);
@@ -68,9 +91,12 @@ public class ArticleServiceImp implements ArticleService {
         if(value.length>=3 && !value[2].equals("") &&!value[2].equals("null")) {
             map.put("classValue", value[2]);
         }
-        PageHelper.startPage(page, limit);
         List<Map> articleList = articleDao.searchArticle(map);
-        return new PageInfo<>(articleList);
+        Map<String ,Object> resMap = new HashMap<>();
+        int count = articleDao.searchArticleCount(map);
+        resMap.put("list",articleList);
+        resMap.put("total",count);
+        return resMap;
     }
 
     @Override

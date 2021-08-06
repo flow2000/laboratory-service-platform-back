@@ -18,13 +18,17 @@ import java.util.Map;
 public interface ArticleDao {
 
     //获取所有文章
-    List<Article> getAllArticle();
+    List<Map> getAllArticle();
 
-    List<Map> getPageArticle();
+    List<Map> getPageArticle(int p,int m);
+
+    int getPageArticleCount();
 
     Map<String, Object> getOneArticle(String article_code);
 
     List<Map> searchArticle(Map<String, Object> map);
+
+    int searchArticleCount(Map<String, Object> map);
 
     int addArticle(Map<String, Object> map);
 
