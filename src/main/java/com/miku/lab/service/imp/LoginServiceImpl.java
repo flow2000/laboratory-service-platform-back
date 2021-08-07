@@ -98,7 +98,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
             UserInfo userInfoToken =getLoginUser(token);
             userInfoToken.setPassword("*******");
             map.put("user",userInfoToken);
-            redisUtil.returnResource(RedisUtil.getJedis());
             return map;
         }else{
             map.put("code",String.valueOf(Constant.RESCODE_LOGIN_ERROR));
@@ -122,7 +121,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
                 return userInfoByUserName;
             }
         }
-        redisUtil.returnResource(RedisUtil.getJedis());
         return null;
     }
 
@@ -172,7 +170,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
                 map.put("msg","token已失效，请重新登录");
                 return map;
             }
-            redisUtil.returnResource(RedisUtil.getJedis());
         }
 
         map.put("code","200");
