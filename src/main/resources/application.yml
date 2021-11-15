@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://47.118.55.237:3306/db_laboratory?characterEncoding=UTF-8&useSSL=false
-    username: root
-    password: 526500siji
+    url: jdbc:mysql://localhost:3306/db_laboratory?characterEncoding=UTF-8&useSSL=false
+    username: db_laboratory
+    password: 20061016Wang
     hikari:
       minimum-idle: 3
       maximum-pool-size: 10
