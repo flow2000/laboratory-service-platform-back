@@ -37,6 +37,14 @@
     </properties>
     <dependencies>
 
+
+        <!--Request依赖-->
+        <dependency>
+            <groupId>com.github.kevinsawicki</groupId>
+            <artifactId>http-request</artifactId>
+            <version>6.0</version>
+        </dependency>
+
 <!--        导出json-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
