@@ -152,6 +152,23 @@ public class OrderCheckServiceImp implements OrderCheckService {
         return orderCheckDao.checkBooking(param);
     }
 
+    /**
+     * 重新审核预约
+     * @param param
+     * @return
+     */
+    @Override
+    public int againCheckBooking(Map<String, Object> param) {
+        if("1".equals(param.get("check_status"))){ //审核通过
+            param.put("check_result",1);
+        }else if("2".equals(param.get("check_status"))){ //审核不通过
+            param.put("check_result",0);
+        }
+        send(param);  //推送
+        orderCheckDao.addOrderCheckLog(param);
+        return orderCheckDao.againCheckBooking(param);
+    }
+
     @Override
     public Object getPageBookingLog(int page, int limit) {
         Map<String,Object> map = new HashMap<>();

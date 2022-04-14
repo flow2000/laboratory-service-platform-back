@@ -32,4 +32,6 @@ public interface OrderCheckService {
     Object searchBookingLog(int page, int limit, String searchKey, String searchValue);
 
     Object getAllBookingLog();
+
+    int againCheckBooking(Map<String, Object> param);
 }

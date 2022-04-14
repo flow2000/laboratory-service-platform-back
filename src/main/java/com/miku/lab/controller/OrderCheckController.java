@@ -126,6 +126,17 @@ public class OrderCheckController {
         }
     }
 
+    @ApiOperation(value = "重新审核预约")
+    @PostMapping("/againCheckBooking")
+    public ReturnResult againCheckBooking(@RequestBody Map<String,Object> param){
+        int res = orderCheckService.againCheckBooking(param);
+        if(res!=0){
+            return AjaxUtil.success("成功", Constant.RESCODE_SUCCESS,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_MODIFYERROR, "审核失败");
+        }
+    }
+
     @ApiOperation(value = "获取所有预约记录的信息")
     @GetMapping("/getAllBookingLog")
     public ReturnResult getAllBookingLog(){

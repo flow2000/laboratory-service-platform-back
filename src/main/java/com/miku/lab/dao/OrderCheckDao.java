@@ -52,4 +52,6 @@ public interface OrderCheckDao {
     List<Map> getAllBookingLog();
 
     List<Map> getWxUserToken(String openid);
+
+    int againCheckBooking(Map<String, Object> param);
 }

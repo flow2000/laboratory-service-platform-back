@@ -130,8 +130,15 @@
 
     <update id="checkBooking" parameterType="map">
         update sys_order_check
-        set check_status = #{check_status},checker=#{checker},updater=#{updater},update_time=NOW(),del_flag=1
+        set check_status = #{check_status},checker=#{checker},updater=#{updater},update_time=NOW()
         where id=#{id}
+        and del_flag=0
+    </update>
+
+    <update id="againCheckBooking" parameterType="map">
+        update sys_order_check
+        set check_status = #{check_status},checker=#{checker},updater=#{updater},update_time=NOW()
+        where booking_code=#{booking_code}
         and del_flag=0
     </update>
 
@@ -225,5 +232,5 @@
     <select id="getWxUserToken" parameterType="String" resultType="map">
         select * from wx_booking_user where openId=#{openid}
     </select>
-    
+
 </mapper>
