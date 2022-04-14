@@ -135,6 +135,11 @@ public class OrderCheckServiceImp implements OrderCheckService {
         return resMap;
     }
 
+    @Override
+    public List<OrderCheck> getBookingByOpenId(String openId) {
+        return orderCheckDao.getBookingByOpenId(openId);
+    }
+
     /**
      * 审核结果推送
      * @param param

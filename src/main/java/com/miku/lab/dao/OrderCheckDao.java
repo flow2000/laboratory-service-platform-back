@@ -54,4 +54,6 @@ public interface OrderCheckDao {
     List<Map> getWxUserToken(String openid);
 
     int againCheckBooking(Map<String, Object> param);
+
+    List<OrderCheck> getBookingByOpenId(String openId);
 }

@@ -178,4 +178,15 @@ public class OrderCheckController {
             return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
         }
     }
+
+    @ApiOperation(value = "通过openId获取预约记录")
+    @GetMapping("/getBookingByOpenId")
+    public ReturnResult getBookingByOpenId(@RequestParam String openId){
+        Object map = orderCheckService.getBookingByOpenId(openId);
+        if(map!=null){
+            return AjaxUtil.success(map, Constant.RESCODE_SUCCESS_MSG,1);
+        }else{
+            return AjaxUtil.error(Constant.RESCODE_SUCCESS, "获取信息失败");
+        }
+    }
 }

@@ -4,8 +4,10 @@ package com.miku.lab.service;/*
  *@version:1.1
  */
 
+import com.miku.lab.entity.OrderCheck;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -34,4 +36,6 @@ public interface OrderCheckService {
     Object getAllBookingLog();
 
     int againCheckBooking(Map<String, Object> param);
+
+    List<OrderCheck> getBookingByOpenId(String openId);
 }
