@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +31,12 @@ public class MachineController {
 
     @Autowired
     private MachineService machineService;
+
+    @Value("${file.common.uploadLinux}")
+    private String filePathLinux;
+
+    @Value("${file.common.uploadWindow}")
+    private String filePathWindow;
 
     /**
      * 获取所有仪器
@@ -103,10 +110,10 @@ public class MachineController {
         String filePath="";
         if(os.toLowerCase().startsWith("win")){
             //windows下的路径
-            filePath ="c:/pictureUpload/project/";
+            filePath = filePathWindow;
         }else {
             //linux下的路径
-            filePath="/root/pictureUpload/project/";
+            filePath = filePathLinux;
         }
         try {
             //写入图片
