@@ -32,11 +32,11 @@ public class MachineController {
     @Autowired
     private MachineService machineService;
 
-    @Value("${file.common.uploadLinux}")
-    private String filePathLinux;
+    @Value("${file.common.uploadPictureByLinux}")
+    private String uploadPictureByLinux;
 
-    @Value("${file.common.uploadWindow}")
-    private String filePathWindow;
+    @Value("${file.common.uploadPictureByWindow}")
+    private String uploadPictureByWindow;
 
     /**
      * 获取所有仪器
@@ -110,10 +110,10 @@ public class MachineController {
         String filePath="";
         if(os.toLowerCase().startsWith("win")){
             //windows下的路径
-            filePath = filePathWindow;
+            filePath = uploadPictureByWindow;
         }else {
             //linux下的路径
-            filePath = filePathLinux;
+            filePath = uploadPictureByLinux;
         }
         try {
             //写入图片

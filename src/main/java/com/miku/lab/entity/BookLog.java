@@ -22,6 +22,8 @@ public class BookLog {
 
     private Integer id;                         //id
 
+    private String openId;
+
     private String bookingCode;                 //预约申请编号
 
     private String bookingChecker;              //审核人

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -86,6 +87,17 @@ public class BookLogServiceImp implements BookLogService{
         String startTime = String.valueOf(map.get("startTime"));
         if(!TimeUtil.isParseDate(startTime)){
             return AjaxUtil.error(611,"开始时间格式错误");
+        }
+        //结束时间不能大于开始时间
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date s = format.parse(startTime);
+            Date e = format.parse(endTime);
+            if (e.before(s)) {
+                return AjaxUtil.error(612,"结束时间不能早于开始时间");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 

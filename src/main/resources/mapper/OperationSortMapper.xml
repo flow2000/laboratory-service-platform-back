@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miku.lab.dao.OperationSortDao">
+
+    <resultMap id="sortResult" type="com.miku.lab.entity.OperationSort">
+        <id property="sortId" column="sort_id"/>
+        <result property="sortName" column="sort_name"/>
+        <result property="remark" column="remark"/>
+        <result property="validStatus" column="valid_status"/>
+        <result property="creater" column="creater"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updater" column="updater"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="delTime" column="del_time"/>
+    </resultMap>
+
+    <sql id="selectSortVo">
+        select os.sort_id, os.sort_name, os.remark, os.valid_status, os.creater, os.create_time, os.updater, os.update_time, os.del_flag, os.del_time
+        from sys_operation_sort os
+    </sql>
+
+    <select id="listOperationSort" parameterType="com.miku.lab.entity.OperationSort" resultMap="sortResult">
+        <include refid="selectSortVo"/>
+        where os.del_flag=0
+        <if test="sortId != null and sortId != ''">
+            AND os.sort_id = #{sortId}
+        </if>
+        <if test="sortName != null and sortName != ''">
+            AND os.sort_name like concat('%', #{sortName}, '%')
+        </if>
+        <if test="remark != null and remark != ''">
+            AND os.remark like concat('%', #{remark}, '%')
+        </if>
+        <if test="validStatus != null and validStatus != ''">
+            AND os.valid_status = #{validStatus}
+        </if>
+        order by os.create_time desc
+        <if test="page != null and limit != null and limit != 0">
+            limit #{page},#{limit}
+        </if>
+    </select>
+
+    <select id="listOperationSortNumber" parameterType="com.miku.lab.entity.OperationSort" resultType="int">
+        select COUNT(*) from sys_operation_sort os
+        where os.del_flag=0
+        <if test="sortId != null and sortId != ''">
+            AND os.sort_id = #{sortId}
+        </if>
+        <if test="sortName != null and sortName != ''">
+            AND os.sort_name like concat('%', #{sortName}, '%')
+        </if>
+        <if test="remark != null and remark != ''">
+            AND os.remark like concat('%', #{remark}, '%')
+        </if>
+        <if test="validStatus != null and validStatus != ''">
+            AND os.valid_status = #{validStatus}
+        </if>
+    </select>
+
+    <insert id="addOperationSort" parameterType="com.miku.lab.entity.OperationSort" useGeneratedKeys="true" keyProperty="sortId">
+        insert into sys_operation_sort(
+        <if test="sortName != null and sortName != ''">sort_name,</if>
+        <if test="remark != null and remark != ''">remark,</if>
+        valid_status,
+        <if test="creater != null and creater != ''">creater,</if>
+        create_time,
+        del_flag
+        )values(
+        <if test="sortName != null and sortName != ''">#{sortName},</if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        1,
+        <if test="creater != null and creater != ''">#{creater},</if>
+        sysdate(),
+        0
+        )
+    </insert>
+
+    <update id="deleteOperationSorts" parameterType="Long">
+        update sys_operation_sort set del_flag = '1',del_time=sysdate() where sort_id in
+        <foreach collection="array" item="sortId" open="(" separator="," close=")">
+            #{sortId}
+        </foreach>
+    </update>
+
+    <update id="updateOperationSort" parameterType="com.miku.lab.entity.OperationSort">
+        update sys_operation_sort
+        <set>
+            <if test="sortName != null and sortName != ''">sort_name=#{sortName},</if>
+            <if test="remark != null and remark != ''">remark=#{remark},</if>
+            <if test="validStatus != null">valid_status=#{validStatus},</if>
+            <if test="updater!=null and updater!=''">updater=#{updater},</if>
+            update_time=sysdate()
+        </set>
+        where sort_id = #{sortId}
+    </update>
+
+</mapper>

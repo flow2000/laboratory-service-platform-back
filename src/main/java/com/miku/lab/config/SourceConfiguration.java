@@ -7,11 +7,17 @@ import org.springframework.web.servlet.config.annotation.*;
 @Configuration
 public class SourceConfiguration extends WebMvcConfigurationSupport {
 
-    @Value("${file.common.uploadWindow}")
-    private String filePathWindow;
+    @Value("${file.common.uploadPictureByWindow}")
+    private String uploadPictureByWindow;
 
-    @Value("${file.common.uploadLinux}")
-    private String filePathLinux;
+    @Value("${file.common.uploadPictureByLinux}")
+    private String uploadPictureByLinux;
+
+    @Value("${file.common.uploadAttachmentByLinux}")
+    private String uploadAttachmentByLinux;
+
+    @Value("${file.common.uploadAttachmentByWindow}")
+    private String uploadAttachmentByWindow;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -24,10 +30,14 @@ public class SourceConfiguration extends WebMvcConfigurationSupport {
         //如果是Windows系统
         if (os.toLowerCase().startsWith("win")) {
             registry.addResourceHandler("/**")
-                    .addResourceLocations("file:" + filePathWindow);
+                    .addResourceLocations("file:" + uploadPictureByWindow);
+            registry.addResourceHandler("/**")
+                    .addResourceLocations("file:" + uploadAttachmentByWindow);
         } else {  //linux 和mac
             registry.addResourceHandler("/**")
-                    .addResourceLocations("file:" + filePathLinux) ;
+                    .addResourceLocations("file:" + uploadPictureByLinux) ;
+            registry.addResourceHandler("/**")
+                    .addResourceLocations("file:" + uploadAttachmentByLinux) ;
         }
 
         super.addResourceHandlers(registry);

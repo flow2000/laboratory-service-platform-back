@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miku.lab.dao.OperationDao">
+
+    <resultMap type="com.miku.lab.entity.Operation" id="operationResult">
+        <id property="operationId" column="operation_id"/>
+        <result property="sortId" column="sort_id"/>
+        <result property="title" column="title"/>
+        <result property="actor" column="actor"/>
+        <result property="content" column="content"/>
+        <result property="date" column="date"/>
+        <result property="abs" column="abs"/>
+        <result property="attachment" column="attachment"/>
+        <result property="creater" column="creater"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updater" column="updater"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="delTime" column="del_time"/>
+        <association property="operationSort" column="sort_id" javaType="com.miku.lab.entity.OperationSort" resultMap="sortResult"/>
+    </resultMap>
+
+    <resultMap id="sortResult" type="com.miku.lab.entity.OperationSort">
+        <id property="sortId" column="sort_id"/>
+        <result property="sortName" column="sort_name"/>
+        <result property="remark" column="remark"/>
+        <result property="validStatus" column="valid_status"/>
+        <result property="creater" column="creater"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updater" column="updater"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="delTime" column="del_time"/>
+    </resultMap>
+
+    <sql id="selectOperationVo">
+        select o.operation_id, o.sort_id, o.title, o.actor, o.content, o.date, o.abs, o.attachment, o.creater, o.create_time, o.updater, o.update_time, o.del_flag, o.del_time,
+        os.sort_id, os.sort_name, os.remark, os.valid_status, os.creater, os.create_time, os.updater, os.update_time, os.del_flag, os.del_time
+        from sys_operation o
+		    left join sys_operation_sort os on o.sort_id = os.sort_id
+    </sql>
+
+    <select id="listOperation" parameterType="com.miku.lab.entity.Operation" resultMap="operationResult">
+        <include refid="selectOperationVo"/>
+        where o.del_flag=0
+        <if test="sortId != null and sortId != 0">
+            AND os.sort_id = #{sortId}
+        </if>
+        <if test="title != null and title != ''">
+            AND o.title like concat('%', #{title}, '%')
+        </if>
+        <if test="actor != null and actor != ''">
+            AND o.actor like concat('%', #{actor}, '%')
+        </if>
+        <if test="content != null and content != ''">
+            AND o.content like concat('%', #{content}, '%')
+        </if>
+        <if test="date != null and date != ''">
+            AND o.date = #{date}
+        </if>
+        <if test="abs != null and abs != ''">
+            AND o.abs like concat('%', #{abs}, '%')
+        </if>
+        order by o.create_time desc
+        <if test="page != null and limit != null and limit != 0">
+            limit #{page},#{limit}
+        </if>
+    </select>
+
+    <select id="listOperationNumber" parameterType="com.miku.lab.entity.Operation" resultType="int">
+        select COUNT(*) from sys_operation o
+        left join sys_operation_sort os on o.sort_id = os.sort_id
+        where o.del_flag=0
+        <if test="sortId != null and sortId != 0">
+            AND os.sort_id = #{sortId}
+        </if>
+        <if test="title != null and title != ''">
+            AND o.title like concat('%', #{title}, '%')
+        </if>
+        <if test="actor != null and actor != ''">
+            AND o.actor like concat('%', #{actor}, '%')
+        </if>
+        <if test="content != null and content != ''">
+            AND o.content like concat('%', #{content}, '%')
+        </if>
+        <if test="date != null and date != ''">
+            AND o.date = #{date}
+        </if>
+        <if test="abs != null and abs != ''">
+            AND o.abs like concat('%', #{abs}, '%')
+        </if>
+    </select>
+
+    <insert id="addOperation" parameterType="com.miku.lab.entity.Operation" useGeneratedKeys="true" keyProperty="operationId">
+        insert into sys_operation(
+        <if test="sortId != null and sortId != 0">sort_id,</if>
+        <if test="title != null and title != ''">title,</if>
+        <if test="actor != null and actor != ''">actor,</if>
+        <if test="content != null and content != ''">content,</if>
+        <if test="abs != null and abs != ''">abs,</if>
+        `date`,
+        <if test="attachment != null ">attachment,</if>
+        <if test="creater != null and creater != ''">creater,</if>
+        create_time,
+        del_flag
+        )values(
+        <if test="sortId != null and sortId != 0">#{sortId},</if>
+        <if test="title != null and title != ''">#{title},</if>
+        <if test="actor != null and actor != ''">#{actor},</if>
+        <if test="content != null and content != ''">#{content},</if>
+        <if test="abs != null and abs != ''">#{abs},</if>
+        sysdate(),
+        <if test="attachment != null ">#{attachment},</if>
+        <if test="creater != null and creater != ''">#{creater},</if>
+        sysdate(),
+        0
+        )
+    </insert>
+
+    <update id="deleteOperations" parameterType="Long">
+        update sys_operation set del_flag = '1',del_time=sysdate() where operation_id in
+        <foreach collection="array" item="operationId" open="(" separator="," close=")">
+            #{operationId}
+        </foreach>
+    </update>
+
+    <update id="updateOperation" parameterType="com.miku.lab.entity.Operation">
+        update sys_operation
+        <set>
+            <if test="sortId != null and sortId != 0">sort_id=#{sortId},</if>
+            <if test="title != null and title != ''">title=#{title},</if>
+            <if test="actor != null and actor!=''">actor=#{actor},</if>
+            <if test="content != null and content!=''">content=#{content},</if>
+            <if test="abs != null and abs!=''">abs=#{abs},</if>
+            <if test="attachment != null">attachment=#{attachment},</if>
+            <if test="date != null">`date` = #{date},</if>
+            <if test="updater != null and updater!=''">updater=#{updater},</if>
+            update_time=sysdate()
+        </set>
+        where operation_id = #{operationId}
+    </update>
+</mapper>

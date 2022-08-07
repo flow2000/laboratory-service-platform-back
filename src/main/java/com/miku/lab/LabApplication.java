@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(exclude = {org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class })
 @EnableScheduling
-@MapperScan("com.miku.lab.dao")
 public class LabApplication extends SpringBootServletInitializer {
     protected static final Logger logger = LoggerFactory.getLogger(LabApplication.class);
 

@@ -1,23 +1,34 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3295/db_laboratory?characterEncoding=UTF-8&useSSL=false
-    username: db_laboratory
-    password: 20061016Wang
+    url: jdbc:mysql://127.0.0.1:3306/db_laboratory?characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123456
     hikari:
       minimum-idle: 3
       maximum-pool-size: 10
       max-lifetime: 30000
       connection-test-query: SELECT 1
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
+
 server:
   port: 9000
 ## 文件访问路径
 file:
   common:
     ## windows系统下访问路径
-    uploadWindow: C:\pictureUpload\project\
+    uploadPictureByWindow: C:\pictureUpload\project\
     ## linux系统下访问路径
-    uploadLinux: /www/wwwroot/120.76.243.77/pictureUpload/project/
+    uploadPictureByLinux: /www/wwwroot/120.76.243.77/pictureUpload/project/
+
+    ## windows系统下附件访问路径
+    uploadAttachmentByWindow: C:\attachmentUpload\project\
+    ## linux系统下附件访问路径
+    uploadAttachmentByLinux: /www/wwwroot/120.76.243.77/attachmentUpload/project/
+
 logging:
   level:
     root: info

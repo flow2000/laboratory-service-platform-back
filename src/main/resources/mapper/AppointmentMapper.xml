@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miku.lab.dao.AppointmentDao">
+
+    <!-- 审核信息 -->
+    <select id="selectAuditList" resultType="com.miku.lab.entity.BookLog" parameterType="java.util.Map">
+        select bl.openId,bl.booking_code,bl.booking_checker,bl.check_time,bl.check_result,bl.is_push
+        from sys_booking_log bl
+        where bl.valid_status=1 and bl.del_flag=0
+        and bl.booking_code in
+        <foreach collection="appointments" item="item" open="(" separator="," close=")">
+            #{item.bookingCode}
+        </foreach>
+        order by bl.check_time desc
+        <if test="page != null and limit != null and limit != 0">
+            limit #{page},#{limit}
+        </if>
+    </select>
+
+    <!-- 审核信息数量 -->
+    <select id="selectAuditListNumber" resultType="int" parameterType="java.util.ArrayList">
+        select COUNT(*)
+        from sys_booking_log bl
+        where bl.valid_status=1 and bl.del_flag=0
+        and bl.booking_code in
+        <foreach collection="appointments" index="index" item="item" open="(" separator="," close=")">
+            #{item.bookingCode}
+        </foreach>
+    </select>
+
+    <!-- 预约信息 -->
+    <select id="selectBookList" resultType="com.miku.lab.entity.BookBody" parameterType="java.util.Map">
+        select
+        o.openId,o.booking_code,o.checker,o.username,o.order_number,o.lab_id,o.order_applyer,o.order_phone,o.lab_name,o.remark,o.start_time,o.end_time,o.last_updater
+        from sys_order_check o
+        where o.del_flag=0
+        <if test="startTime != null">
+            AND o.start_time &gt;= #{startTime,jdbcType=DATE}
+        </if>
+        <if test="endTime != null">
+            AND o.end_time &lt;= #{endTime,jdbcType=DATE}
+        </if>
+        and o.booking_code in
+        <foreach collection="appointmentList" index="index" item="item" open="(" separator="," close=")">
+            #{item.bookingCode}
+        </foreach>
+        <if test="page != null and limit != null and limit != 0">
+            limit #{page},#{limit}
+        </if>
+    </select>
+
+    <!-- 预约信息数量 -->
+    <select id="selectBookListNumber" resultType="int" parameterType="java.util.Map">
+        select COUNT(*)
+        from sys_order_check o
+        where o.del_flag=0
+        <if test="startTime != null">
+            AND o.start_time &gt;= #{startTime,jdbcType=DATE}
+        </if>
+        <if test="endTime != null">
+            AND o.end_time &lt;= #{endTime,jdbcType=DATE}
+        </if>
+        and o.booking_code in
+        <foreach collection="appointmentList" index="index" item="item" open="(" separator="," close=")">
+            #{item.bookingCode}
+        </foreach>
+    </select>
+
+    <select id="selectBookingMachine" parameterType="com.miku.lab.entity.Appointment" resultType="String">
+        select booking_code from wx_booking_machine bm
+        where bm.valid_status = 2
+        <if test="machineId != null">
+            and bm.machine_code = #{machineId}
+        </if>
+    </select>
+    <sql id="selectAppointmentVo">
+        select m.machine_id,m.machine_name,m.total_time
+        from sys_machine m
+    </sql>
+
+    <select id="listAppointment" resultType="com.miku.lab.entity.Appointment"
+            parameterType="com.miku.lab.entity.Appointment">
+        <include refid="selectAppointmentVo"/>
+        where m.del_flag=0
+        <if test="machineName != null and machineName != ''">
+            AND m.machine_name like concat('%', #{machineName}, '%')
+        </if>
+        order by m.total_time desc
+        <if test="page != null and limit != null and limit != 0">
+            limit #{page},#{limit}
+        </if>
+    </select>
+
+    <select id="listAppointmentNumber" resultType="int" parameterType="com.miku.lab.entity.Appointment">
+        select COUNT(machine_id)
+        from sys_machine m
+        where m.del_flag=0
+        <if test="machineName != null and machineName != ''">
+            AND m.machine_name like concat('%', #{machineName}, '%')
+        </if>
+    </select>
+
+    <update id="updateMachineTotalTime" parameterType="com.miku.lab.entity.Appointment">
+        update sys_machine
+        set total_time=#{totalTime}
+        where machine_id=#{machineId}
+    </update>
+
+</mapper>

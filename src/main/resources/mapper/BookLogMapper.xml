@@ -40,8 +40,8 @@
 
     <insert id="addBookMachine" parameterType="map">
         insert
-        into wx_booking_machine(openId,booking_code,machine_code,machine_number,del_flag,create_time)
-        values(#{openId},#{bookingCode},#{machineCode},#{machineNumber},0,NOW())
+        into wx_booking_machine(openId,booking_code,machine_code,machine_number,valid_status,del_flag,create_time)
+        values(#{openId},#{bookingCode},#{machineCode},#{machineNumber},2,0,NOW())
     </insert>
 
     <update id="updateMachine" parameterType="map">

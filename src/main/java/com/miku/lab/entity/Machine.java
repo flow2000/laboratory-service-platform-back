@@ -42,6 +42,7 @@ public class Machine {
     private Integer qualityTime;            //保质期
     private Integer validStatus;               //有效状态
     private Integer isCheck;                    //是否需要审核
+    private Double totalTime;                     //仪器总预约时长
     private String creater;                     //创建者
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;                   //创建时间

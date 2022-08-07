@@ -63,6 +63,7 @@ public class BookBody extends OrderCheck{
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date endTime;           //结束时间
 
+    private double appointmentTime; //预约时长
 
     @ApiModelProperty(hidden=true)
     private String checker;         //审核人
